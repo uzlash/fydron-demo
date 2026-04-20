@@ -25,3 +25,17 @@ export type DashboardData = {
 };
 
 export type DashboardDataMode = "full" | "empty";
+
+export type NotificationTab = "all" | "unread" | "mentions";
+
+export type NotificationItem = {
+  id: string;
+  title: string;
+  actor: string;
+  time: string;
+  relativeTime: string;
+  dayLabel: string;
+  unread: boolean;
+  hasMention: boolean;
+  actionLabel: string;
+};

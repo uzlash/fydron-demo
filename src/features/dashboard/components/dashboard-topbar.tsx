@@ -4,7 +4,15 @@ import { Input, Text } from "@fluentui/react-components";
 import { Search20Regular, Alert20Regular } from "@fluentui/react-icons";
 import { useLocale } from "@/i18n/locale-context";
 
-export function DashboardTopbar() {
+type DashboardTopbarProps = {
+  onToggleNotifications: () => void;
+  hasUnreadNotifications: boolean;
+};
+
+export function DashboardTopbar({
+  onToggleNotifications,
+  hasUnreadNotifications,
+}: DashboardTopbarProps) {
   const { t } = useLocale();
 
   return (
@@ -19,11 +27,15 @@ export function DashboardTopbar() {
           contentBefore={<Search20Regular className="text-muted" />}
         />
         <button
-          className="inline-flex h-[36px] w-[36px] items-center justify-center rounded border border-border bg-surface text-secondary hover:bg-sidebar"
+          className="relative inline-flex h-[36px] w-[36px] items-center justify-center rounded border border-border bg-surface text-secondary hover:bg-sidebar"
           aria-label={t.dashboard.notifications}
           type="button"
+          onClick={onToggleNotifications}
         >
           <Alert20Regular />
+          {hasUnreadNotifications ? (
+            <span className="absolute mb-4 ml-4 inline-block h-2 w-2 rounded-full bg-danger" />
+          ) : null}
         </button>
       </div>
     </header>

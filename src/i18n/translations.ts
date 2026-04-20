@@ -126,6 +126,19 @@ export const en = {
         "Begin by adding your first client, then create and manage audits efficiently from this dashboard.",
       cta: "Add your first Client",
     },
+    notificationCenter: {
+      title: "Notification Center",
+      markAllAsRead: "Mark all as read",
+      tabs: {
+        all: "All activity",
+        unread: "Unread",
+        mentions: "Mentions",
+      },
+      empty: {
+        generic: "No notifications yet.",
+        unread: "You have no unread notifications.",
+      },
+    },
   },
   toast: {
     loginErrorTitle: "Wrong Email/Password",
@@ -258,6 +271,19 @@ export const nl: TranslationDict = {
       subtitle:
         "Begin met het toevoegen van je eerste klant en beheer daarna audits efficient vanuit dit dashboard.",
       cta: "Voeg je eerste klant toe",
+    },
+    notificationCenter: {
+      title: "Meldingscentrum",
+      markAllAsRead: "Alles markeren als gelezen",
+      tabs: {
+        all: "Alle activiteit",
+        unread: "Ongelezen",
+        mentions: "Vermeldingen",
+      },
+      empty: {
+        generic: "Nog geen meldingen.",
+        unread: "Je hebt geen ongelezen meldingen.",
+      },
     },
   },
   toast: {

@@ -8,7 +8,8 @@ import { DashboardTopbar } from "@/features/dashboard/components/dashboard-topba
 import { DashboardStats } from "@/features/dashboard/components/dashboard-stats";
 import { DossiersTable } from "@/features/dashboard/components/dossiers-table";
 import { EmptyDashboardState } from "@/features/dashboard/components/empty-dashboard-state";
-import { fetchDashboardData } from "@/features/dashboard/mock-data";
+import { NotificationCenter } from "@/features/dashboard/components/notification-center";
+import { fetchDashboardData, notificationItems } from "@/features/dashboard/mock-data";
 import type { DashboardDataMode } from "@/features/dashboard/types";
 import { useLocale } from "@/i18n/locale-context";
 
@@ -25,6 +26,7 @@ function DashboardDataLoading({ label }: { label: string }) {
 
 export function DashboardScreen() {
   const [mode, setMode] = useState<DashboardDataMode>("full");
+  const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(true);
   const { t } = useLocale();
   const dashboardQuery = useQuery({
     queryKey: ["dashboard-data", mode],
@@ -36,36 +38,56 @@ export function DashboardScreen() {
   const isEmpty = !isLoading && (data?.dossiers.length ?? 0) === 0;
 
   return (
-    <div className="flex h-screen w-full bg-surface font-sans text-foreground">
+    <div className="relative flex h-screen w-full bg-surface font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border">
-        <DashboardTopbar />
-        
-        {/* Main Content Area */}
-        <div className="flex flex-1 flex-col overflow-y-auto">
-          <div className="px-6 py-6">
-            <Text size={500} weight="semibold" block className="mb-[2px] text-[18px] text-foreground">
-              {t.dashboard.greetingTitle.replace("{name}", data?.greetingName ?? "Michael")}
-            </Text>
-            <Text size={200} className="text-[13px] text-secondary" block>
-              {t.dashboard.greetingSubtitle}
-            </Text>
-            <div className="mt-[20px]">
-              <DashboardStats stats={data?.stats ?? []} />
-            </div>
-          </div>
+      <div className="flex min-w-0 flex-1 border-l border-border">
+        <div className="flex min-w-0 flex-1 flex-col">
+          <DashboardTopbar
+            onToggleNotifications={() =>
+              setIsNotificationCenterOpen((currentValue) => !currentValue)
+            }
+            hasUnreadNotifications={notificationItems.some((item) => item.unread)}
+          />
 
-          {isLoading ? (
-            <DashboardDataLoading label={t.dashboard.loading} />
-          ) : isEmpty ? (
-            <EmptyDashboardState onAction={() => setMode("full")} />
-          ) : (
-            <div className="flex-1">
-              <DossiersTable rows={data?.dossiers ?? []} />
+          {/* Main Content Area */}
+          <div className="flex flex-1 flex-col overflow-y-auto">
+            <div className="px-6 py-6">
+              <Text size={500} weight="semibold" block className="mb-[2px] text-[18px] text-foreground">
+                {t.dashboard.greetingTitle.replace("{name}", data?.greetingName ?? "Michael")}
+              </Text>
+              <Text size={200} className="text-[13px] text-secondary" block>
+                {t.dashboard.greetingSubtitle}
+              </Text>
+              <div className="mt-[20px]">
+                <DashboardStats stats={data?.stats ?? []} />
+              </div>
             </div>
-          )}
+
+            {isLoading ? (
+              <DashboardDataLoading label={t.dashboard.loading} />
+            ) : isEmpty ? (
+              <EmptyDashboardState onAction={() => setMode("full")} />
+            ) : (
+              <div className="flex-1">
+                <DossiersTable rows={data?.dossiers ?? []} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
+      {isNotificationCenterOpen ? (
+        <>
+          <button
+            type="button"
+            aria-label="Close notifications panel"
+            className="absolute inset-0 z-20 bg-black/45"
+            onClick={() => setIsNotificationCenterOpen(false)}
+          />
+          <div className="absolute right-0 top-0 z-30 h-full">
+            <NotificationCenter items={notificationItems} />
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }
