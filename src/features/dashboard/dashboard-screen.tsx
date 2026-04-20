@@ -43,6 +43,7 @@ export function DashboardScreen() {
       <div className="flex min-w-0 flex-1 border-l border-border">
         <div className="flex min-w-0 flex-1 flex-col">
           <DashboardTopbar
+            title={t.dashboard.title}
             onToggleNotifications={() =>
               setIsNotificationCenterOpen((currentValue) => !currentValue)
             }

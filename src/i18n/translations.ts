@@ -140,6 +140,34 @@ export const en = {
       },
     },
   },
+  billing: {
+    title: "Billing & Subscriptions",
+    loading: "Loading billing data…",
+    overview: {
+      title: "Subscription Overview Card",
+      subtitle: "Manage your subscription and track your active dossier usage",
+      contactCta: "Contact Fydron",
+      activeClients: "Active Clients",
+      activeDossiers: "Active Dossiers",
+    },
+    invoices: {
+      title: "Invoice History",
+      subtitle: "Below is a record of all invoices issued for your subscription.",
+      statusLabels: {
+        success: "Success",
+        failed: "Failed",
+        pending: "Pending",
+      },
+      columns: {
+        invoice: "Invoice",
+        status: "Status",
+        date: "Date",
+        amount: "Amount",
+      },
+      download: "Download",
+      empty: "No Invoice yet",
+    },
+  },
   toast: {
     loginErrorTitle: "Wrong Email/Password",
     loginErrorBody:
@@ -284,6 +312,34 @@ export const nl: TranslationDict = {
         generic: "Nog geen meldingen.",
         unread: "Je hebt geen ongelezen meldingen.",
       },
+    },
+  },
+  billing: {
+    title: "Facturatie & Abonnementen",
+    loading: "Facturatiegegevens worden geladen…",
+    overview: {
+      title: "Overzichtskaart abonnement",
+      subtitle: "Beheer je abonnement en volg het gebruik van je actieve dossiers",
+      contactCta: "Contacteer Fydron",
+      activeClients: "Actieve klanten",
+      activeDossiers: "Actieve dossiers",
+    },
+    invoices: {
+      title: "Factuurgeschiedenis",
+      subtitle: "Hieronder vind je een overzicht van alle facturen voor je abonnement.",
+      statusLabels: {
+        success: "Succes",
+        failed: "Mislukt",
+        pending: "In behandeling",
+      },
+      columns: {
+        invoice: "Factuur",
+        status: "Status",
+        date: "Datum",
+        amount: "Bedrag",
+      },
+      download: "Download",
+      empty: "Nog geen factuur",
     },
   },
   toast: {

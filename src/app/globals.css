@@ -20,6 +20,7 @@
   --palette-muted: #a19f9d;
   --palette-body: #323130;
   --palette-danger: #d13438;
+  --palette-success: #107c10;
 }
 
 @theme inline {
@@ -40,6 +41,7 @@
   --color-muted: var(--palette-muted);
   --color-body: var(--palette-body);
   --color-danger: var(--palette-danger);
+  --color-success: var(--palette-success);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

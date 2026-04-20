@@ -7,18 +7,20 @@ import { useLocale } from "@/i18n/locale-context";
 type DashboardTopbarProps = {
   onToggleNotifications: () => void;
   hasUnreadNotifications: boolean;
+  title: string;
 };
 
 export function DashboardTopbar({
   onToggleNotifications,
   hasUnreadNotifications,
+  title,
 }: DashboardTopbarProps) {
   const { t } = useLocale();
 
   return (
     <header className="flex h-[60px] items-center justify-between border-b border-border px-6 bg-surface">
       <Text size={500} weight="semibold" className="text-foreground text-[18px]">
-        {t.dashboard.title}
+        {title}
       </Text>
       <div className="flex items-center gap-3">
         <Input

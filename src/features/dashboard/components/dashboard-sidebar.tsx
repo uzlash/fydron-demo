@@ -2,6 +2,8 @@
 
 
 import type { ReactNode } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Avatar, Text } from "@fluentui/react-components";
 
 import {
@@ -18,9 +20,10 @@ import { FydronLogo } from "@/features/auth/components/fydron-logo";
 import { useLocale } from "@/i18n/locale-context";
 
 type NavItem = {
+  key: string;
   label: string;
   icon: ReactNode;
-  active?: boolean;
+  href?: string;
   disabled?: boolean;
   alertCount?: number;
 };
@@ -31,32 +34,53 @@ type NavGroup = {
 };
 
 function NavRow({ item }: { item: NavItem }) {
-  return (
-    <div
-      className={`group relative flex h-9 cursor-pointer items-center justify-between pl-[24px] pr-[16px] ${
-        item.active
-          ? "bg-surface text-foreground font-semibold"
-          : item.disabled
-            ? "text-muted"
-            : "text-body hover:bg-border-soft"
-      }`}
-    >
-      {item.active && (
+  const pathname = usePathname();
+  const isActive = item.href
+    ? item.href === "/dashboard"
+      ? pathname === item.href
+      : pathname.startsWith(item.href)
+    : false;
+
+  const rowClassName = `group relative flex h-9 items-center justify-between pl-[24px] pr-[16px] ${
+    isActive
+      ? "bg-surface text-foreground font-semibold"
+      : item.disabled
+        ? "text-muted"
+        : "text-body hover:bg-border-soft"
+  }`;
+
+  const content = (
+    <>
+      {isActive && (
         <div className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 bg-primary" />
       )}
-      
+
       <div className="flex min-w-0 items-center gap-[12px]">
-        <span className={`w-4 text-center font-mono text-[16px] leading-none ${item.active ? "text-primary" : "text-secondary"}`}>
+        <span className={`w-4 text-center font-mono text-[16px] leading-none ${isActive ? "text-primary" : "text-secondary"}`}>
           {item.icon}
         </span>
         <span className="truncate text-[13px] pb-[1px]">{item.label}</span>
       </div>
-      
+
       {item.alertCount ? (
         <span className="inline-flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-primary-foreground">
           {item.alertCount}
         </span>
       ) : null}
+    </>
+  );
+
+  if (item.href && !item.disabled) {
+    return (
+      <Link href={item.href} className={`${rowClassName} cursor-pointer`}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={`${rowClassName} cursor-default`}>
+      {content}
     </div>
   );
 }
@@ -68,22 +92,22 @@ export function DashboardSidebar() {
     {
       title: t.dashboard.sections.platform,
       items: [
-        { label: t.dashboard.nav.dashboard, icon: <Board20Regular />, active: true },
-        { label: t.dashboard.nav.matrix, icon: <GridDots20Regular /> },
-        { label: t.dashboard.nav.globalMessages, icon: <ChatMultiple20Regular />, alertCount: 1 },
-        { label: t.dashboard.nav.clientPortfolio, icon: <Folder20Regular /> },
-        { label: t.dashboard.nav.partnerAssets, icon: <ContactCard20Regular /> },
+        { key: "dashboard", label: t.dashboard.nav.dashboard, icon: <Board20Regular />, href: "/dashboard" },
+        { key: "matrix", label: t.dashboard.nav.matrix, icon: <GridDots20Regular /> },
+        { key: "globalMessages", label: t.dashboard.nav.globalMessages, icon: <ChatMultiple20Regular />, alertCount: 1 },
+        { key: "clientPortfolio", label: t.dashboard.nav.clientPortfolio, icon: <Folder20Regular /> },
+        { key: "partnerAssets", label: t.dashboard.nav.partnerAssets, icon: <ContactCard20Regular /> },
       ],
     },
     {
       title: t.dashboard.sections.payments,
-      items: [{ label: t.dashboard.nav.billingSubscription, icon: <Payment20Regular /> }],
+      items: [{ key: "billingSubscription", label: t.dashboard.nav.billingSubscription, icon: <Payment20Regular />, href: "/billing-subscriptions" }],
     },
     {
       title: t.dashboard.sections.other,
       items: [
-        { label: t.dashboard.nav.hrVault, icon: <Cloud20Regular />, disabled: true },
-        { label: t.dashboard.nav.insights, icon: <Sparkle20Regular />, disabled: true },
+        { key: "hrVault", label: t.dashboard.nav.hrVault, icon: <Cloud20Regular />, disabled: true },
+        { key: "insights", label: t.dashboard.nav.insights, icon: <Sparkle20Regular />, disabled: true },
       ],
     },
   ];
@@ -102,7 +126,7 @@ export function DashboardSidebar() {
             </Text>
             <div className="flex flex-col gap-[2px]">
               {group.items.map((item) => (
-                <NavRow key={item.label} item={item} />
+                <NavRow key={item.key} item={item} />
               ))}
             </div>
           </div>
