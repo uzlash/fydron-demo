@@ -76,6 +76,57 @@ export const en = {
     scanHint: "Scan with Google or Microsoft Authenticator",
     continue: "Continue",
   },
+  dashboard: {
+    title: "Dashboard",
+    searchPlaceholder: "Search",
+    notifications: "Notifications",
+    greetingTitle: "Hey {name}!",
+    greetingSubtitle: "Welcome back. What are we doing today?",
+    loading: "Loading dashboard…",
+    stats: {
+      activeDossiers: "Active Dossiers",
+      unreadMessages: "Unread messages",
+      upcomingDeadlines: "Upcoming Deadlines",
+    },
+    sections: {
+      platform: "Platform",
+      payments: "Payments",
+      other: "Other",
+    },
+    nav: {
+      dashboard: "Dashboard",
+      matrix: "The Matrix",
+      globalMessages: "Global Messages",
+      clientPortfolio: "Client Portfolio",
+      partnerAssets: "Partner Assets",
+      billingSubscription: "Billing & Subscription",
+      hrVault: "HR Vault",
+      insights: "Insights",
+    },
+    profile: {
+      name: "Mary Jane",
+      email: "maryja1@company.com",
+    },
+    dossiers: {
+      title: "Dossiers",
+      searchPlaceholder: "Search dossiers by organisation",
+      filterByRole: "Filter by Role",
+      organization: "Organisation",
+      dossier: "Dossier",
+      roles: "Roles",
+      progress: "Progress",
+    },
+    pagination: {
+      previous: "Previous",
+      next: "Next",
+    },
+    empty: {
+      title: "Let's Get Started!",
+      subtitle:
+        "Begin by adding your first client, then create and manage audits efficiently from this dashboard.",
+      cta: "Add your first Client",
+    },
+  },
   toast: {
     loginErrorTitle: "Wrong Email/Password",
     loginErrorBody:
@@ -157,6 +208,57 @@ export const nl: TranslationDict = {
     subtitle: "Stel multifactorauthenticatie in om je account te beschermen.",
     scanHint: "Scan met Google of Microsoft Authenticator",
     continue: "Doorgaan",
+  },
+  dashboard: {
+    title: "Dashboard",
+    searchPlaceholder: "Zoeken",
+    notifications: "Meldingen",
+    greetingTitle: "Hey {name}!",
+    greetingSubtitle: "Welkom terug. Wat gaan we vandaag doen?",
+    loading: "Dashboard wordt geladen…",
+    stats: {
+      activeDossiers: "Actieve dossiers",
+      unreadMessages: "Ongelezen berichten",
+      upcomingDeadlines: "Aankomende deadlines",
+    },
+    sections: {
+      platform: "Platform",
+      payments: "Betalingen",
+      other: "Overig",
+    },
+    nav: {
+      dashboard: "Dashboard",
+      matrix: "De Matrix",
+      globalMessages: "Wereldwijde berichten",
+      clientPortfolio: "Clientportefeuille",
+      partnerAssets: "Partnerassets",
+      billingSubscription: "Facturatie & Abonnement",
+      hrVault: "HR kluis",
+      insights: "Inzichten",
+    },
+    profile: {
+      name: "Mary Jane",
+      email: "maryja1@company.com",
+    },
+    dossiers: {
+      title: "Dossiers",
+      searchPlaceholder: "Zoek dossiers op organisatie",
+      filterByRole: "Filter op rol",
+      organization: "Organisatie",
+      dossier: "Dossier",
+      roles: "Rollen",
+      progress: "Voortgang",
+    },
+    pagination: {
+      previous: "Vorige",
+      next: "Volgende",
+    },
+    empty: {
+      title: "Laten we beginnen!",
+      subtitle:
+        "Begin met het toevoegen van je eerste klant en beheer daarna audits efficient vanuit dit dashboard.",
+      cta: "Voeg je eerste klant toe",
+    },
   },
   toast: {
     loginErrorTitle: "Verkeerde e-mail/wachtwoord",

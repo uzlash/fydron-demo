@@ -6,4 +6,10 @@ function meetsPasswordRequirements(p: string) {
   return true;
 }
 
-export { meetsPasswordRequirements };
+function delay(ms: number) {
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+export { meetsPasswordRequirements, delay };

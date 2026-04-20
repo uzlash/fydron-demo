@@ -12,6 +12,7 @@ const links: { href: string; label: string }[] = [
   { href: "/auth/profile", label: "Profile (empty)" },
   { href: "/auth/profile?state=filled", label: "Profile (filled)" },
   { href: "/auth/mfa", label: "MFA" },
+  { href: "/dashboard", label: "Dashboard" }
 ];
 
 export default function AuthHubPage() {

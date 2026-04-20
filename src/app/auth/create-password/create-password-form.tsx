@@ -9,7 +9,7 @@ import { ErrorToast } from "@/features/auth/components/error-toast";
 import { LegalFooter } from "@/features/auth/components/legal-footer";
 import { PasswordInput } from "@/features/auth/components/password-input";
 import { useLocale } from "@/i18n/locale-context";
-import { meetsPasswordRequirements } from "@/lib/helpers";
+import { meetsPasswordRequirements } from "@/utils/helpers";
 
 export function CreatePasswordForm() {
   const { t } = useLocale();
