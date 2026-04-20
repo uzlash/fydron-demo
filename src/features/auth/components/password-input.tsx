@@ -1,0 +1,63 @@
+"use client";
+
+import { Button, Field, Input } from "@fluentui/react-components";
+import { Eye24Regular, EyeOff24Regular } from "@fluentui/react-icons";
+import { useId, useState, type ReactNode } from "react";
+
+type Props = {
+  label: ReactNode;
+  value: string;
+  onChange: (value: string) => void;
+  validationState?: "none" | "error" | "warning" | "success";
+  placeholder?: string;
+  /** Renders on the same row as the label (e.g. “Forgot password?”) */
+  labelEndSlot?: ReactNode;
+};
+
+export function PasswordInput({
+  label,
+  value,
+  onChange,
+  validationState = "none",
+  placeholder,
+  labelEndSlot,
+}: Props) {
+  const [visible, setVisible] = useState(false);
+  const id = useId();
+
+  const labelRow =
+    labelEndSlot != null ? (
+      <div className="flex w-full min-w-0 items-center justify-between gap-2">
+        <span className="min-w-0">{label}</span>
+        {labelEndSlot}
+      </div>
+    ) : (
+      label
+    );
+
+  return (
+    <Field
+      // Composite label row (e.g. password + “Forgot password?”) is valid in the Field label slot at runtime
+      label={labelRow as never}
+      validationState={validationState}
+      id={id}
+    >
+      <Input
+        id={id}
+        type={visible ? "text" : "password"}
+        value={value}
+        onChange={(_, d) => onChange(d.value)}
+        placeholder={placeholder}
+        contentAfter={
+          <Button
+            appearance="transparent"
+            size="small"
+            icon={visible ? <EyeOff24Regular /> : <Eye24Regular />}
+            aria-label={visible ? "Hide password" : "Show password"}
+            onClick={() => setVisible((v) => !v)}
+          />
+        }
+      />
+    </Field>
+  );
+}
