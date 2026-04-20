@@ -35,25 +35,25 @@ function NavRow({ item }: { item: NavItem }) {
     <div
       className={`group relative flex h-9 cursor-pointer items-center justify-between pl-[24px] pr-[16px] ${
         item.active
-          ? "bg-white text-[#242424] font-semibold"
+          ? "bg-surface text-foreground font-semibold"
           : item.disabled
-            ? "text-[#a19f9d]"
-            : "text-[#323130] hover:bg-[#edebe9]"
+            ? "text-muted"
+            : "text-body hover:bg-border-soft"
       }`}
     >
       {item.active && (
-        <div className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 bg-[#0078d4]" />
+        <div className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 bg-primary" />
       )}
       
       <div className="flex min-w-0 items-center gap-[12px]">
-        <span className={`w-4 text-center font-mono text-[16px] leading-none ${item.active ? "text-[#0078d4]" : "text-[#605e5c]"}`}>
+        <span className={`w-4 text-center font-mono text-[16px] leading-none ${item.active ? "text-primary" : "text-secondary"}`}>
           {item.icon}
         </span>
         <span className="truncate text-[13px] pb-[1px]">{item.label}</span>
       </div>
       
       {item.alertCount ? (
-        <span className="inline-flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-[#d13438] px-1 text-[10px] font-bold text-white">
+        <span className="inline-flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-primary-foreground">
           {item.alertCount}
         </span>
       ) : null}
@@ -89,7 +89,7 @@ export function DashboardSidebar() {
   ];
 
   return (
-    <aside className="flex h-full w-[240px] flex-col border-none bg-[#f3f2f1]">
+    <aside className="flex h-full w-[240px] flex-col border-none bg-sidebar">
       <div className="px-6 py-[22px]">
         <FydronLogo className="text-[30px]" />
       </div>
@@ -97,7 +97,7 @@ export function DashboardSidebar() {
       <nav className="flex flex-1 flex-col gap-6 overflow-y-auto mt-2">
         {groups.map((group) => (
           <div key={group.title} className="flex flex-col">
-            <Text size={200} className="mb-[6px] px-6 text-[10px] text-[#a19f9d] uppercase tracking-wide">
+            <Text size={200} className="mb-[6px] px-6 text-[10px] text-muted uppercase tracking-wide">
               {group.title}
             </Text>
             <div className="flex flex-col gap-[2px]">
@@ -113,10 +113,10 @@ export function DashboardSidebar() {
         <div className="flex items-center gap-[10px]">
           <Avatar name="Mary Jane" color="colorful" size={32} />
           <div className="min-w-0 flex flex-col justify-center gap-[2px]">
-            <Text size={300} block className="text-[13px] font-semibold text-[#242424] leading-tight">
+            <Text size={300} block className="text-[13px] font-semibold text-foreground leading-tight">
               {t.dashboard.profile.name}
             </Text>
-            <Text size={200} block className="truncate text-[11px] text-[#605e5c] leading-tight">
+            <Text size={200} block className="truncate text-[11px] text-secondary leading-tight">
               {t.dashboard.profile.email}
             </Text>
           </div>

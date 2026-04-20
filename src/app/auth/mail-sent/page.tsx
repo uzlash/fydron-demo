@@ -14,7 +14,7 @@ export default function MailSentPage() {
         <Text as="h1" size={500} weight="semibold" block>
           {t.mailSent.title}
         </Text>
-        <Text size={300} className="text-[#605e5c]">
+        <Text size={300} className="text-secondary">
           {t.mailSent.body}
         </Text>
       </AuthCard>

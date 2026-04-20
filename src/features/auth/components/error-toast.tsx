@@ -12,15 +12,15 @@ type Props = {
 export function ErrorToast({ title, body, onDismiss }: Props) {
   return (
     <div
-      className="fixed top-4 right-4 z-[100] flex w-[min(360px,calc(100vw-2rem))] gap-3 rounded border border-[#e0e0e0] bg-white p-3 shadow-md"
+      className="fixed top-4 right-4 z-[100] flex w-[min(360px,calc(100vw-2rem))] gap-3 rounded border border-border bg-surface p-3 shadow-md"
       role="alert"
     >
-      <ErrorCircle24Filled className="mt-0.5 shrink-0 text-[#d13438]" />
+      <ErrorCircle24Filled className="mt-0.5 shrink-0 text-danger" />
       <div className="min-w-0 flex-1">
         <Text weight="semibold" block>
           {title}
         </Text>
-        <Text size={200} className="text-[#605e5c]">
+        <Text size={200} className="text-secondary">
           {body}
         </Text>
       </div>

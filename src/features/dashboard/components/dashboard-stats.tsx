@@ -30,15 +30,15 @@ export function DashboardStats({ stats }: { stats: DashboardStat[] }) {
       {stats.map((stat) => (
         <Card
           key={stat.key}
-          className="flex flex-col justify-center h-[76px] rounded-[4px] border border-[#d2d0ce] bg-white shadow-none px-4"
+          className="flex flex-col justify-center h-[76px] rounded-[4px] border border-border-strong bg-surface shadow-none px-4"
         >
           <div className="flex items-center gap-3">
-            <span className="text-[#a19f9d] text-lg">{iconFor(stat.key)}</span>
+            <span className="text-muted text-lg">{iconFor(stat.key)}</span>
             <div className="flex flex-col justify-center">
-              <Text size={500} weight="semibold" block className="leading-[20px] text-[16px] text-[#242424]">
+              <Text size={500} weight="semibold" block className="leading-[20px] text-[16px] text-foreground">
                 {stat.value}
               </Text>
-              <Text size={200} block className="text-[12px] text-[#605e5c] leading-[16px]">
+              <Text size={200} block className="text-[12px] text-secondary leading-[16px]">
                 {t.dashboard.stats[stat.key]}
               </Text>
             </div>

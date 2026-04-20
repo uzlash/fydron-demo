@@ -7,7 +7,7 @@ import { LocaleSwitcher } from "@/features/auth/components/locale-switcher";
 type Bg = "muted" | "black";
 
 const bgClass: Record<Bg, string> = {
-  muted: "bg-[#f3f2f1]",
+  muted: "bg-sidebar",
   black: "bg-black",
 };
 

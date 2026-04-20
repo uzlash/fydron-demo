@@ -32,7 +32,7 @@ export function ProfileForm() {
         <Text as="h1" size={500} weight="semibold" block>
           {t.profile.title}
         </Text>
-        <Text size={300} className="text-[#605e5c]">
+        <Text size={300} className="text-secondary">
           {t.profile.subtitle}
         </Text>
         <div className="flex flex-wrap items-start gap-4">
@@ -74,7 +74,7 @@ export function ProfileForm() {
                 {t.profile.uploadPhoto}
               </Button>
             )}
-            <Text size={200} className="text-[#605e5c]">
+            <Text size={200} className="text-secondary">
               {t.profile.photoHint}
             </Text>
           </div>

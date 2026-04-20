@@ -22,7 +22,7 @@ export default function AuthHubPage() {
       <ul className="flex flex-col gap-2">
         {links.map((l) => (
           <li key={l.href}>
-            <Link className="text-[#0078d4] underline" href={l.href}>
+            <Link className="text-primary underline" href={l.href}>
               {l.label}
             </Link>
           </li>

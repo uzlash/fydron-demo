@@ -18,7 +18,7 @@ export function PasswordSuccessContent() {
       <Text as="h1" size={500} weight="semibold" block>
         {t.passwordSuccess.title}
       </Text>
-      <Text size={300} className="text-[#605e5c]">
+      <Text size={300} className="text-secondary">
         {t.passwordSuccess.body}
       </Text>
       <Button

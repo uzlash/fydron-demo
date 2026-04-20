@@ -54,7 +54,7 @@ export function CreatePasswordForm() {
         <Text as="h1" size={500} weight="semibold" block>
           {t.createPassword.title}
         </Text>
-        <Text size={300} className="text-[#605e5c]">
+        <Text size={300} className="text-secondary">
           {t.createPassword.subtitle}
         </Text>
         <form className="flex flex-col gap-4" onSubmit={submit}>
@@ -76,7 +76,7 @@ export function CreatePasswordForm() {
             <Text size={200} weight="semibold" block className="mb-1">
               {t.createPassword.requirementsTitle}
             </Text>
-            <ul className="list-disc pl-5 text-sm text-[#605e5c]">
+            <ul className="list-disc pl-5 text-sm text-secondary">
               <li>{t.createPassword.req1}</li>
               <li>{t.createPassword.req2}</li>
               <li>{t.createPassword.req3}</li>
@@ -89,7 +89,7 @@ export function CreatePasswordForm() {
             className="w-full"
             disabled={loading}
           >
-            {loading ? <Spinner size="tiny" className="text-white" /> : t.createPassword.submit}
+            {loading ? <Spinner size="tiny" className="text-primary-foreground" /> : t.createPassword.submit}
           </Button>
         </form>
       </AuthCard>

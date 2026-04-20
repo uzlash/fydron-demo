@@ -50,7 +50,7 @@ export function LoginForm() {
         <Text as="h1" size={500} weight="semibold" block>
           {t.login.title}
         </Text>
-        <Text size={300} className="text-[#605e5c]">
+        <Text size={300} className="text-secondary">
           {t.login.subtitle}
         </Text>
         <form className="flex flex-col gap-4" onSubmit={submit}>
@@ -74,7 +74,7 @@ export function LoginForm() {
             labelEndSlot={
               <Link
                 href="/auth/forgot-password"
-                className="shrink-0 text-sm text-[#0078d4] underline"
+                className="shrink-0 text-sm text-primary underline"
               >
                 {t.login.forgotPassword}
               </Link>

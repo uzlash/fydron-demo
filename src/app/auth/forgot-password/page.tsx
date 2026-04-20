@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
         <Text as="h1" size={500} weight="semibold" block>
           {t.forgot.title}
         </Text>
-        <Text size={300} className="text-[#605e5c]">
+        <Text size={300} className="text-secondary">
           {t.forgot.subtitle}
         </Text>
         <form
@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
               onChange={(_, d) => setEmail(d.value)}
             />
           </Field>
-          <Text size={200} className="text-[#605e5c]">
+          <Text size={200} className="text-secondary">
             {t.forgot.hint}
           </Text>
           <Button
@@ -67,7 +67,7 @@ export default function ForgotPasswordPage() {
             disabled={submitMutation.isPending}
           >
             {submitMutation.isPending ? (
-              <Spinner size="tiny" className="text-white" />
+              <Spinner size="tiny" className="text-primary-foreground" />
             ) : (
               t.forgot.submit
             )}

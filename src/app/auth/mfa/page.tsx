@@ -20,7 +20,7 @@ export default function MfaPage() {
         <Text as="h1" size={500} weight="semibold" block>
           {t.mfa.title}
         </Text>
-        <Text size={300} className="text-[#605e5c]">
+        <Text size={300} className="text-secondary">
           {t.mfa.subtitle}
         </Text>
         <div className="flex justify-center py-4">
@@ -33,7 +33,7 @@ export default function MfaPage() {
             priority
           />
         </div>
-        <Text size={200} className="text-center text-[#a19f9d]">
+        <Text size={200} className="text-center text-muted">
           {t.mfa.scanHint}
         </Text>
         <Button

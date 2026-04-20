@@ -14,8 +14,8 @@ import { useLocale } from "@/i18n/locale-context";
 
 function DashboardDataLoading({ label }: { label: string }) {
   return (
-    <section className="flex flex-1 items-center justify-center border-t border-[#edebe9] px-6">
-      <div className="flex items-center gap-2 text-[#605e5c]">
+    <section className="flex flex-1 items-center justify-center border-t border-border-soft px-6">
+      <div className="flex items-center gap-2 text-secondary">
         <Spinner size="tiny" />
         <span className="text-[13px]">{label}</span>
       </div>
@@ -36,18 +36,18 @@ export function DashboardScreen() {
   const isEmpty = !isLoading && (data?.dossiers.length ?? 0) === 0;
 
   return (
-    <div className="flex h-screen w-full bg-[#ffffff] font-sans text-[#242424]">
+    <div className="flex h-screen w-full bg-surface font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-[#e1dfdd]">
+      <div className="flex min-w-0 flex-1 flex-col border-l border-border">
         <DashboardTopbar />
         
         {/* Main Content Area */}
         <div className="flex flex-1 flex-col overflow-y-auto">
           <div className="px-6 py-6">
-            <Text size={500} weight="semibold" block className="text-[18px] text-[#242424] mb-[2px]">
+            <Text size={500} weight="semibold" block className="mb-[2px] text-[18px] text-foreground">
               {t.dashboard.greetingTitle.replace("{name}", data?.greetingName ?? "Michael")}
             </Text>
-            <Text size={200} className="text-[#605e5c] text-[13px]" block>
+            <Text size={200} className="text-[13px] text-secondary" block>
               {t.dashboard.greetingSubtitle}
             </Text>
             <div className="mt-[20px]">

@@ -3,11 +3,43 @@
 :root {
   --background: #f3f2f1;
   --foreground: #242424;
+
+  --palette-primary: #0078d4;
+  --palette-primary-foreground: #ffffff;
+  --palette-secondary: #605e5c;
+  --palette-secondary-foreground: #242424;
+  --palette-accent: #fbc5d0;
+  --palette-accent-foreground: #c1254a;
+
+  --palette-surface: #ffffff;
+  --palette-surface-muted: #faf9f8;
+  --palette-sidebar: #f3f2f1;
+  --palette-border: #e1dfdd;
+  --palette-border-strong: #d2d0ce;
+  --palette-border-soft: #edebe9;
+  --palette-muted: #a19f9d;
+  --palette-body: #323130;
+  --palette-danger: #d13438;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--palette-primary);
+  --color-primary-foreground: var(--palette-primary-foreground);
+  --color-secondary: var(--palette-secondary);
+  --color-secondary-foreground: var(--palette-secondary-foreground);
+  --color-accent: var(--palette-accent);
+  --color-accent-foreground: var(--palette-accent-foreground);
+  --color-surface: var(--palette-surface);
+  --color-surface-muted: var(--palette-surface-muted);
+  --color-sidebar: var(--palette-sidebar);
+  --color-border: var(--palette-border);
+  --color-border-strong: var(--palette-border-strong);
+  --color-border-soft: var(--palette-border-soft);
+  --color-muted: var(--palette-muted);
+  --color-body: var(--palette-body);
+  --color-danger: var(--palette-danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
