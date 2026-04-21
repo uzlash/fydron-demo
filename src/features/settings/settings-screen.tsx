@@ -1,0 +1,398 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Avatar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogBody,
+  DialogContent,
+  DialogSurface,
+  DialogTitle,
+  Field,
+  Input,
+  Switch,
+  Text,
+} from "@fluentui/react-components";
+import { CheckmarkCircle16Filled } from "@fluentui/react-icons";
+import Link from "next/link";
+import { DashboardSidebar } from "@/features/dashboard/components/dashboard-sidebar";
+import { DashboardTopbar } from "@/features/dashboard/components/dashboard-topbar";
+import { NotificationCenter } from "@/features/dashboard/components/notification-center";
+import { notificationItems } from "@/features/dashboard/mock-data";
+import { SuccessToast } from "@/features/settings/components/success-toast";
+import { useLocale } from "@/i18n/locale-context";
+
+type SettingsTab = "profile" | "notifications" | "security";
+
+type ToastPayload = { title: string; body: string };
+
+export function SettingsScreen() {
+  const { t } = useLocale();
+  const [tab, setTab] = useState<SettingsTab>("profile");
+  const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
+  const [firstName, setFirstName] = useState("Mary");
+  const [lastName, setLastName] = useState("Jane");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState(t.dashboard.profile.email);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+  const [toast, setToast] = useState<ToastPayload | null>(null);
+
+  const [notifyClientMessages, setNotifyClientMessages] = useState(true);
+  const [notifyDossier, setNotifyDossier] = useState(true);
+  const [notifyDeadlines, setNotifyDeadlines] = useState(true);
+  const [mfaActive, setMfaActive] = useState(true);
+
+  const dismissToast = useCallback(() => setToast(null), []);
+
+  useEffect(() => {
+    if (!toast) return;
+    const id = window.setTimeout(() => setToast(null), 6000);
+    return () => window.clearTimeout(id);
+  }, [toast]);
+
+  const tabs: { key: SettingsTab; label: string }[] = [
+    { key: "profile", label: t.settings.tabs.profile },
+    { key: "notifications", label: t.settings.tabs.notifications },
+    { key: "security", label: t.settings.tabs.security },
+  ];
+
+  const advisorRole = t.settings.profile.defaultRole;
+
+  return (
+    <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+      <DashboardSidebar />
+      <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface">
+        <DashboardTopbar
+          title={t.settings.title}
+          onToggleNotifications={() => setIsNotificationCenterOpen((v) => !v)}
+          hasUnreadNotifications={notificationItems.some((item) => item.unread)}
+        />
+
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <div className="border-b border-border-soft px-6">
+            <div className="flex gap-8">
+              {tabs.map((item) => (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => setTab(item.key)}
+                  className={`border-b-2 pb-3 pt-4 text-[14px] font-medium transition-colors ${
+                    tab === item.key
+                      ? "border-primary text-primary"
+                      : "border-transparent text-secondary hover:text-foreground"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-6 py-6">
+            {tab === "profile" ? (
+              <div className="max-w-[720px]">
+                <div className="border-b border-border-soft pb-4">
+                  <Text size={500} weight="semibold" className="block text-[20px] text-foreground">
+                    {t.settings.profile.sectionTitle}
+                  </Text>
+                  <Text size={200} className="mt-1 block text-[13px] text-secondary">
+                    {t.settings.profile.subtitle}
+                  </Text>
+                </div>
+
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  className="hidden"
+                  aria-label={t.settings.profile.changePicture}
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (!f) return;
+                    setPhotoUrl(URL.createObjectURL(f));
+                  }}
+                />
+
+                <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start">
+                  <Avatar
+                    name={`${firstName} ${lastName}`.trim()}
+                    image={photoUrl ? { src: photoUrl } : undefined}
+                    color="colorful"
+                    size={96}
+                    shape="circular"
+                  />
+                  <div className="flex flex-col gap-2">
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        appearance="primary"
+                        className="h-8 rounded-[4px]"
+                        onClick={() => fileRef.current?.click()}
+                      >
+                        {t.settings.profile.changePicture}
+                      </Button>
+                      <Button
+                        appearance="outline"
+                        className="h-8 rounded-[4px] border-border-strong text-foreground"
+                        onClick={() => {
+                          setPhotoUrl(null);
+                          if (fileRef.current) fileRef.current.value = "";
+                        }}
+                      >
+                        {t.settings.profile.removePhoto}
+                      </Button>
+                    </div>
+                    <Text size={200} className="text-[12px] text-secondary">
+                      {t.profile.photoHint}
+                    </Text>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <Field label={t.profile.firstName}>
+                    <Input
+                      value={firstName}
+                      onChange={(_, d) => setFirstName(d.value)}
+                      className="h-9"
+                      placeholder={t.settings.profile.placeholders.firstName}
+                    />
+                  </Field>
+                  <Field label={t.profile.lastName}>
+                    <Input
+                      value={lastName}
+                      onChange={(_, d) => setLastName(d.value)}
+                      className="h-9"
+                      placeholder={t.settings.profile.placeholders.lastName}
+                    />
+                  </Field>
+                </div>
+
+                <div className="mt-5">
+                  <Field label={t.settings.profile.assignedRole}>
+                    <Input
+                      value={advisorRole}
+                      readOnly
+                      disabled
+                      className="h-9 bg-sidebar text-secondary"
+                    />
+                  </Field>
+                </div>
+
+                <div className="mt-5">
+                  <Field label={t.profile.phone}>
+                    <Input
+                      value={phone}
+                      onChange={(_, d) => setPhone(d.value)}
+                      className="h-9"
+                      placeholder={t.settings.profile.placeholders.phone}
+                    />
+                  </Field>
+                </div>
+
+                <div className="mt-5">
+                  <Field label={t.settings.profile.emailAddress}>
+                    <Input
+                      value={email}
+                      onChange={(_, d) => setEmail(d.value)}
+                      className="h-9"
+                      type="email"
+                      placeholder={t.settings.profile.placeholders.email}
+                    />
+                  </Field>
+                </div>
+
+                <div className="mt-8">
+                  <Button appearance="primary" className="h-9 rounded-[4px] px-4 font-medium" onClick={() => setSaveDialogOpen(true)}>
+                    {t.settings.profile.saveChanges}
+                  </Button>
+                </div>
+              </div>
+            ) : null}
+
+            {tab === "notifications" ? (
+              <div className="max-w-[720px]">
+                <div className="border-b border-border-soft pb-4">
+                  <Text size={500} weight="semibold" className="block text-[20px] text-foreground">
+                    {t.settings.notifications.sectionTitle}
+                  </Text>
+                  <Text size={200} className="mt-1 block text-[13px] text-secondary">
+                    {t.settings.notifications.subtitle}
+                  </Text>
+                </div>
+
+                <ul className="mt-2 divide-y divide-border">
+                  <li className="flex items-start justify-between gap-6 py-5">
+                    <div className="min-w-0">
+                      <Text weight="semibold" className="block text-[14px] text-foreground">
+                        {t.settings.notifications.clientMessagesTitle}
+                      </Text>
+                      <Text size={200} className="mt-1 block text-[13px] text-secondary">
+                        {t.settings.notifications.clientMessagesDescription}
+                      </Text>
+                    </div>
+                    <Switch
+                      checked={notifyClientMessages}
+                      onChange={(_, d) => setNotifyClientMessages(d.checked)}
+                      label={{ children: t.settings.notifications.clientMessagesTitle, className: "sr-only" }}
+                      className="shrink-0"
+                    />
+                  </li>
+                  <li className="flex items-start justify-between gap-6 py-5">
+                    <div className="min-w-0">
+                      <Text weight="semibold" className="block text-[14px] text-foreground">
+                        {t.settings.notifications.dossierTitle}
+                      </Text>
+                      <Text size={200} className="mt-1 block text-[13px] text-secondary">
+                        {t.settings.notifications.dossierDescription}
+                      </Text>
+                    </div>
+                    <Switch
+                      checked={notifyDossier}
+                      onChange={(_, d) => setNotifyDossier(d.checked)}
+                      label={{ children: t.settings.notifications.dossierTitle, className: "sr-only" }}
+                      className="shrink-0"
+                    />
+                  </li>
+                  <li className="flex items-start justify-between gap-6 py-5">
+                    <div className="min-w-0">
+                      <Text weight="semibold" className="block text-[14px] text-foreground">
+                        {t.settings.notifications.deadlinesTitle}
+                      </Text>
+                      <Text size={200} className="mt-1 block text-[13px] text-secondary">
+                        {t.settings.notifications.deadlinesDescription}
+                      </Text>
+                    </div>
+                    <Switch
+                      checked={notifyDeadlines}
+                      onChange={(_, d) => setNotifyDeadlines(d.checked)}
+                      label={{ children: t.settings.notifications.deadlinesTitle, className: "sr-only" }}
+                      className="shrink-0"
+                    />
+                  </li>
+                </ul>
+
+                <div className="mt-4">
+                  <Button
+                    appearance="primary"
+                    className="h-9 rounded-[4px] px-4 font-medium"
+                    onClick={() =>
+                      setToast({
+                        title: t.settings.notifications.preferencesSavedTitle,
+                        body: t.settings.notifications.preferencesSavedBody,
+                      })
+                    }
+                  >
+                    {t.settings.notifications.savePreferences}
+                  </Button>
+                </div>
+              </div>
+            ) : null}
+
+            {tab === "security" ? (
+              <div className="max-w-[720px]">
+                <div className="border-b border-border-soft pb-4">
+                  <Text size={500} weight="semibold" className="block text-[20px] text-foreground">
+                    {t.settings.security.sectionTitle}
+                  </Text>
+                  <Text size={200} className="mt-1 block text-[13px] text-secondary">
+                    {t.settings.security.subtitle}
+                  </Text>
+                </div>
+
+                <div className="mt-6">
+                  <Text size={400} weight="semibold" className="block text-[16px] text-foreground">
+                    {t.settings.security.mfaConfigTitle}
+                  </Text>
+
+                  <div className="mt-4 flex items-center gap-3">
+                    <Text size={300} className="text-[14px] text-foreground">
+                      {t.settings.security.mfaStatusLabel}
+                    </Text>
+                    <span className="inline-flex items-center gap-1.5 rounded-[4px] bg-[#107c10] px-2 py-1 text-[12px] font-medium text-white">
+                      <CheckmarkCircle16Filled />
+                      {t.settings.security.mfaActiveBadge}
+                    </span>
+                  </div>
+
+                  <Text size={200} className="mt-4 block text-[13px] text-secondary">
+                    {t.settings.security.mfaProtectedText}
+                  </Text>
+
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <Button appearance="outline" className="h-8 rounded-[4px] border-border-strong text-foreground">
+                      {t.settings.security.resetMfa}
+                    </Button>
+                    <Button appearance="primary" className="h-8 rounded-[4px]">
+                      {t.settings.security.reconfigureMfa}
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="mt-8 border-t border-border-soft pt-4">
+                  <Text size={200} className="block text-[13px] text-secondary">
+                    {t.settings.security.footerText}
+                  </Text>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+
+      <Dialog open={saveDialogOpen} onOpenChange={(_, data) => setSaveDialogOpen(data.open)} modalType="modal">
+        <DialogSurface className="max-w-[400px] rounded-[12px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+          <DialogBody>
+            <DialogTitle className="text-[20px] font-semibold text-foreground">
+              {t.settings.profile.saveConfirmTitle}
+            </DialogTitle>
+            <DialogContent className="mt-2">
+              <Text className="text-[14px] text-secondary">{t.settings.profile.saveConfirmBody}</Text>
+            </DialogContent>
+            <DialogActions className="mt-6 flex flex-wrap justify-center gap-3">
+              <Button
+                appearance="primary"
+                className="h-9 rounded-[4px] px-6 font-medium"
+                onClick={() => {
+                  setSaveDialogOpen(false);
+                  setToast({
+                    title: t.settings.profile.successTitle,
+                    body: t.settings.profile.successBody,
+                  });
+                }}
+              >
+                {t.settings.profile.confirmChanges}
+              </Button>
+              <Button
+                appearance="outline"
+                className="h-9 rounded-[4px] border-border-strong px-6 font-medium text-foreground"
+                onClick={() => setSaveDialogOpen(false)}
+              >
+                {t.settings.profile.cancel}
+              </Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
+
+      {toast ? <SuccessToast title={toast.title} body={toast.body} onDismiss={dismissToast} /> : null}
+
+      {isNotificationCenterOpen ? (
+        <>
+          <button
+            type="button"
+            aria-label="Close notifications panel"
+            className="absolute inset-0 z-20 bg-black/45"
+            onClick={() => setIsNotificationCenterOpen(false)}
+          />
+          <div className="absolute right-0 top-0 z-30 h-full">
+            <NotificationCenter items={notificationItems} />
+          </div>
+        </>
+      ) : null}
+    </div>
+  );
+}

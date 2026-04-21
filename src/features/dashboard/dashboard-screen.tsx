@@ -26,7 +26,7 @@ function DashboardDataLoading({ label }: { label: string }) {
 
 export function DashboardScreen() {
   const [mode, setMode] = useState<DashboardDataMode>("full");
-  const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(true);
+  const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
   const { t } = useLocale();
   const dashboardQuery = useQuery({
     queryKey: ["dashboard-data", mode],

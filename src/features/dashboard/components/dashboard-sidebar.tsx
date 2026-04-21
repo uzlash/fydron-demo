@@ -4,7 +4,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Avatar, Text } from "@fluentui/react-components";
+import { Text } from "@fluentui/react-components";
 
 import {
   Board20Regular,
@@ -17,6 +17,7 @@ import {
   Sparkle20Regular,
 } from "@fluentui/react-icons";
 import { FydronLogo } from "@/features/auth/components/fydron-logo";
+import { SidebarProfileMenu } from "@/features/dashboard/components/sidebar-profile-menu";
 import { useLocale } from "@/i18n/locale-context";
 
 type NavItem = {
@@ -134,17 +135,7 @@ export function DashboardSidebar() {
       </nav>
 
       <div className="mt-auto px-[24px] py-[24px]">
-        <div className="flex items-center gap-[10px]">
-          <Avatar name="Mary Jane" color="colorful" size={32} />
-          <div className="min-w-0 flex flex-col justify-center gap-[2px]">
-            <Text size={300} block className="text-[13px] font-semibold text-foreground leading-tight">
-              {t.dashboard.profile.name}
-            </Text>
-            <Text size={200} block className="truncate text-[11px] text-secondary leading-tight">
-              {t.dashboard.profile.email}
-            </Text>
-          </div>
-        </div>
+        <SidebarProfileMenu name={t.dashboard.profile.name} email={t.dashboard.profile.email} />
       </div>
     </aside>
   );
