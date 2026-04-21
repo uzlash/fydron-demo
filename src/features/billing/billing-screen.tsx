@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { Spinner, Text } from "@fluentui/react-components";
 import {
+  ArrowSync16Regular,
   ArrowDownload16Regular,
-  CheckmarkCircle20Regular,
-  Clock20Regular,
-  DismissCircle20Regular,
+  CheckmarkCircle16Filled,
+  Warning16Filled,
 } from "@fluentui/react-icons";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardSidebar } from "@/features/dashboard/components/dashboard-sidebar";
@@ -27,7 +27,7 @@ function StatusBadge({
   if (status === "success") {
     return (
       <span className="inline-flex items-center gap-2 text-[13px] text-foreground">
-        <CheckmarkCircle20Regular className="shrink-0 text-success" />
+        <CheckmarkCircle16Filled className="shrink-0 text-success" />
         {label}
       </span>
     );
@@ -36,7 +36,7 @@ function StatusBadge({
   if (status === "failed") {
     return (
       <span className="inline-flex items-center gap-2 text-[13px] text-foreground">
-        <DismissCircle20Regular className="shrink-0 text-danger" />
+        <Warning16Filled className="shrink-0 text-danger" />
         {label}
       </span>
     );
@@ -44,7 +44,7 @@ function StatusBadge({
 
   return (
     <span className="inline-flex items-center gap-2 text-[13px] text-foreground">
-      <Clock20Regular className="shrink-0 text-muted" />
+      <ArrowSync16Regular className="shrink-0 text-primary" />
       {label}
     </span>
   );

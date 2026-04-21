@@ -1,0 +1,265 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { LockClosed16Filled } from "@fluentui/react-icons";
+import { DashboardSidebar } from "@/features/dashboard/components/dashboard-sidebar";
+import { DashboardTopbar } from "@/features/dashboard/components/dashboard-topbar";
+import { NotificationCenter } from "@/features/dashboard/components/notification-center";
+import { notificationItems } from "@/features/dashboard/mock-data";
+import { fetchMatrixActivityItems, fetchMatrixComplianceChapters, fetchMatrixDossierData } from "@/features/matrix/mock-data";
+import { ActivityTimelinePanel } from "@/features/matrix/components/activity-timeline-panel";
+import { MatrixAddTeamDialog } from "@/features/matrix/components/matrix-add-team-dialog";
+import { ComplianceOverviewPanel } from "@/features/matrix/components/compliance-overview-panel";
+import { MatrixDossierTable } from "@/features/matrix/components/matrix-dossier-table";
+import { MatrixDossierToolbar } from "@/features/matrix/components/matrix-dossier-toolbar";
+import { MatrixReviewerPanel } from "@/features/matrix/components/matrix-reviewer-panel";
+import { MatrixFrameworkMigrationModal } from "@/features/matrix/components/matrix-framework-migration-modal";
+import { MatrixInspectionBanner } from "@/features/matrix/components/matrix-inspection-banner";
+import { MatrixUnderReviewBanner } from "@/features/matrix/components/matrix-under-review-banner";
+import { MatrixTableSkeleton } from "@/features/matrix/components/matrix-table-skeleton";
+import type { MatrixActivityTab, MatrixDossierAuditMode, MatrixDossierMode, MatrixDossierRow } from "@/features/matrix/types";
+import { useLocale } from "@/i18n/locale-context";
+
+type MatrixDossierScreenProps = {
+  dossierId: string;
+};
+
+type SidePanel = "none" | "activity" | "compliance" | "reviewer";
+
+export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
+  const { t } = useLocale();
+  const [mode, setMode] = useState<MatrixDossierMode>("full");
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [panel, setPanel] = useState<SidePanel>("none");
+  const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
+  const [isAddTeamOpen, setIsAddTeamOpen] = useState(false);
+  const [activeReviewerRow, setActiveReviewerRow] = useState<MatrixDossierRow | null>(null);
+  const [activityTab, setActivityTab] = useState<MatrixActivityTab>("all");
+  const [auditMode, setAuditMode] = useState<MatrixDossierAuditMode>("standard");
+  const [inspectionBannerDismissed, setInspectionBannerDismissed] = useState(false);
+  const [isMigrationModalOpen, setIsMigrationModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (auditMode !== "inspection") {
+      setInspectionBannerDismissed(false);
+    }
+  }, [auditMode]);
+
+  const dossierQuery = useQuery({
+    queryKey: ["matrix-dossier", dossierId, mode, auditMode],
+    queryFn: () => fetchMatrixDossierData(mode, auditMode),
+  });
+  const activityQuery = useQuery({
+    queryKey: ["matrix-activity", dossierId],
+    queryFn: fetchMatrixActivityItems,
+  });
+  const complianceQuery = useQuery({
+    queryKey: ["matrix-compliance", dossierId],
+    queryFn: fetchMatrixComplianceChapters,
+  });
+
+  const rows = dossierQuery.data?.rows ?? [];
+  const allSelected = rows.length > 0 && selectedIds.length === rows.length;
+  const title = `${t.matrix.dossier.titlePrefix}: ${dossierQuery.data?.meta.id ?? "ISO 27001"} - ${dossierQuery.data?.meta.organizationName ?? "Medical Center X"}`;
+  const showSkeleton = dossierQuery.isPending || mode === "loading";
+  const showEmpty = !showSkeleton && rows.length === 0;
+
+  const breadcrumb = useMemo(
+    () => [t.matrix.dossier.breadcrumbRoot, t.matrix.dossier.breadcrumbMid, `${t.matrix.dossier.breadcrumbDossier} ${dossierId.toUpperCase()}`],
+    [dossierId, t.matrix.dossier.breadcrumbDossier, t.matrix.dossier.breadcrumbMid, t.matrix.dossier.breadcrumbRoot],
+  );
+
+  const toggleOne = (id: string) => {
+    setSelectedIds((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]));
+  };
+
+  const toggleAll = () => {
+    if (allSelected) {
+      setSelectedIds([]);
+      return;
+    }
+    setSelectedIds(rows.map((row) => row.id));
+  };
+
+  return (
+    <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+      <DashboardSidebar />
+      <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface">
+        {auditMode === "inspection" && !inspectionBannerDismissed ? (
+          <MatrixInspectionBanner
+            onReviewUpgrade={() => setIsMigrationModalOpen(true)}
+            onDismiss={() => setInspectionBannerDismissed(true)}
+          />
+        ) : null}
+        {auditMode === "underReview" ? <MatrixUnderReviewBanner /> : null}
+        <DashboardTopbar
+          title={t.dashboard.nav.matrix}
+          onToggleNotifications={() => {
+            setPanel("none");
+            setIsNotificationCenterOpen((currentValue) => !currentValue);
+          }}
+          hasUnreadNotifications={notificationItems.some((item) => item.unread)}
+        />
+
+        <div className="flex min-h-0 flex-1">
+          <div className="min-w-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5">
+            <div className="text-[12px] text-muted">
+              {breadcrumb.join("  >  ")}
+            </div>
+
+            <div className="mt-3 flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <h1 className="text-[32px] font-semibold leading-none text-foreground">{title}</h1>
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-[12px] text-secondary">
+                  <span className="inline-flex rounded-[3px] bg-surface-muted px-2 py-1">{t.matrix.dossier.frameworkVersion}: {dossierQuery.data?.meta.frameworkVersion ?? "2022"}</span>
+                  <button
+                    type="button"
+                    className={`inline-flex rounded-[3px] px-2 py-1 ${(dossierQuery.data?.meta.overallCompliance ?? 0) >= 100 ? "bg-[#e8f7ee] font-medium text-[#0b5c2e]" : "bg-surface-muted"}`}
+                    onClick={() => setPanel("compliance")}
+                  >
+                    {t.matrix.dossier.overallCompliance}: {dossierQuery.data?.meta.overallCompliance ?? 0}%
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex rounded-[3px] bg-surface-muted px-2 py-1"
+                    onClick={() => {
+                      setIsNotificationCenterOpen(false);
+                      setPanel("activity");
+                    }}
+                  >
+                    {t.matrix.dossier.lastSynced}: {dossierQuery.data?.meta.lastSynced ?? "0 hours ago"}
+                  </button>
+                </div>
+              </div>
+              <MatrixDossierToolbar
+                selectedCount={selectedIds.length}
+                auditMode={auditMode}
+                onAddTeam={() => {
+                  setPanel("none");
+                  setIsNotificationCenterOpen(false);
+                  setIsAddTeamOpen(true);
+                }}
+              />
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-[12px]">
+              <span className="text-muted">{t.matrix.dossier.demo.tableData}</span>
+              <button type="button" className={`rounded border px-2 py-1 ${mode === "full" ? "border-primary text-primary" : "border-border text-secondary"}`} onClick={() => setMode("full")}>Full</button>
+              <button type="button" className={`rounded border px-2 py-1 ${mode === "loading" ? "border-primary text-primary" : "border-border text-secondary"}`} onClick={() => setMode("loading")}>Loading</button>
+              <button type="button" className={`rounded border px-2 py-1 ${mode === "empty" ? "border-primary text-primary" : "border-border text-secondary"}`} onClick={() => setMode("empty")}>Empty</button>
+              <span className="text-muted sm:ml-1">{t.matrix.dossier.demo.auditWorkflow}</span>
+              <button type="button" className={`rounded border px-2 py-1 ${auditMode === "standard" ? "border-primary text-primary" : "border-border text-secondary"}`} onClick={() => setAuditMode("standard")}>{t.matrix.dossier.audit.standard}</button>
+              <button type="button" className={`rounded border px-2 py-1 ${auditMode === "inspection" ? "border-primary text-primary" : "border-border text-secondary"}`} onClick={() => setAuditMode("inspection")}>{t.matrix.dossier.audit.inspection}</button>
+              <button type="button" className={`rounded border px-2 py-1 ${auditMode === "underReview" ? "border-primary text-primary" : "border-border text-secondary"}`} onClick={() => setAuditMode("underReview")}>{t.matrix.dossier.audit.underReview}</button>
+            </div>
+
+            {showSkeleton ? (
+              <MatrixTableSkeleton />
+            ) : showEmpty ? (
+              <div className="mt-3 flex h-[520px] items-center justify-center rounded-[4px] border border-border-soft">
+                <p className="text-center text-[17px] text-secondary">{t.matrix.dossier.empty}</p>
+              </div>
+            ) : (
+              <div className="relative mt-3">
+                {auditMode === "underReview" ? (
+                  <div className="pointer-events-none absolute bottom-4 left-3 z-10 flex max-w-[300px] items-start gap-2.5 rounded-[4px] bg-[#1f1f1f] px-3 py-2.5 text-[12px] leading-snug text-white shadow-lg">
+                    <LockClosed16Filled className="mt-0.5 shrink-0 text-white" />
+                    <span>{t.matrix.dossier.underReview.lockNotice}</span>
+                  </div>
+                ) : null}
+                <MatrixDossierTable
+                  rows={rows}
+                  selectedIds={selectedIds}
+                  onToggleOne={toggleOne}
+                  onToggleAll={toggleAll}
+                  auditMode={auditMode}
+                  onOpenReviewer={(row) => {
+                    setIsNotificationCenterOpen(false);
+                    setActiveReviewerRow(row);
+                    setPanel("reviewer");
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          {panel === "activity" ? (
+            <>
+              <button
+                type="button"
+                aria-label="Close activity panel"
+                className="absolute inset-0 z-20 bg-black/45"
+                onClick={() => setPanel("none")}
+              />
+              <div className="absolute right-0 top-0 z-30 h-full">
+                <ActivityTimelinePanel
+                  tab={activityTab}
+                  onTabChange={setActivityTab}
+                  items={activityQuery.data ?? []}
+                  onClose={() => setPanel("none")}
+                />
+              </div>
+            </>
+          ) : null}
+
+          {panel === "compliance" ? (
+            <>
+              <button
+                type="button"
+                aria-label="Close compliance panel"
+                className="absolute inset-0 z-20 bg-black/45"
+                onClick={() => setPanel("none")}
+              />
+              <div className="absolute right-0 top-0 z-30 h-full">
+                <ComplianceOverviewPanel
+                  chapters={complianceQuery.data ?? []}
+                  onClose={() => setPanel("none")}
+                />
+              </div>
+            </>
+          ) : null}
+
+          {panel === "reviewer" && activeReviewerRow ? (
+            <>
+              <button
+                type="button"
+                aria-label="Close reviewer panel"
+                className="absolute inset-0 z-20 bg-black/45"
+                onClick={() => setPanel("none")}
+              />
+              <div className="absolute right-0 top-0 z-30 h-full">
+                <MatrixReviewerPanel
+                  row={activeReviewerRow}
+                  auditMode={auditMode}
+                  onClose={() => setPanel("none")}
+                />
+              </div>
+            </>
+          ) : null}
+        </div>
+      </div>
+
+      {isNotificationCenterOpen ? (
+        <>
+          <button
+            type="button"
+            aria-label="Close notifications panel"
+            className="absolute inset-0 z-20 bg-black/45"
+            onClick={() => setIsNotificationCenterOpen(false)}
+          />
+          <div className="absolute right-0 top-0 z-30 h-full">
+            <NotificationCenter items={notificationItems} />
+          </div>
+        </>
+      ) : null}
+
+      <MatrixAddTeamDialog
+        open={isAddTeamOpen}
+        onClose={() => setIsAddTeamOpen(false)}
+      />
+
+      <MatrixFrameworkMigrationModal open={isMigrationModalOpen} onClose={() => setIsMigrationModalOpen(false)} />
+    </div>
+  );
+}
