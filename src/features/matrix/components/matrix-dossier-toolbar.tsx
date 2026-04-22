@@ -1,7 +1,16 @@
 "use client";
 
-import { Button } from "@fluentui/react-components";
-import { Archive16Regular, ArrowDownload16Regular, ChevronDown16Regular } from "@fluentui/react-icons";
+import {
+  Button,
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuPopover,
+  MenuTrigger,
+  SplitButton,
+} from "@fluentui/react-components";
+import type { MenuButtonProps } from "@fluentui/react-components";
+import { Add16Regular, Archive16Regular, ArrowDownload16Regular } from "@fluentui/react-icons";
 import type { MatrixDossierAuditMode } from "@/features/matrix/types";
 import { useLocale } from "@/i18n/locale-context";
 
@@ -36,12 +45,31 @@ export function MatrixDossierToolbar({ selectedCount, onAddTeam, auditMode = "st
       <Button appearance="outline" className="h-8 rounded-[3px] border-border px-3 text-[13px]" icon={<Archive16Regular />} disabled={archiveDisabled}>
         {t.matrix.dossier.archive}
       </Button>
-      <Button appearance="primary" className="h-8 rounded-[3px] px-3 text-[13px] font-medium" onClick={onAddTeam} disabled={restrictActions}>
-        + {t.matrix.dossier.addTeam}
-      </Button>
-      <Button appearance="primary" className="h-8 min-w-[30px] rounded-[3px] px-2" disabled={restrictActions}>
-        <ChevronDown16Regular />
-      </Button>
+      <Menu positioning="below-end">
+        <MenuTrigger disableButtonEnhancement>
+          {(triggerProps: MenuButtonProps) => (
+            <SplitButton
+              appearance="primary"
+              className="h-8 min-h-8 text-[13px] font-medium"
+              size="small"
+              icon={<Add16Regular />}
+              iconPosition="before"
+              menuButton={triggerProps}
+              primaryActionButton={{ onClick: onAddTeam }}
+              disabled={restrictActions}
+            >
+              {t.matrix.dossier.addTeam}
+            </SplitButton>
+          )}
+        </MenuTrigger>
+        <MenuPopover>
+          <MenuList>
+            <MenuItem onClick={onAddTeam} disabled={restrictActions}>
+              {t.matrix.dossier.addTeam}
+            </MenuItem>
+          </MenuList>
+        </MenuPopover>
+      </Menu>
     </div>
   );
 }

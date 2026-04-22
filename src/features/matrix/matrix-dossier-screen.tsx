@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { LockClosed16Filled } from "@fluentui/react-icons";
 import { DashboardSidebar } from "@/features/dashboard/components/dashboard-sidebar";
@@ -18,7 +19,14 @@ import { MatrixFrameworkMigrationModal } from "@/features/matrix/components/matr
 import { MatrixInspectionBanner } from "@/features/matrix/components/matrix-inspection-banner";
 import { MatrixUnderReviewBanner } from "@/features/matrix/components/matrix-under-review-banner";
 import { MatrixTableSkeleton } from "@/features/matrix/components/matrix-table-skeleton";
-import type { MatrixActivityTab, MatrixDossierAuditMode, MatrixDossierMode, MatrixDossierRow } from "@/features/matrix/types";
+import {
+  MATRIX_ACTIVATION_QUERY_KEY,
+  type MatrixActivityTab,
+  type MatrixAddTeamActivationPreset,
+  type MatrixDossierAuditMode,
+  type MatrixDossierMode,
+  type MatrixDossierRow,
+} from "@/features/matrix/types";
 import { useLocale } from "@/i18n/locale-context";
 
 type MatrixDossierScreenProps = {
@@ -27,8 +35,16 @@ type MatrixDossierScreenProps = {
 
 type SidePanel = "none" | "activity" | "compliance" | "reviewer";
 
+function activationPresetFromSearch(raw: string | null): MatrixAddTeamActivationPreset {
+  if (raw === "standard") return "standard";
+  if (raw === "direct") return "direct";
+  return "default";
+}
+
 export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
   const { t } = useLocale();
+  const searchParams = useSearchParams();
+  const addTeamActivationPreset = activationPresetFromSearch(searchParams.get(MATRIX_ACTIVATION_QUERY_KEY));
   const [mode, setMode] = useState<MatrixDossierMode>("full");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [panel, setPanel] = useState<SidePanel>("none");
@@ -257,6 +273,7 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
       <MatrixAddTeamDialog
         open={isAddTeamOpen}
         onClose={() => setIsAddTeamOpen(false)}
+        activationPreset={addTeamActivationPreset}
       />
 
       <MatrixFrameworkMigrationModal open={isMigrationModalOpen} onClose={() => setIsMigrationModalOpen(false)} />

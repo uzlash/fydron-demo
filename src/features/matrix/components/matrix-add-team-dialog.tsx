@@ -1,20 +1,31 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button, Input } from "@fluentui/react-components";
 import { Delete16Regular, Search16Regular } from "@fluentui/react-icons";
+import type { MatrixAddTeamActivationPreset } from "@/features/matrix/types";
 import { useLocale } from "@/i18n/locale-context";
 
 type AddTeamField = "team" | "reviewer" | "auditor";
 
+const allPeople = ["Susan Lee", "Sandra Bullock", "John Doe", "John Miller", "Steven Guth"];
+
+const PREPOP_TEAM = ["Susan Lee", "Sandra Bullock", "John Doe"];
+const PREPOP_REVIEWERS = ["Susan Lee", "Sandra Bullock"];
+const PREPOP_AUDITORS = ["Susan Lee", "Sandra Bullock", "John Doe"];
+
 type MatrixAddTeamDialogProps = {
   open: boolean;
   onClose: () => void;
+  /** From `?activation=` after "Open matrix" from portfolio activation. */
+  activationPreset?: MatrixAddTeamActivationPreset;
 };
 
-const allPeople = ["Susan Lee", "Sandra Bullock", "John Doe", "John Miller", "Steven Guth"];
-
-export function MatrixAddTeamDialog({ open, onClose }: MatrixAddTeamDialogProps) {
+export function MatrixAddTeamDialog({
+  open,
+  onClose,
+  activationPreset = "default",
+}: MatrixAddTeamDialogProps) {
   const { t } = useLocale();
   const [activeField, setActiveField] = useState<AddTeamField | null>(null);
   const [teamQuery, setTeamQuery] = useState("");
@@ -23,6 +34,26 @@ export function MatrixAddTeamDialog({ open, onClose }: MatrixAddTeamDialogProps)
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
   const [reviewers, setReviewers] = useState<string[]>([]);
   const [auditors, setAuditors] = useState<string[]>([]);
+
+  const showReviewerBlock =
+    activationPreset === "standard" || (activationPreset === "default" && teamMembers.length > 0);
+
+  useEffect(() => {
+    if (!open) return;
+    if (activationPreset === "standard") {
+      setTeamMembers([...PREPOP_TEAM]);
+      setReviewers([...PREPOP_REVIEWERS]);
+      setAuditors([...PREPOP_AUDITORS]);
+    } else {
+      setTeamMembers([]);
+      setReviewers([]);
+      setAuditors([]);
+    }
+    setActiveField(null);
+    setTeamQuery("");
+    setReviewerQuery("");
+    setAuditorQuery("");
+  }, [open, activationPreset]);
 
   const query = activeField === "team" ? teamQuery : activeField === "reviewer" ? reviewerQuery : activeField === "auditor" ? auditorQuery : "";
   const picked = useMemo(() => new Set([...teamMembers, ...reviewers, ...auditors]), [auditors, reviewers, teamMembers]);
@@ -70,12 +101,7 @@ export function MatrixAddTeamDialog({ open, onClose }: MatrixAddTeamDialogProps)
 
   return (
     <>
-      <button
-        type="button"
-        aria-label="Close activate team dialog"
-        className="fixed inset-0 z-40 bg-black/45"
-        onClick={onClose}
-      />
+      <button type="button" aria-label="Close activate team dialog" className="fixed inset-0 z-40 bg-black/45" onClick={onClose} />
 
       <div className="fixed left-1/2 top-1/2 z-50 w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-[4px] border border-border bg-surface shadow-[0_10px_40px_rgb(0,0,0,0.2)]">
         <div className="max-h-[610px] overflow-y-auto px-4 pb-3 pt-4">
@@ -114,7 +140,7 @@ export function MatrixAddTeamDialog({ open, onClose }: MatrixAddTeamDialogProps)
             ) : null}
           </section>
 
-          {teamMembers.length > 0 ? (
+          {showReviewerBlock ? (
             <section className="mt-3">
               <label className="mb-1.5 block text-[13px] text-foreground">{t.matrix.dossier.addTeamDialog.selectReviewer}</label>
               <Input

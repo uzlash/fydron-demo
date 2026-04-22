@@ -59,3 +59,10 @@ export type MatrixChapterProgress = {
   label: string;
   percent: number;
 };
+
+/** How "Activate Team" is seeded when opening the dossier after workflow activation (`?activation=`). */
+export type MatrixAddTeamActivationPreset = "default" | "standard" | "direct";
+
+/** Query param and dossier id used when opening Matrix after successful activation. */
+export const MATRIX_ACTIVATION_QUERY_KEY = "activation" as const;
+export const MATRIX_ACTIVATION_DOSSIER_ID = "iso-27001-mcx" as const;
