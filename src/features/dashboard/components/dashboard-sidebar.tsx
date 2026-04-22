@@ -12,6 +12,7 @@ import {
   ChatMultiple20Regular,
   Folder20Regular,
   ContactCard20Regular,
+  DocumentArrowRight20Regular,
   Payment20Regular,
   Cloud20Regular,
   Sparkle20Regular,
@@ -98,6 +99,12 @@ export function DashboardSidebar() {
         { key: "globalMessages", label: t.dashboard.nav.globalMessages, icon: <ChatMultiple20Regular />, alertCount: 1 },
         { key: "clientPortfolio", label: t.dashboard.nav.clientPortfolio, icon: <Folder20Regular /> },
         { key: "partnerAssets", label: t.dashboard.nav.partnerAssets, icon: <ContactCard20Regular /> },
+        {
+          key: "exportCenter",
+          label: t.dashboard.nav.exportCenter,
+          icon: <DocumentArrowRight20Regular />,
+          href: "/export-center",
+        },
       ],
     },
     {
