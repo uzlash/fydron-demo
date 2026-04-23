@@ -13,9 +13,19 @@ type MatrixDossierTableProps = {
   onToggleAll: () => void;
   onOpenReviewer: (row: MatrixDossierRow) => void;
   auditMode?: MatrixDossierAuditMode;
+  /** When false, omits the Last updated column (e.g. Client Portfolio dossier view). */
+  showLastUpdated?: boolean;
 };
 
-export function MatrixDossierTable({ rows, selectedIds, onToggleAll, onToggleOne, onOpenReviewer, auditMode = "standard" }: MatrixDossierTableProps) {
+export function MatrixDossierTable({
+  rows,
+  selectedIds,
+  onToggleAll,
+  onToggleOne,
+  onOpenReviewer,
+  auditMode = "standard",
+  showLastUpdated = true,
+}: MatrixDossierTableProps) {
   const { t } = useLocale();
   const allSelected = rows.length > 0 && selectedIds.length === rows.length;
   const tableLocked = auditMode !== "standard";
@@ -31,7 +41,9 @@ export function MatrixDossierTable({ rows, selectedIds, onToggleAll, onToggleOne
             <th className="px-2 py-3 font-medium">{t.matrix.dossier.columns.title} ↕</th>
             <th className="px-2 py-3 font-medium">{t.matrix.dossier.columns.status} ↕</th>
             <th className="px-2 py-3 font-medium">{t.matrix.dossier.columns.requirementId}</th>
-            <th className="px-2 py-3 font-medium">{t.matrix.dossier.columns.lastUpdated} ↕</th>
+            {showLastUpdated ? (
+              <th className="px-2 py-3 font-medium">{t.matrix.dossier.columns.lastUpdated} ↕</th>
+            ) : null}
             <th className="w-[34px] px-2 py-3" />
           </tr>
         </thead>
@@ -50,7 +62,7 @@ export function MatrixDossierTable({ rows, selectedIds, onToggleAll, onToggleOne
                 <MatrixStatusChip status={row.status} />
               </td>
               <td className="px-2 py-3 text-secondary">{row.requirementId}</td>
-              <td className="px-2 py-3 text-secondary">{row.lastUpdated}</td>
+              {showLastUpdated ? <td className="px-2 py-3 text-secondary">{row.lastUpdated}</td> : null}
               <td className="px-2 py-3">
                 <button
                   type="button"

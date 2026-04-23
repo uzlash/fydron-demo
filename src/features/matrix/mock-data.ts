@@ -4,7 +4,9 @@ import type {
   MatrixChapterProgress,
   MatrixDossierAuditMode,
   MatrixDossierData,
+  MatrixDossierMeta,
   MatrixDossierMode,
+  MatrixDossierRow,
   MatrixPortfolioData,
   MatrixPortfolioMode,
 } from "@/features/matrix/types";
@@ -56,6 +58,10 @@ const dossierData: MatrixDossierData = {
     { id: "d16", title: "2.4 Malware Protection Guidelin", status: "notApproved", requirementId: "A6.7", lastUpdated: "15-03-2026 15:08" },
   ],
 };
+
+/** Shared sample rows for Client Portfolio “turbo” dossier view (same structure as matrix dossier). */
+export const matrixDossierReferenceRows: MatrixDossierRow[] = dossierData.rows;
+export const matrixDossierReferenceMeta: MatrixDossierMeta = dossierData.meta;
 
 const activityItems: MatrixActivityItem[] = [
   { id: "a1", day: "Today", title: "System Sync Completed", detail: "All Indicators updated Successfully", time: "11:09 AM", tab: "sync", tone: "success" },
