@@ -11,6 +11,7 @@ import { EmptyDashboardState } from "@/features/dashboard/components/empty-dashb
 import { NotificationCenter } from "@/features/dashboard/components/notification-center";
 import { fetchDashboardData, notificationItems } from "@/features/dashboard/mock-data";
 import type { DashboardDataMode } from "@/features/dashboard/types";
+import { useDemoSession } from "@/features/auth/demo-session-context";
 import { useLocale } from "@/i18n/locale-context";
 
 function DashboardDataLoading({ label }: { label: string }) {
@@ -28,6 +29,7 @@ export function DashboardScreen() {
   const [mode, setMode] = useState<DashboardDataMode>("full");
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
   const { t } = useLocale();
+  const { user } = useDemoSession();
   const dashboardQuery = useQuery({
     queryKey: ["dashboard-data", mode],
     queryFn: () => fetchDashboardData(mode),
@@ -54,7 +56,10 @@ export function DashboardScreen() {
           <div className="flex flex-1 flex-col overflow-y-auto">
             <div className="px-6 py-6">
               <Text size={500} weight="semibold" block className="mb-[2px] text-[18px] text-foreground">
-                {t.dashboard.greetingTitle.replace("{name}", data?.greetingName ?? "Michael")}
+                {t.dashboard.greetingTitle.replace(
+                  "{name}",
+                  user?.firstName ?? data?.greetingName ?? "there",
+                )}
               </Text>
               <Text size={200} className="text-[13px] text-secondary" block>
                 {t.dashboard.greetingSubtitle}

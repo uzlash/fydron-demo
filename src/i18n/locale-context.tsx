@@ -28,7 +28,7 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 function readStoredLocale(): Locale {
   if (typeof window === "undefined") return "en";
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  if (stored === "nl" || stored === "en") return stored;
+  if (stored === "en") return stored as Locale;
   return "en";
 }
 

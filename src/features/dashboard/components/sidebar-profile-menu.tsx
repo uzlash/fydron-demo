@@ -13,6 +13,7 @@ import {
   SignOut20Regular,
   WeatherSunny20Regular,
 } from "@fluentui/react-icons";
+import { useDemoSession } from "@/features/auth/demo-session-context";
 import { useLocale } from "@/i18n/locale-context";
 
 type MenuRowProps = {
@@ -61,6 +62,7 @@ type SidebarProfileMenuProps = {
 
 export function SidebarProfileMenu({ name, email }: SidebarProfileMenuProps) {
   const { t } = useLocale();
+  const { signOut } = useDemoSession();
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -122,6 +124,7 @@ export function SidebarProfileMenu({ name, email }: SidebarProfileMenuProps) {
             destructive
             onClick={() => {
               close();
+              signOut();
               router.push("/auth/login");
             }}
           />

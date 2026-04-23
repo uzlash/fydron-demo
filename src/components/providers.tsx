@@ -2,6 +2,11 @@
 
 import { FluentProvider } from "@fluentui/react-components";
 import { webLightTheme } from "@fluentui/react-theme";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState, type ReactNode } from "react";
+import { DemoSessionGate } from "@/components/demo-session-gate";
+import { DemoSessionProvider } from "@/features/auth/demo-session-context";
+import { LocaleProvider } from "@/i18n/locale-context";
 
 /** Fydron brand (#0070C0) over Fluent default (aligns with auth / UI spec). */
 const fydronLightTheme = {
@@ -20,9 +25,6 @@ const fydronLightTheme = {
   colorBrandForegroundLinkHover: "#0061a8",
   colorBrandForegroundLinkPressed: "#005994",
 };
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState, type ReactNode } from "react";
-import { LocaleProvider } from "@/i18n/locale-context";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
@@ -37,7 +39,11 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <FluentProvider theme={fydronLightTheme}>
-        <LocaleProvider>{children}</LocaleProvider>
+        <LocaleProvider>
+          <DemoSessionProvider>
+            <DemoSessionGate>{children}</DemoSessionGate>
+          </DemoSessionProvider>
+        </LocaleProvider>
       </FluentProvider>
     </QueryClientProvider>
   );

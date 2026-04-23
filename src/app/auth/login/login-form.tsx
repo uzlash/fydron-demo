@@ -9,11 +9,14 @@ import { AuthShell } from "@/features/auth/components/auth-shell";
 import { ErrorToast } from "@/features/auth/components/error-toast";
 import { LegalFooter } from "@/features/auth/components/legal-footer";
 import { PasswordInput } from "@/features/auth/components/password-input";
+import { matchDemoUser } from "@/features/auth/demo-accounts";
+import { useDemoSession } from "@/features/auth/demo-session-context";
 import { useLocale } from "@/i18n/locale-context";
 
 export function LoginForm() {
   const { t } = useLocale();
   const router = useRouter();
+  const { signIn } = useDemoSession();
   const searchParams = useSearchParams();
   const errorParam = searchParams.get("error") === "1";
 
@@ -34,6 +37,13 @@ export function LoginForm() {
       setShowToast(true);
       return;
     }
+    const account = matchDemoUser(email, password);
+    if (!account) {
+      setShowError(true);
+      setShowToast(true);
+      return;
+    }
+    signIn(account);
     router.push("/dashboard");
   };
 

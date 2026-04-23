@@ -19,6 +19,8 @@ import {
 } from "@fluentui/react-icons";
 import { FydronLogo } from "@/features/auth/components/fydron-logo";
 import { SidebarProfileMenu } from "@/features/dashboard/components/sidebar-profile-menu";
+import { demoDisplayName } from "@/features/auth/demo-accounts";
+import { useDemoSession } from "@/features/auth/demo-session-context";
 import { useLocale } from "@/i18n/locale-context";
 
 type NavItem = {
@@ -88,6 +90,7 @@ function NavRow({ item }: { item: NavItem }) {
 }
 
 export function DashboardSidebar() {
+  const { user } = useDemoSession();
   const { t } = useLocale();
 
   const groups: NavGroup[] = [
@@ -142,7 +145,10 @@ export function DashboardSidebar() {
       </nav>
 
       <div className="mt-auto px-[24px] py-[24px]">
-        <SidebarProfileMenu name={t.dashboard.profile.name} email={t.dashboard.profile.email} />
+        <SidebarProfileMenu
+          name={user ? demoDisplayName(user) : t.dashboard.profile.name}
+          email={user?.email ?? t.dashboard.profile.email}
+        />
       </div>
     </aside>
   );

@@ -21,6 +21,7 @@ import { DashboardSidebar } from "@/features/dashboard/components/dashboard-side
 import { DashboardTopbar } from "@/features/dashboard/components/dashboard-topbar";
 import { NotificationCenter } from "@/features/dashboard/components/notification-center";
 import { notificationItems } from "@/features/dashboard/mock-data";
+import { useDemoSession } from "@/features/auth/demo-session-context";
 import { SuccessToast } from "@/features/settings/components/success-toast";
 import { useLocale } from "@/i18n/locale-context";
 
@@ -30,12 +31,13 @@ type ToastPayload = { title: string; body: string };
 
 export function SettingsScreen() {
   const { t } = useLocale();
+  const { user, signIn } = useDemoSession();
   const [tab, setTab] = useState<SettingsTab>("profile");
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
-  const [firstName, setFirstName] = useState("Mary");
-  const [lastName, setLastName] = useState("Jane");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState(t.dashboard.profile.email);
+  const [email, setEmail] = useState("");
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -48,6 +50,13 @@ export function SettingsScreen() {
   const [mfaActive, setMfaActive] = useState(true);
 
   const dismissToast = useCallback(() => setToast(null), []);
+
+  useEffect(() => {
+    if (!user) return;
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setEmail(user.email);
+  }, [user]);
 
   useEffect(() => {
     if (!toast) return;
@@ -358,6 +367,11 @@ export function SettingsScreen() {
                 className="h-9 rounded-[4px] px-6 font-medium"
                 onClick={() => {
                   setSaveDialogOpen(false);
+                  signIn({
+                    email: email.trim(),
+                    firstName: firstName.trim(),
+                    lastName: lastName.trim(),
+                  });
                   setToast({
                     title: t.settings.profile.successTitle,
                     body: t.settings.profile.successBody,
