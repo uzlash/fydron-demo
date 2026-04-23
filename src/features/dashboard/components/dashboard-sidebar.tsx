@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { Text } from "@fluentui/react-components";
 
 import {
-  Board20Regular,
+  DataBarHorizontal20Filled,
   GridDots20Regular,
   ChatMultiple20Regular,
   Folder20Regular,
@@ -97,7 +97,7 @@ export function DashboardSidebar() {
     {
       title: t.dashboard.sections.platform,
       items: [
-        { key: "dashboard", label: t.dashboard.nav.dashboard, icon: <Board20Regular />, href: "/dashboard" },
+        { key: "dashboard", label: t.dashboard.nav.dashboard, icon: <DataBarHorizontal20Filled />, href: "/dashboard" },
         { key: "matrix", label: t.dashboard.nav.matrix, icon: <GridDots20Regular />, href: "/matrix" },
         { key: "globalMessages", label: t.dashboard.nav.globalMessages, icon: <ChatMultiple20Regular />, alertCount: 1 },
         { key: "clientPortfolio", label: t.dashboard.nav.clientPortfolio, icon: <Folder20Regular />, href: "/client-portfolio" },
