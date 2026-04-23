@@ -1,5 +1,19 @@
 import { delay } from "@/utils/helpers";
-import type { BillingData } from "@/features/billing/types";
+import type { BillingData, InvoiceStatus } from "@/features/billing/types";
+
+const statuses: InvoiceStatus[] = [
+  "success",
+  "failed",
+  "success",
+  "pending",
+  "success",
+  "failed",
+  "pending",
+  "pending",
+  "success",
+  "failed",
+  "success",
+];
 
 const billingData: BillingData = {
   overview: {
@@ -9,19 +23,14 @@ const billingData: BillingData = {
     activeClients: 45,
     activeDossiers: 65,
   },
-  invoices: [
-    { id: "1", invoiceNumber: "INV001", status: "success", date: "12-05-2026", amount: "€250.00" },
-    { id: "2", invoiceNumber: "INV001", status: "failed", date: "12-05-2026", amount: "€250.00" },
-    { id: "3", invoiceNumber: "INV001", status: "success", date: "12-05-2026", amount: "€250.00" },
-    { id: "4", invoiceNumber: "INV001", status: "pending", date: "12-05-2026", amount: "€250.00" },
-    { id: "5", invoiceNumber: "INV001", status: "success", date: "12-05-2026", amount: "€250.00" },
-    { id: "6", invoiceNumber: "INV001", status: "pending", date: "12-05-2026", amount: "€250.00" },
-    { id: "7", invoiceNumber: "INV001", status: "failed", date: "12-05-2026", amount: "€250.00" },
-    { id: "8", invoiceNumber: "INV001", status: "pending", date: "12-05-2026", amount: "€250.00" },
-    { id: "9", invoiceNumber: "INV001", status: "pending", date: "12-05-2026", amount: "€250.00" },
-    { id: "10", invoiceNumber: "INV001", status: "success", date: "12-05-2026", amount: "€250.00" },
-    { id: "11", invoiceNumber: "INV001", status: "failed", date: "12-05-2026", amount: "€250.00" },
-  ],
+  // Figma: one invoice id column pattern; vary status only
+  invoices: statuses.map((status, i) => ({
+    id: String(i + 1),
+    invoiceNumber: "INV001",
+    status,
+    date: "12-05-2026",
+    amount: "€250.00",
+  })),
 };
 
 export async function fetchBillingData(): Promise<BillingData> {

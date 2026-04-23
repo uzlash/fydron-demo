@@ -323,7 +323,7 @@ export function SettingsScreen() {
                     <Text size={300} className="text-[14px] text-foreground">
                       {t.settings.security.mfaStatusLabel}
                     </Text>
-                    <span className="inline-flex items-center gap-1.5 rounded-[4px] bg-[#107c10] px-2 py-1 text-[12px] font-medium text-white">
+                    <span className="inline-flex items-center gap-1.5 rounded-[4px] bg-success px-2 py-1 text-[12px] font-medium text-white">
                       <CheckmarkCircle16Filled />
                       {t.settings.security.mfaActiveBadge}
                     </span>

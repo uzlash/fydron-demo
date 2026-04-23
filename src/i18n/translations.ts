@@ -414,6 +414,7 @@ export const en = {
         status: "Status",
         date: "Date",
         amount: "Amount",
+        action: "Action",
       },
       download: "Download",
       empty: "No Invoice yet",
