@@ -62,7 +62,6 @@ function InvoiceEmptyState({ label }: { label: string }) {
 export function BillingScreen() {
   const { t } = useLocale();
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
-  // Figma: current page 2 in the numbered control
   const [invoicePage, setInvoicePage] = useState(2);
   const billingQuery = useQuery({
     queryKey: ["billing-data"],

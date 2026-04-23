@@ -26,31 +26,42 @@ type MenuRowProps = {
 };
 
 function MenuRow({ icon, label, destructive, href, onClick, onNavigate }: MenuRowProps) {
-  const className = `flex w-full items-center gap-4 rounded-[12px] px-4 py-3 text-left text-[16px] font-medium transition-colors hover:bg-surface-muted ${
-    destructive ? "text-danger" : "text-foreground"
-  }`;
+  const rowClass =
+    "group flex w-full min-h-10 max-w-full items-center gap-3 rounded-lg p-1 text-left text-[14px] font-medium leading-none transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary";
 
-  const inner = (
+  const stateClass = destructive
+    ? "text-accent-foreground hover:bg-accent/10"
+    : "text-foreground hover:bg-surface-muted";
+
+  const content = (
     <>
-      <span className={`flex h-6 w-6 shrink-0 items-center justify-center ${destructive ? "text-danger" : "text-secondary"}`}>
+      <span
+        className={`flex h-5 w-5 shrink-0 items-center justify-center [&_svg]:h-5 [&_svg]:w-5 ${
+          destructive ? "text-accent-foreground" : "text-foreground"
+        }`}
+        aria-hidden
+      >
         {icon}
       </span>
-      <span className="min-w-0 flex-1">{label}</span>
-      <ChevronRight20Regular className="h-5 w-5 shrink-0 text-muted" />
+      <span className="min-w-0 flex-1 truncate">{label}</span>
+      <ChevronRight20Regular
+        className="h-4 w-4 shrink-0 text-secondary"
+        aria-hidden
+      />
     </>
   );
 
   if (href) {
     return (
-      <Link href={href} className={className} onClick={onNavigate}>
-        {inner}
+      <Link href={href} className={`${rowClass} ${stateClass}`} onClick={onNavigate}>
+        {content}
       </Link>
     );
   }
 
   return (
-    <button type="button" className={className} onClick={onClick}>
-      {inner}
+    <button type="button" className={`${rowClass} ${stateClass}`} onClick={onClick}>
+      {content}
     </button>
   );
 }
@@ -81,17 +92,17 @@ export function SidebarProfileMenu({ name, email }: SidebarProfileMenuProps) {
         >
           <Avatar name={name} color="colorful" size={32} />
           <div className="min-w-0 flex flex-1 flex-col justify-center gap-[2px]">
-            <Text size={300} block className="text-[13px] font-semibold text-foreground leading-tight">
+            <Text size={300} block className="text-[13px] font-semibold leading-tight text-foreground">
               {name}
             </Text>
-            <Text size={200} block className="truncate text-[11px] text-secondary leading-tight">
+            <Text size={200} block className="truncate text-[11px] leading-tight text-secondary">
               {email}
             </Text>
           </div>
         </button>
       </PopoverTrigger>
-      <PopoverSurface className="rounded-[24px] border border-border bg-surface p-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
-        <nav className="flex min-w-[280px] flex-col gap-1" aria-label={t.settings.userMenu.ariaLabel}>
+      <PopoverSurface className="min-w-[272px] overflow-hidden rounded-[20px] border border-border bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.1)] sm:min-w-[280px]">
+        <nav className="flex flex-col gap-0.5" aria-label={t.settings.userMenu.ariaLabel}>
           <MenuRow
             icon={<Settings20Regular />}
             label={t.settings.userMenu.settings}
@@ -101,16 +112,12 @@ export function SidebarProfileMenu({ name, email }: SidebarProfileMenuProps) {
           <MenuRow
             icon={<WeatherSunny20Regular />}
             label={t.settings.userMenu.appearance}
-            onClick={() => {
-              close();
-            }}
+            onClick={close}
           />
           <MenuRow
             icon={<Database20Regular />}
             label={t.settings.userMenu.dataManagement}
-            onClick={() => {
-              close();
-            }}
+            onClick={close}
           />
           <MenuRow
             icon={<Headphones20Regular />}
