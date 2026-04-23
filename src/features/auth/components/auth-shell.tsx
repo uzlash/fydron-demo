@@ -7,7 +7,7 @@ import { LocaleSwitcher } from "@/features/auth/components/locale-switcher";
 type Bg = "muted" | "black";
 
 const bgClass: Record<Bg, string> = {
-  muted: "bg-sidebar",
+  muted: "bg-background",
   black: "bg-black",
 };
 
@@ -30,7 +30,7 @@ export function AuthShell({
         <LocaleSwitcher className="absolute top-4 right-4 z-20" />
       ) : null}
       <div className="flex w-full max-w-[440px] flex-col items-center gap-6">
-        <FydronLogo />
+        <FydronLogo className="shrink-0" />
         {children}
         {footer}
       </div>

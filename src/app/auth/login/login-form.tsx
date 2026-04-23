@@ -34,7 +34,7 @@ export function LoginForm() {
       setShowToast(true);
       return;
     }
-    router.push("/auth/create-password");
+    router.push("/dashboard");
   };
 
   return (
@@ -47,12 +47,23 @@ export function LoginForm() {
         />
       ) : null}
       <AuthCard>
-        <Text as="h1" size={500} weight="semibold" block>
-          {t.login.title}
-        </Text>
-        <Text size={300} className="text-secondary">
-          {t.login.subtitle}
-        </Text>
+        <div className="flex flex-col gap-2">
+          <Text
+            as="h1"
+            size={500}
+            weight="semibold"
+            block
+            className="text-foreground !text-lg leading-tight"
+          >
+            {t.login.title}
+          </Text>
+          <Text
+            size={300}
+            className="text-sm leading-snug text-secondary"
+          >
+            {t.login.subtitle}
+          </Text>
+        </div>
         <form className="flex flex-col gap-4" onSubmit={submit}>
           <Field
             label={t.login.email}
@@ -83,9 +94,15 @@ export function LoginForm() {
             onChange={setPassword}
             validationState={showError ? "error" : "none"}
           />
-          <Button appearance="primary" type="submit" className="w-full">
+          <Button appearance="primary" type="submit" className="w-full !rounded">
             {t.login.submit}
           </Button>
+          <p className="m-0 -mt-1 text-center text-[13px] leading-snug text-secondary">
+            {t.login.noAccount}{" "}
+            <Link href="/auth/create-password" className="font-medium text-primary underline">
+              {t.login.signUp}
+            </Link>
+          </p>
         </form>
       </AuthCard>
     </AuthShell>

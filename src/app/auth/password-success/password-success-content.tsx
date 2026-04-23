@@ -4,7 +4,6 @@ import { Button, Text } from "@fluentui/react-components";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AuthCard } from "@/features/auth/components/auth-card";
 import { AuthShell } from "@/features/auth/components/auth-shell";
-import { LegalFooter } from "@/features/auth/components/legal-footer";
 import { useLocale } from "@/i18n/locale-context";
 
 export function PasswordSuccessContent() {
@@ -15,15 +14,26 @@ export function PasswordSuccessContent() {
 
   const inner = (
     <AuthCard>
-      <Text as="h1" size={500} weight="semibold" block>
-        {t.passwordSuccess.title}
-      </Text>
-      <Text size={300} className="text-secondary">
-        {t.passwordSuccess.body}
-      </Text>
+      <div className="flex flex-col gap-2">
+        <Text
+          as="h1"
+          size={500}
+          weight="semibold"
+          block
+          className="text-foreground !text-lg leading-tight"
+        >
+          {t.passwordSuccess.title}
+        </Text>
+        <Text
+          size={300}
+          className="text-sm leading-snug text-secondary"
+        >
+          {t.passwordSuccess.body}
+        </Text>
+      </div>
       <Button
         appearance="primary"
-        className="w-full"
+        className="w-full !rounded"
         onClick={() => router.push("/auth/mfa")}
       >
         {t.passwordSuccess.continueCta}
@@ -39,5 +49,5 @@ export function PasswordSuccessContent() {
     );
   }
 
-  return <AuthShell footer={<LegalFooter />}>{inner}</AuthShell>;
+  return <AuthShell footer={null}>{inner}</AuthShell>;
 }

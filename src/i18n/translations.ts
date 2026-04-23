@@ -22,11 +22,14 @@ export const en = {
   },
   login: {
     title: "Log into your account",
-    subtitle: "Create a password to activate your account.",
+    subtitle: "Enter your email and password to continue to the dashboard.",
     email: "Email",
     password: "Password",
     forgotPassword: "Forgot password?",
-    submit: "Create password",
+    submit: "Log in",
+    signIn: "Sign in",
+    noAccount: "Don't have an account?",
+    signUp: "Sign up",
     emailPlaceholder: "@email.com",
   },
   forgot: {
@@ -53,10 +56,11 @@ export const en = {
     req3: "At least 1 number",
     req4: "At least 1 special character (!@#$%^&* etc.)",
     submit: "Create password",
+    alreadyHaveAccount: "Already have an account?",
   },
   passwordSuccess: {
     title: "Password successfully created!",
-    body: "You have successfully created a new password. Continue to set up multi-factor authentication to secure your account.",
+    body: "You have successfully created a new password. Tap the button below to continue and set up multi-factor authentication for your account.",
     continueCta: "Continue",
   },
   profile: {
@@ -75,6 +79,7 @@ export const en = {
     subtitle: "Set up multi-factor authentication to protect your account.",
     scanHint: "Scan with Google or Microsoft Authenticator",
     continue: "Continue",
+    continueToProfile: "Continue",
   },
   dashboard: {
     title: "Dashboard",
@@ -700,11 +705,14 @@ export const nl: TranslationDict = {
   },
   login: {
     title: "Log in op je account",
-    subtitle: "Maak een wachtwoord om je account te activeren.",
+    subtitle: "Voer je e-mailadres en wachtwoord in om verder te gaan naar het dashboard.",
     email: "E-mail",
     password: "Wachtwoord",
     forgotPassword: "Wachtwoord vergeten?",
-    submit: "Wachtwoord aanmaken",
+    submit: "Inloggen",
+    signIn: "Inloggen",
+    noAccount: "Nog geen account?",
+    signUp: "Registreren",
     emailPlaceholder: "@email.com",
   },
   forgot: {
@@ -731,10 +739,11 @@ export const nl: TranslationDict = {
     req3: "Minstens 1 cijfer",
     req4: "Minstens 1 speciaal teken (!@#$%^&* enz.)",
     submit: "Wachtwoord aanmaken",
+    alreadyHaveAccount: "Heb je al een account?",
   },
   passwordSuccess: {
     title: "Wachtwoord succesvol aangemaakt!",
-    body: "Je hebt succesvol een nieuw wachtwoord aangemaakt. Ga verder om multifactorauthenticatie in te stellen en je account te beveiligen.",
+    body: "Je hebt succesvol een nieuw wachtwoord aangemaakt. Tik op de knop hieronder om verder te gaan en multifactorauthenticatie in te stellen.",
     continueCta: "Doorgaan",
   },
   profile: {
@@ -753,6 +762,7 @@ export const nl: TranslationDict = {
     subtitle: "Stel multifactorauthenticatie in om je account te beschermen.",
     scanHint: "Scan met Google of Microsoft Authenticator",
     continue: "Doorgaan",
+    continueToProfile: "Doorgaan om de profielregistratie te voltooien",
   },
   dashboard: {
     title: "Dashboard",

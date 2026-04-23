@@ -7,7 +7,10 @@ import { useLocale } from "@/i18n/locale-context";
 export function LegalFooter() {
   const { t } = useLocale();
   return (
-    <Text size={200} className="max-w-md text-center text-secondary">
+    <Text
+      size={200}
+      className="max-w-md text-center text-sm leading-snug text-secondary"
+    >
       {t.common.termsLead}{" "}
       <NextLink href="#" className="text-primary underline">
         {t.common.terms}

@@ -51,32 +51,50 @@ export function CreatePasswordForm() {
         />
       ) : null}
       <AuthCard>
-        <Text as="h1" size={500} weight="semibold" block>
-          {t.createPassword.title}
-        </Text>
-        <Text size={300} className="text-secondary">
-          {t.createPassword.subtitle}
-        </Text>
-        <form className="flex flex-col gap-4" onSubmit={submit}>
-          <PasswordInput
-            label={t.createPassword.newPassword}
-            value={a}
-            onChange={setA}
-            validationState={showError ? "error" : "none"}
-            placeholder={t.createPassword.placeholder}
-          />
-          <PasswordInput
-            label={t.createPassword.confirmPassword}
-            value={b}
-            onChange={setB}
-            validationState={showError ? "error" : "none"}
-            placeholder={t.createPassword.placeholder}
-          />
+        <div className="flex flex-col gap-2">
+          <Text
+            as="h1"
+            size={500}
+            weight="semibold"
+            block
+            className="text-foreground !text-lg leading-tight"
+          >
+            {t.createPassword.title}
+          </Text>
+          <Text
+            size={300}
+            className="text-sm leading-snug text-secondary"
+          >
+            {t.createPassword.subtitle}
+          </Text>
+        </div>
+        <form className="flex flex-col gap-6" onSubmit={submit}>
+          <div className="flex flex-col gap-4">
+            <PasswordInput
+              label={t.createPassword.newPassword}
+              value={a}
+              onChange={setA}
+              validationState={showError ? "error" : "none"}
+              placeholder={t.createPassword.placeholder}
+            />
+            <PasswordInput
+              label={t.createPassword.confirmPassword}
+              value={b}
+              onChange={setB}
+              validationState={showError ? "error" : "none"}
+              placeholder={t.createPassword.placeholder}
+            />
+          </div>
           <div>
-            <Text size={200} weight="semibold" block className="mb-1">
+            <Text
+              size={200}
+              weight="semibold"
+              block
+              className="mb-1 text-sm text-body"
+            >
               {t.createPassword.requirementsTitle}
             </Text>
-            <ul className="list-disc pl-5 text-sm text-secondary">
+            <ul className="list-disc space-y-0.5 pl-5 text-sm leading-normal text-secondary">
               <li>{t.createPassword.req1}</li>
               <li>{t.createPassword.req2}</li>
               <li>{t.createPassword.req3}</li>
@@ -86,7 +104,7 @@ export function CreatePasswordForm() {
           <Button
             appearance="primary"
             type="submit"
-            className="w-full"
+            className="w-full !rounded"
             disabled={loading}
           >
             {loading ? <Spinner size="tiny" className="text-primary-foreground" /> : t.createPassword.submit}

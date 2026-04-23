@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { AuthCard } from "@/features/auth/components/auth-card";
 import { AuthShell } from "@/features/auth/components/auth-shell";
-import { LegalFooter } from "@/features/auth/components/legal-footer";
 import { useLocale } from "@/i18n/locale-context";
 
 const QR_CODE_SRC = "/qr-code-test.png";
@@ -15,15 +14,26 @@ export default function MfaPage() {
   const router = useRouter();
 
   return (
-    <AuthShell footer={<LegalFooter />}>
+    <AuthShell footer={null}>
       <AuthCard>
-        <Text as="h1" size={500} weight="semibold" block>
-          {t.mfa.title}
-        </Text>
-        <Text size={300} className="text-secondary">
-          {t.mfa.subtitle}
-        </Text>
-        <div className="flex justify-center py-4">
+        <div className="flex flex-col gap-2">
+          <Text
+            as="h1"
+            size={500}
+            weight="semibold"
+            block
+            className="text-foreground !text-lg leading-tight"
+          >
+            {t.mfa.title}
+          </Text>
+          <Text
+            size={300}
+            className="text-sm leading-snug text-secondary"
+          >
+            {t.mfa.subtitle}
+          </Text>
+        </div>
+        <div className="flex justify-center py-8">
           <Image
             src={QR_CODE_SRC}
             alt=""
@@ -33,15 +43,18 @@ export default function MfaPage() {
             priority
           />
         </div>
-        <Text size={200} className="text-center text-muted">
+        <Text
+          size={200}
+          className="text-center text-sm text-muted"
+        >
           {t.mfa.scanHint}
         </Text>
         <Button
           appearance="primary"
-          className="w-full"
+          className="w-full !rounded"
           onClick={() => router.push("/auth/profile")}
         >
-          {t.mfa.continue}
+          {t.mfa.continueToProfile}
         </Button>
       </AuthCard>
     </AuthShell>

@@ -1,12 +1,14 @@
 "use client";
 
-import { Card } from "@fluentui/react-components";
 import type { ReactNode } from "react";
 
+/**
+ * Fydron auth: white panel with 1px outline only (no drop shadow or elevation fill).
+ */
 export function AuthCard({ children }: { children: ReactNode }) {
   return (
-    <Card className="w-full border border-border shadow-sm">
-      <div className="flex flex-col gap-5 p-8">{children}</div>
-    </Card>
+    <div className="w-full max-w-[440px] rounded-md border border-border bg-surface">
+      <div className="flex flex-col gap-6 p-6">{children}</div>
+    </div>
   );
 }

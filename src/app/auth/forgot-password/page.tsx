@@ -36,12 +36,23 @@ export default function ForgotPasswordPage() {
   return (
     <AuthShell footer={<LegalFooter />}>
       <AuthCard>
-        <Text as="h1" size={500} weight="semibold" block>
-          {t.forgot.title}
-        </Text>
-        <Text size={300} className="text-secondary">
-          {t.forgot.subtitle}
-        </Text>
+        <div className="flex flex-col gap-2">
+          <Text
+            as="h1"
+            size={500}
+            weight="semibold"
+            block
+            className="text-foreground !text-lg leading-tight"
+          >
+            {t.forgot.title}
+          </Text>
+          <Text
+            size={300}
+            className="text-sm leading-snug text-secondary"
+          >
+            {t.forgot.subtitle}
+          </Text>
+        </div>
         <form
           className="flex flex-col gap-4"
           onSubmit={(e) => {
@@ -57,13 +68,13 @@ export default function ForgotPasswordPage() {
               onChange={(_, d) => setEmail(d.value)}
             />
           </Field>
-          <Text size={200} className="text-secondary">
+          <Text size={200} className="text-sm text-secondary">
             {t.forgot.hint}
           </Text>
           <Button
             appearance="primary"
             type="submit"
-            className="w-full"
+            className="w-full !rounded"
             disabled={submitMutation.isPending}
           >
             {submitMutation.isPending ? (

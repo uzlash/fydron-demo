@@ -1,10 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f3f2f1;
+  /* Auth / marketing baseline (Fydron) */
+  --background: #f5f5f5;
   --foreground: #242424;
 
-  --palette-primary: #0078d4;
+  --palette-primary: #0070c0;
   --palette-primary-foreground: #ffffff;
   --palette-secondary: #605e5c;
   --palette-secondary-foreground: #242424;
@@ -14,8 +15,8 @@
   --palette-surface: #ffffff;
   --palette-surface-muted: #faf9f8;
   --palette-sidebar: #f3f2f1;
-  --palette-border: #e1dfdd;
-  --palette-border-strong: #d2d0ce;
+  --palette-border: #d1d1d1;
+  --palette-border-strong: #c8c6c4;
   --palette-border-soft: #edebe9;
   --palette-muted: #a19f9d;
   --palette-body: #323130;

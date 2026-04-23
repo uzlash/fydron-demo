@@ -11,12 +11,23 @@ export default function MailSentPage() {
   return (
     <AuthShell>
       <AuthCard>
-        <Text as="h1" size={500} weight="semibold" block>
-          {t.mailSent.title}
-        </Text>
-        <Text size={300} className="text-secondary">
-          {t.mailSent.body}
-        </Text>
+        <div className="flex flex-col gap-2">
+          <Text
+            as="h1"
+            size={500}
+            weight="semibold"
+            block
+            className="text-foreground !text-lg leading-tight"
+          >
+            {t.mailSent.title}
+          </Text>
+          <Text
+            size={300}
+            className="text-sm leading-snug text-secondary"
+          >
+            {t.mailSent.body}
+          </Text>
+        </div>
       </AuthCard>
     </AuthShell>
   );

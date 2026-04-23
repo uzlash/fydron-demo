@@ -29,12 +29,23 @@ export function ProfileForm() {
   return (
     <AuthShell footer={<LegalFooter />}>
       <AuthCard>
-        <Text as="h1" size={500} weight="semibold" block>
-          {t.profile.title}
-        </Text>
-        <Text size={300} className="text-secondary">
-          {t.profile.subtitle}
-        </Text>
+        <div className="flex flex-col gap-2">
+          <Text
+            as="h1"
+            size={500}
+            weight="semibold"
+            block
+            className="text-foreground !text-lg leading-tight"
+          >
+            {t.profile.title}
+          </Text>
+          <Text
+            size={300}
+            className="text-sm leading-snug text-secondary"
+          >
+            {t.profile.subtitle}
+          </Text>
+        </div>
         <div className="flex flex-wrap items-start gap-4">
           <Avatar
             name={[first, last].filter(Boolean).join(" ").trim() || "User"}
@@ -99,7 +110,11 @@ export function ProfileForm() {
               onChange={(_, d) => setPhone(d.value)}
             />
           </Field>
-          <Button appearance="primary" type="submit" className="w-full">
+          <Button
+            appearance="primary"
+            type="submit"
+            className="w-full !rounded"
+          >
             {t.profile.continue}
           </Button>
         </form>

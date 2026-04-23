@@ -1,16 +1,16 @@
 "use client";
 
-import { Text } from "@fluentui/react-components";
+import Image from "next/image";
 
 export function FydronLogo({ className }: { className?: string }) {
   return (
-    <Text
-      weight="bold"
-      size={500}
-      className={`text-primary ${className ?? ""}`.trim()}
-      style={{ fontSize: "1.5rem", letterSpacing: "-0.02em" }}
-    >
-      Fydron
-    </Text>
+    <Image
+      src="/logo.png"
+      alt="Fydron"
+      width={120}
+      height={32}
+      className={`h-8 w-auto object-contain ${className ?? ""}`.trim()}
+      priority
+    />
   );
 }

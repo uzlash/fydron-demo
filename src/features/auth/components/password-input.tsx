@@ -52,7 +52,14 @@ export function PasswordInput({
           <Button
             appearance="transparent"
             size="small"
-            icon={visible ? <EyeOff24Regular /> : <Eye24Regular />}
+            className="min-h-8 min-w-8 shrink-0 text-secondary hover:text-body"
+            icon={
+              visible ? (
+                <EyeOff24Regular className="h-5 w-5" />
+              ) : (
+                <Eye24Regular className="h-5 w-5" />
+              )
+            }
             aria-label={visible ? "Hide password" : "Show password"}
             onClick={() => setVisible((v) => !v)}
           />
