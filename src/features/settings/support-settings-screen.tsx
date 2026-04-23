@@ -8,15 +8,17 @@ import { NotificationCenter } from "@/features/dashboard/components/notification
 import { notificationItems } from "@/features/dashboard/mock-data";
 import { useLocale } from "@/i18n/locale-context";
 import { useState } from "react";
+import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
 
 export function SupportSettingsScreen() {
   const { t } = useLocale();
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
 
   return (
-    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
+    <AppPageFrame>
       <DashboardSidebar />
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
+      <AppMainCard>
+      <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface">
         <DashboardTopbar
           title={t.settings.title}
           onToggleNotifications={() => setIsNotificationCenterOpen((value) => !value)}
@@ -65,6 +67,7 @@ export function SupportSettingsScreen() {
           </div>
         </div>
       </div>
+      </AppMainCard>
 
       {isNotificationCenterOpen ? (
         <>
@@ -79,6 +82,6 @@ export function SupportSettingsScreen() {
           </div>
         </>
       ) : null}
-    </div>
+    </AppPageFrame>
   );
 }

@@ -1,4 +1,4 @@
-export type DashboardRole = "Uploader" | "User" | "Reviewer" | "Auditor";
+export type DashboardRole = "Uploader" | "Contributor" | "Reviewer" | "Auditor";
 
 export type DashboardStatKey =
   | "activeDossiers"

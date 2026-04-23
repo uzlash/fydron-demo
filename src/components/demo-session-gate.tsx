@@ -41,8 +41,10 @@ export function DemoSessionGate({ children }: { children: ReactNode }) {
 
   if (!ready && !auth) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-background text-secondary">
-        <Spinner size="small" label="Loading" />
+      <div className="box-border flex h-screen w-full overflow-hidden bg-background p-2.5 text-secondary">
+        <div className="flex flex-1 items-center justify-center rounded-lg border border-border bg-surface">
+          <Spinner size="small" label="Loading" />
+        </div>
       </div>
     );
   }

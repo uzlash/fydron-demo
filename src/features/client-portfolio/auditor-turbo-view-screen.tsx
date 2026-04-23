@@ -12,6 +12,7 @@ import { DashboardTopbar } from "@/features/dashboard/components/dashboard-topba
 import { NotificationCenter } from "@/features/dashboard/components/notification-center";
 import { notificationItems } from "@/features/dashboard/mock-data";
 import { useLocale } from "@/i18n/locale-context";
+import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
 
 const TURBO_VIEW_ROW_COUNT = 5;
 
@@ -67,9 +68,10 @@ export function AuditorTurboViewScreen({ clientId, dossierId }: AuditorTurboView
   const total = rows.length;
 
   return (
-    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
+    <AppPageFrame>
       <DashboardSidebar />
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
+      <AppMainCard>
+      <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface">
         <DashboardTopbar
           title={av.topbarTitle}
           onToggleNotifications={() => setIsNotificationCenterOpen((v) => !v)}
@@ -227,6 +229,7 @@ export function AuditorTurboViewScreen({ clientId, dossierId }: AuditorTurboView
           </div>
         </div>
       </div>
+      </AppMainCard>
 
       {isNotificationCenterOpen ? (
         <>
@@ -241,6 +244,6 @@ export function AuditorTurboViewScreen({ clientId, dossierId }: AuditorTurboView
           </div>
         </>
       ) : null}
-    </div>
+    </AppPageFrame>
   );
 }

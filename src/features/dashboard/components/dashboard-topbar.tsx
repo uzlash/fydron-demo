@@ -19,19 +19,24 @@ export function DashboardTopbar({
 
   return (
     <header className="flex h-[60px] shrink-0 items-center justify-between border-b border-border bg-surface px-6">
-      <Text size={500} weight="semibold" className="text-foreground text-[18px]">
+      <Text
+        as="h1"
+        size={500}
+        weight="semibold"
+        className="shrink-0 text-[18px] text-foreground"
+      >
         {title}
       </Text>
-      <div className="flex items-center gap-3">
+      <div className="flex min-w-0 flex-1 items-center justify-end gap-3 pl-6">
         <Input
           placeholder={t.dashboard.searchPlaceholder}
-          className="w-[380px] h-[36px]"
+          className="h-9 w-full min-w-0 max-w-[380px] rounded border-border"
           contentBefore={<Search20Regular className="text-muted" />}
         />
         <button
-          className="relative inline-flex h-[36px] w-[36px] items-center justify-center rounded border border-border bg-surface text-secondary hover:bg-sidebar"
-          aria-label={t.dashboard.notifications}
           type="button"
+          className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded border border-border bg-surface text-secondary hover:bg-sidebar"
+          aria-label={t.dashboard.notifications}
           onClick={onToggleNotifications}
         >
           <Alert20Regular />

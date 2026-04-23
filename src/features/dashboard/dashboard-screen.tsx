@@ -13,6 +13,7 @@ import { fetchDashboardData, notificationItems } from "@/features/dashboard/mock
 import type { DashboardDataMode } from "@/features/dashboard/types";
 import { useDemoSession } from "@/features/auth/demo-session-context";
 import { useLocale } from "@/i18n/locale-context";
+import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
 
 function DashboardDataLoading({ label }: { label: string }) {
   return (
@@ -40,9 +41,10 @@ export function DashboardScreen() {
   const isEmpty = !isLoading && (data?.dossiers.length ?? 0) === 0;
 
   return (
-    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-surface font-sans text-foreground">
+    <AppPageFrame>
       <DashboardSidebar />
-      <div className="flex min-h-0 min-w-0 flex-1 border-l border-border">
+      <AppMainCard>
+      <div className="flex h-full min-h-0 min-w-0 w-full flex-col overflow-hidden bg-surface">
         <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
           <DashboardTopbar
             title={t.dashboard.title}
@@ -53,17 +55,23 @@ export function DashboardScreen() {
           />
 
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-            <div className="shrink-0 px-6 py-6">
-              <Text size={500} weight="semibold" block className="mb-[2px] text-[18px] text-foreground">
+            <div className="shrink-0 px-6 pb-2 pt-8">
+              <Text
+                as="h1"
+                size={500}
+                weight="semibold"
+                block
+                className="mb-1 text-[18px] leading-snug text-foreground"
+              >
                 {t.dashboard.greetingTitle.replace(
                   "{name}",
                   user?.firstName ?? data?.greetingName ?? "there",
                 )}
               </Text>
-              <Text size={200} className="text-[13px] text-secondary" block>
+              <Text size={200} className="text-[13px] leading-5 text-secondary" block>
                 {t.dashboard.greetingSubtitle}
               </Text>
-              <div className="mt-[20px]">
+              <div className="mt-6">
                 <DashboardStats stats={data?.stats ?? []} />
               </div>
             </div>
@@ -78,6 +86,7 @@ export function DashboardScreen() {
           </div>
         </div>
       </div>
+      </AppMainCard>
       {isNotificationCenterOpen ? (
         <>
           <button
@@ -91,6 +100,6 @@ export function DashboardScreen() {
           </div>
         </>
       ) : null}
-    </div>
+    </AppPageFrame>
   );
 }

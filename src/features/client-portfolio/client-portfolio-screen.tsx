@@ -11,6 +11,7 @@ import { DashboardTopbar } from "@/features/dashboard/components/dashboard-topba
 import { NotificationCenter } from "@/features/dashboard/components/notification-center";
 import { notificationItems } from "@/features/dashboard/mock-data";
 import { useLocale } from "@/i18n/locale-context";
+import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
 
 export function ClientPortfolioScreen() {
   const { t } = useLocale();
@@ -29,9 +30,10 @@ export function ClientPortfolioScreen() {
   );
 
   return (
-    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
+    <AppPageFrame>
       <DashboardSidebar />
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
+      <AppMainCard>
+      <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface">
         <DashboardTopbar
           title={t.dashboard.nav.clientPortfolio}
           onToggleNotifications={() => setIsNotificationCenterOpen((v) => !v)}
@@ -46,6 +48,7 @@ export function ClientPortfolioScreen() {
           />
         </div>
       </div>
+      </AppMainCard>
 
       {isNotificationCenterOpen ? (
         <>
@@ -67,6 +70,6 @@ export function ClientPortfolioScreen() {
         detail={detail}
         onClose={() => setDrawerClientId(null)}
       />
-    </div>
+    </AppPageFrame>
   );
 }

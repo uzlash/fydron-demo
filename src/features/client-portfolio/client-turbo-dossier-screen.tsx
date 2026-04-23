@@ -18,6 +18,7 @@ import { DashboardTopbar } from "@/features/dashboard/components/dashboard-topba
 import { NotificationCenter } from "@/features/dashboard/components/notification-center";
 import { notificationItems } from "@/features/dashboard/mock-data";
 import { useLocale } from "@/i18n/locale-context";
+import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
 
 const PAGE_SIZE = 4;
 
@@ -107,15 +108,17 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
 
   if (!data) {
     return (
-      <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
+      <AppPageFrame>
         <DashboardSidebar />
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface p-6">
+        <AppMainCard>
+        <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface p-6">
           <Text>{t.clientPortfolio.profile.notFound}</Text>
           <Button appearance="primary" className="mt-4" onClick={() => router.push("/client-portfolio")}>
             {t.clientPortfolio.profile.backToPortfolio}
           </Button>
         </div>
-      </div>
+        </AppMainCard>
+      </AppPageFrame>
     );
   }
 
@@ -124,9 +127,10 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
     .replace("{site}", data.siteName);
 
   return (
-    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
+    <AppPageFrame>
       <DashboardSidebar />
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
+      <AppMainCard>
+      <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface">
         <DashboardTopbar
           title={nav.matrix}
           onToggleNotifications={() => {
@@ -318,6 +322,7 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
           ) : null}
         </div>
       </div>
+      </AppMainCard>
 
       {isNotificationCenterOpen ? (
         <>
@@ -332,6 +337,6 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
           </div>
         </>
       ) : null}
-    </div>
+    </AppPageFrame>
   );
 }

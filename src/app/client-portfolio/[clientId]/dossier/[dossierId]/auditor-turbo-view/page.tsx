@@ -9,8 +9,10 @@ type PageProps = {
 
 function TurboLoading() {
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-background text-[13px] text-secondary">
-      Loading…
+    <div className="box-border h-screen w-full overflow-hidden bg-background p-2.5 text-secondary">
+      <div className="flex h-full items-center justify-center rounded-lg border border-border bg-surface text-[13px]">
+        Loading…
+      </div>
     </div>
   );
 }

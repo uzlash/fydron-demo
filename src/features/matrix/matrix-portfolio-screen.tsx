@@ -10,6 +10,7 @@ import { fetchMatrixPortfolioData } from "@/features/matrix/mock-data";
 import { MatrixPortfolioTable } from "@/features/matrix/components/matrix-portfolio-table";
 import type { MatrixPortfolioMode } from "@/features/matrix/types";
 import { useLocale } from "@/i18n/locale-context";
+import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
 
 export function MatrixPortfolioScreen() {
   const { t } = useLocale();
@@ -21,9 +22,10 @@ export function MatrixPortfolioScreen() {
   });
 
   return (
-    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
+    <AppPageFrame>
       <DashboardSidebar />
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
+      <AppMainCard>
+      <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface">
         <DashboardTopbar
           title={t.dashboard.nav.matrix}
           onToggleNotifications={() => setIsNotificationCenterOpen((currentValue) => !currentValue)}
@@ -34,6 +36,7 @@ export function MatrixPortfolioScreen() {
           <MatrixPortfolioTable rows={query.data?.rows ?? []} />
         </div>
       </div>
+      </AppMainCard>
 
       {isNotificationCenterOpen ? (
         <>
@@ -48,6 +51,6 @@ export function MatrixPortfolioScreen() {
           </div>
         </>
       ) : null}
-    </div>
+    </AppPageFrame>
   );
 }

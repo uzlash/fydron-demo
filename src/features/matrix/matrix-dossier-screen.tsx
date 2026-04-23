@@ -28,6 +28,7 @@ import {
   type MatrixDossierRow,
 } from "@/features/matrix/types";
 import { useLocale } from "@/i18n/locale-context";
+import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
 
 type MatrixDossierScreenProps = {
   dossierId: string;
@@ -99,9 +100,10 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
   };
 
   return (
-    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
+    <AppPageFrame>
       <DashboardSidebar />
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
+      <AppMainCard>
+      <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface">
         {auditMode === "inspection" && !inspectionBannerDismissed ? (
           <MatrixInspectionBanner
             onReviewUpgrade={() => setIsMigrationModalOpen(true)}
@@ -261,6 +263,7 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
           ) : null}
         </div>
       </div>
+      </AppMainCard>
 
       {isNotificationCenterOpen ? (
         <>
@@ -283,6 +286,6 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
       />
 
       <MatrixFrameworkMigrationModal open={isMigrationModalOpen} onClose={() => setIsMigrationModalOpen(false)} />
-    </div>
+    </AppPageFrame>
   );
 }

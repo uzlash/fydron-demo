@@ -18,6 +18,7 @@ import { DashboardSidebar } from "@/features/dashboard/components/dashboard-side
 import { DashboardTopbar } from "@/features/dashboard/components/dashboard-topbar";
 import { NotificationCenter } from "@/features/dashboard/components/notification-center";
 import { notificationItems } from "@/features/dashboard/mock-data";
+import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
 
 type ClientProfileScreenProps = {
   clientId: string;
@@ -41,9 +42,10 @@ export function ClientProfileScreen({ clientId }: ClientProfileScreenProps) {
   const profile = useMemo(() => getClientProfile(clientId), [clientId]);
 
   return (
-    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
+    <AppPageFrame>
       <DashboardSidebar />
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
+      <AppMainCard>
+      <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface">
         <DashboardTopbar
           title={p.pageTitle}
           onToggleNotifications={() => setIsNotificationCenterOpen((v) => !v)}
@@ -102,6 +104,7 @@ export function ClientProfileScreen({ clientId }: ClientProfileScreenProps) {
           )}
         </div>
       </div>
+      </AppMainCard>
 
       {isNotificationCenterOpen ? (
         <>
@@ -116,6 +119,6 @@ export function ClientProfileScreen({ clientId }: ClientProfileScreenProps) {
           </div>
         </>
       ) : null}
-    </div>
+    </AppPageFrame>
   );
 }
