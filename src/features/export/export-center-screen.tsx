@@ -93,21 +93,23 @@ export function ExportCenterScreen() {
   const formDisabled = phase !== "form";
 
   return (
-    <div className="relative flex h-screen w-full bg-surface font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-surface font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border">
         <DashboardTopbar
           title={x.title}
           onToggleNotifications={() => setIsNotificationCenterOpen((c) => !c)}
           hasUnreadNotifications={notificationItems.some((item) => item.unread)}
         />
-        <main className="min-h-0 flex-1 overflow-y-auto bg-background px-4 py-5 sm:px-6 sm:py-6">
-          <h1 className="text-[28px] font-semibold leading-tight text-foreground sm:text-[32px]">{x.heading}</h1>
-          <p className="mt-2 max-w-[720px] text-[14px] leading-relaxed text-secondary">
-            {x.description.replace("{client}", displayClient)}
-          </p>
-
-          <div className="mt-6 max-w-[640px] space-y-5">
+        <main className="flex min-h-0 flex-1 flex-col overflow-hidden bg-background">
+          <div className="shrink-0 px-4 py-5 sm:px-6 sm:pt-6 sm:pb-0">
+            <h1 className="text-[28px] font-semibold leading-tight text-foreground sm:text-[32px]">{x.heading}</h1>
+            <p className="mt-2 max-w-[720px] text-[14px] leading-relaxed text-secondary">
+              {x.description.replace("{client}", displayClient)}
+            </p>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6 sm:py-6">
+          <div className="mt-0 max-w-[640px] space-y-5 sm:mt-0">
             <div ref={wrapRef} className="space-y-2">
               <p className="text-[13px] font-medium text-foreground">{x.client}</p>
               <div className="relative">
@@ -285,6 +287,7 @@ export function ExportCenterScreen() {
                 </button>
               </div>
             ) : null}
+          </div>
           </div>
         </main>
       </div>

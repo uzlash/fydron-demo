@@ -14,16 +14,16 @@ export function SupportSettingsScreen() {
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState(false);
 
   return (
-    <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
         <DashboardTopbar
           title={t.settings.title}
           onToggleNotifications={() => setIsNotificationCenterOpen((value) => !value)}
           hasUnreadNotifications={notificationItems.some((item) => item.unread)}
         />
 
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
           <div className="rounded-[12px] border border-border bg-surface">
             <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border-soft px-5 py-5">
               <div className="flex flex-col">

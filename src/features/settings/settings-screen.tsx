@@ -73,17 +73,17 @@ export function SettingsScreen() {
   const advisorRole = t.settings.profile.defaultRole;
 
   return (
-    <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
         <DashboardTopbar
           title={t.settings.title}
           onToggleNotifications={() => setIsNotificationCenterOpen((v) => !v)}
           hasUnreadNotifications={notificationItems.some((item) => item.unread)}
         />
 
-        <div className="flex flex-1 flex-col overflow-hidden">
-          <div className="border-b border-border-soft px-6">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          <div className="shrink-0 border-b border-border-soft px-6">
             <div className="flex gap-8">
               {tabs.map((item) => (
                 <button
@@ -102,7 +102,7 @@ export function SettingsScreen() {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto px-6 py-6">
+          <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6">
             {tab === "profile" ? (
               <div className="max-w-[720px]">
                 <div className="border-b border-border-soft pb-4">

@@ -18,7 +18,7 @@ export function DashboardTopbar({
   const { t } = useLocale();
 
   return (
-    <header className="flex h-[60px] items-center justify-between border-b border-border px-6 bg-surface">
+    <header className="flex h-[60px] shrink-0 items-center justify-between border-b border-border bg-surface px-6">
       <Text size={500} weight="semibold" className="text-foreground text-[18px]">
         {title}
       </Text>

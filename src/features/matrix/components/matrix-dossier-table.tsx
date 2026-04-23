@@ -33,8 +33,8 @@ export function MatrixDossierTable({
   return (
     <div className="mt-3 overflow-x-auto rounded-[4px] border border-border-soft">
       <table className="w-full border-collapse text-[13px]">
-        <thead>
-          <tr className="border-b border-border-soft text-left text-secondary">
+        <thead className="sticky top-0 z-10 bg-surface text-left text-secondary">
+          <tr className="border-b border-border-soft">
             <th className="w-[28px] px-3 py-3">
               <Checkbox checked={allSelected} onChange={onToggleAll} disabled={tableLocked} />
             </th>

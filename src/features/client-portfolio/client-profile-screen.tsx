@@ -41,18 +41,18 @@ export function ClientProfileScreen({ clientId }: ClientProfileScreenProps) {
   const profile = useMemo(() => getClientProfile(clientId), [clientId]);
 
   return (
-    <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
         <DashboardTopbar
           title={p.pageTitle}
           onToggleNotifications={() => setIsNotificationCenterOpen((v) => !v)}
           hasUnreadNotifications={notificationItems.some((item) => item.unread)}
         />
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-1 pb-8 sm:px-10">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-6 py-1 pb-0 sm:px-10">
           {!profile ? (
-            <div className="p-4">
+            <div className="shrink-0 p-4">
               <Text className="text-[15px] text-foreground">{p.notFound}</Text>
               <Button appearance="primary" className="mt-4" onClick={() => router.push("/client-portfolio")}>
                 {p.backToPortfolio}
@@ -60,34 +60,38 @@ export function ClientProfileScreen({ clientId }: ClientProfileScreenProps) {
             </div>
           ) : (
             <>
-              <ClientProfileHeader profile={profile} onEdit={() => setIsEditClientOpen(true)} />
-              <div className="mt-1 border-b border-border-soft">
-                <div className="flex flex-wrap gap-1 sm:gap-6">
-                  {tabItems.map((item) => {
-                    const isActive = tab === item.id;
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => setTab(item.id)}
-                        className={
-                          isActive
-                            ? "border-b-2 border-primary pb-2.5 text-[14px] font-medium text-foreground"
-                            : "border-b-2 border-transparent pb-2.5 text-[14px] text-secondary hover:text-foreground"
-                        }
-                      >
-                        {item.label}
-                      </button>
-                    );
-                  })}
+              <div className="shrink-0">
+                <ClientProfileHeader profile={profile} onEdit={() => setIsEditClientOpen(true)} />
+                <div className="mt-1 border-b border-border-soft">
+                  <div className="flex flex-wrap gap-1 sm:gap-6">
+                    {tabItems.map((item) => {
+                      const isActive = tab === item.id;
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => setTab(item.id)}
+                          className={
+                            isActive
+                              ? "border-b-2 border-primary pb-2.5 text-[14px] font-medium text-foreground"
+                              : "border-b-2 border-transparent pb-2.5 text-[14px] text-secondary hover:text-foreground"
+                          }
+                        >
+                          {item.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-              {tab === "overview" ? <ClientProfileOverviewPanel profile={profile} /> : null}
-              {tab === "users" ? <ClientProfileUsersPanel users={profile.users} /> : null}
-              {tab === "dossiers" ? <ClientProfileDossiersPanel profile={profile} /> : null}
-              {tab === "settings" ? (
-                <ClientProfileSettingsPanel onDeactivateSuccess={() => router.push("/client-portfolio")} />
-              ) : null}
+              <div className="min-h-0 flex-1 overflow-y-auto pt-1 pb-8">
+                {tab === "overview" ? <ClientProfileOverviewPanel profile={profile} /> : null}
+                {tab === "users" ? <ClientProfileUsersPanel users={profile.users} /> : null}
+                {tab === "dossiers" ? <ClientProfileDossiersPanel profile={profile} /> : null}
+                {tab === "settings" ? (
+                  <ClientProfileSettingsPanel onDeactivateSuccess={() => router.push("/client-portfolio")} />
+                ) : null}
+              </div>
 
               <EditClientDialog
                 open={isEditClientOpen}

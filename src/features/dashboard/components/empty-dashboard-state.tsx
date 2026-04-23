@@ -7,7 +7,7 @@ export function EmptyDashboardState({ onAction }: { onAction?: () => void }) {
   const { t } = useLocale();
 
   return (
-    <section className="flex flex-1 items-center justify-center border-t border-border-soft px-6 pb-20">
+    <section className="flex min-h-0 flex-1 items-center justify-center border-t border-border-soft px-6 pb-20">
       <div className="flex max-w-[400px] flex-col items-center text-center">
         <Text size={500} weight="semibold" className="mb-3 text-[16px] text-foreground">
           {t.dashboard.empty.title}

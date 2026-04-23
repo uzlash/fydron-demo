@@ -275,10 +275,12 @@ export function MatrixPortfolioTable({ rows }: MatrixPortfolioTableProps) {
 
   return (
     <>
-      <section className="px-4 pb-5 pt-4 sm:px-5">
-        <h2 className="text-[30px] font-semibold leading-none text-foreground">{t.matrix.portfolio.title}</h2>
+      <section className="flex h-full min-h-0 flex-col px-4 pb-5 pt-4 sm:px-5">
+        <h2 className="shrink-0 text-[30px] font-semibold leading-none text-foreground">
+          {t.matrix.portfolio.title}
+        </h2>
 
-        <div className="mt-4 flex items-center justify-between gap-3">
+        <div className="mt-4 flex shrink-0 items-center justify-between gap-3">
           <Input
             className="h-[38px] w-[360px]"
             placeholder={t.matrix.portfolio.searchPlaceholder}
@@ -315,10 +317,11 @@ export function MatrixPortfolioTable({ rows }: MatrixPortfolioTableProps) {
           </div>
         </div>
 
-        <div className="mt-3 overflow-x-auto rounded-[4px] border border-border-soft">
+        <div className="mt-3 min-h-0 flex-1 overflow-y-auto">
+          <div className="overflow-x-auto rounded-[4px] border border-border-soft">
           <table className="w-full border-collapse text-[13px]">
-            <thead>
-              <tr className="border-b border-border-soft text-left text-secondary">
+            <thead className="sticky top-0 z-10 bg-surface text-left text-secondary">
+              <tr className="border-b border-border-soft">
                 <th className="px-4 py-3 font-medium">{t.matrix.portfolio.columns.dossier} ↕</th>
                 <th className="px-4 py-3 font-medium">{t.matrix.portfolio.columns.framework} ↕</th>
                 <th className="px-4 py-3 font-medium">{t.matrix.portfolio.columns.roles} ↕</th>
@@ -344,9 +347,10 @@ export function MatrixPortfolioTable({ rows }: MatrixPortfolioTableProps) {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
-        <div className="mt-4 flex items-center justify-end gap-2 text-[13px] text-secondary">
+        <div className="mt-4 flex shrink-0 items-center justify-end gap-2 border-t border-border-soft pt-3 text-[13px] text-secondary">
           <button type="button" className="px-2 py-1 hover:text-foreground">‹ {t.matrix.common.previous}</button>
           <button type="button" className="h-7 w-7 rounded hover:bg-surface-muted">1</button>
           <button type="button" className="h-7 w-7 rounded border border-border bg-surface-muted">2</button>

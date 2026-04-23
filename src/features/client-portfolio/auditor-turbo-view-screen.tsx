@@ -67,9 +67,9 @@ export function AuditorTurboViewScreen({ clientId, dossierId }: AuditorTurboView
   const total = rows.length;
 
   return (
-    <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
         <DashboardTopbar
           title={av.topbarTitle}
           onToggleNotifications={() => setIsNotificationCenterOpen((v) => !v)}

@@ -124,7 +124,7 @@ export function DashboardSidebar() {
   ];
 
   return (
-    <aside className="flex h-full w-[240px] flex-col border-none bg-sidebar">
+    <aside className="flex h-full w-[240px] shrink-0 flex-col overflow-hidden border-none bg-sidebar">
       <div className="px-6 py-[22px]">
         <FydronLogo className="text-[30px]" />
       </div>

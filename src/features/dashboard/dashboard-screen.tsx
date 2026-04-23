@@ -16,7 +16,7 @@ import { useLocale } from "@/i18n/locale-context";
 
 function DashboardDataLoading({ label }: { label: string }) {
   return (
-    <section className="flex flex-1 items-center justify-center border-t border-border-soft px-6">
+    <section className="flex min-h-0 flex-1 items-center justify-center border-t border-border-soft px-6">
       <div className="flex items-center gap-2 text-secondary">
         <Spinner size="tiny" />
         <span className="text-[13px]">{label}</span>
@@ -40,10 +40,10 @@ export function DashboardScreen() {
   const isEmpty = !isLoading && (data?.dossiers.length ?? 0) === 0;
 
   return (
-    <div className="relative flex h-screen w-full bg-surface font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-surface font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 border-l border-border">
-        <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-h-0 min-w-0 flex-1 border-l border-border">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
           <DashboardTopbar
             title={t.dashboard.title}
             onToggleNotifications={() =>
@@ -52,9 +52,8 @@ export function DashboardScreen() {
             hasUnreadNotifications={notificationItems.some((item) => item.unread)}
           />
 
-          {/* Main Content Area */}
-          <div className="flex flex-1 flex-col overflow-y-auto">
-            <div className="px-6 py-6">
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+            <div className="shrink-0 px-6 py-6">
               <Text size={500} weight="semibold" block className="mb-[2px] text-[18px] text-foreground">
                 {t.dashboard.greetingTitle.replace(
                   "{name}",
@@ -74,9 +73,7 @@ export function DashboardScreen() {
             ) : isEmpty ? (
               <EmptyDashboardState onAction={() => setMode("full")} />
             ) : (
-              <div className="flex-1">
-                <DossiersTable rows={data?.dossiers ?? []} />
-              </div>
+              <DossiersTable rows={data?.dossiers ?? []} />
             )}
           </div>
         </div>

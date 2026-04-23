@@ -107,9 +107,9 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
 
   if (!data) {
     return (
-      <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+      <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
         <DashboardSidebar />
-        <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface p-6">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface p-6">
           <Text>{t.clientPortfolio.profile.notFound}</Text>
           <Button appearance="primary" className="mt-4" onClick={() => router.push("/client-portfolio")}>
             {t.clientPortfolio.profile.backToPortfolio}
@@ -124,9 +124,9 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
     .replace("{site}", data.siteName);
 
   return (
-    <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
         <DashboardTopbar
           title={nav.matrix}
           onToggleNotifications={() => {
@@ -136,9 +136,9 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
           hasUnreadNotifications={notificationItems.some((item) => item.unread)}
         />
 
-        <div className="relative flex min-h-0 flex-1">
-          <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5">
-            <nav className="text-[12px] text-muted" aria-label="Breadcrumb">
+        <div className="relative flex min-h-0 min-w-0 flex-1">
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-4 py-4 sm:px-5">
+            <nav className="shrink-0 text-[12px] text-muted" aria-label="Breadcrumb">
               <Link className="hover:text-foreground" href="/matrix">
                 {turbo.breadcrumbMatrix}
               </Link>
@@ -152,7 +152,7 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
               </span>
             </nav>
 
-            <div className="mt-3 flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-start">
+            <div className="mt-3 flex shrink-0 flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-start">
               <div className="min-w-0">
                 <h1 className="text-[24px] font-semibold leading-tight text-foreground sm:text-[28px] lg:text-[32px]">
                   {pageTitle}
@@ -216,18 +216,19 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
               </div>
             </div>
 
-            <div className="relative mt-3">
-              <MatrixDossierTable
-                showLastUpdated={false}
-                rows={pageRows}
-                selectedIds={selectedIds}
-                onToggleOne={toggleOne}
-                onToggleAll={toggleAll}
-                onOpenReviewer={openReviewer}
-              />
-            </div>
+            <div className="mt-3 flex min-h-0 flex-1 flex-col">
+              <div className="min-h-0 flex-1 overflow-y-auto">
+                <MatrixDossierTable
+                  showLastUpdated={false}
+                  rows={pageRows}
+                  selectedIds={selectedIds}
+                  onToggleOne={toggleOne}
+                  onToggleAll={toggleAll}
+                  onOpenReviewer={openReviewer}
+                />
+              </div>
 
-            <div className="mt-4 flex items-center justify-end gap-1 text-[13px] text-secondary sm:gap-2">
+              <div className="mt-4 flex shrink-0 items-center justify-end gap-1 border-t border-border-soft pt-3 text-[13px] text-secondary sm:gap-2">
               <button
                 type="button"
                 className="px-2 py-1 hover:text-foreground disabled:opacity-40"
@@ -256,6 +257,7 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
               >
                 {turbo.pagination.next}
               </button>
+              </div>
             </div>
           </div>
 

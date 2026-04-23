@@ -99,9 +99,9 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
   };
 
   return (
-    <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
         {auditMode === "inspection" && !inspectionBannerDismissed ? (
           <MatrixInspectionBanner
             onReviewUpgrade={() => setIsMigrationModalOpen(true)}
@@ -118,13 +118,13 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
           hasUnreadNotifications={notificationItems.some((item) => item.unread)}
         />
 
-        <div className="flex min-h-0 flex-1">
-          <div className="min-w-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5">
-            <div className="text-[12px] text-muted">
+        <div className="flex min-h-0 min-w-0 flex-1">
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-4 py-4 sm:px-5">
+            <div className="shrink-0 text-[12px] text-muted">
               {breadcrumb.join("  >  ")}
             </div>
 
-            <div className="mt-3 flex items-start justify-between gap-3">
+            <div className="mt-3 flex shrink-0 items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
                 <h1 className="text-[32px] font-semibold leading-none text-foreground">{title}</h1>
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-[12px] text-secondary">
@@ -159,7 +159,7 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
               />
             </div>
 
-            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-[12px]">
+            <div className="mt-3 flex shrink-0 flex-wrap items-center gap-x-3 gap-y-2 text-[12px]">
               <span className="text-muted">{t.matrix.dossier.demo.tableData}</span>
               <button type="button" className={`rounded border px-2 py-1 ${mode === "full" ? "border-primary text-primary" : "border-border text-secondary"}`} onClick={() => setMode("full")}>Full</button>
               <button type="button" className={`rounded border px-2 py-1 ${mode === "loading" ? "border-primary text-primary" : "border-border text-secondary"}`} onClick={() => setMode("loading")}>Loading</button>
@@ -170,20 +170,24 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
               <button type="button" className={`rounded border px-2 py-1 ${auditMode === "underReview" ? "border-primary text-primary" : "border-border text-secondary"}`} onClick={() => setAuditMode("underReview")}>{t.matrix.dossier.audit.underReview}</button>
             </div>
 
+            <div className="mt-3 flex min-h-0 min-w-0 flex-1 flex-col">
             {showSkeleton ? (
-              <MatrixTableSkeleton />
+              <div className="min-h-0 flex-1 overflow-hidden">
+                <MatrixTableSkeleton />
+              </div>
             ) : showEmpty ? (
-              <div className="mt-3 flex h-[520px] items-center justify-center rounded-[4px] border border-border-soft">
+              <div className="flex min-h-0 flex-1 items-center justify-center rounded-[4px] border border-border-soft">
                 <p className="text-center text-[17px] text-secondary">{t.matrix.dossier.empty}</p>
               </div>
             ) : (
-              <div className="relative mt-3">
+              <div className="relative min-h-0 flex-1">
                 {auditMode === "underReview" ? (
                   <div className="pointer-events-none absolute bottom-4 left-3 z-10 flex max-w-[300px] items-start gap-2.5 rounded-[4px] bg-[#1f1f1f] px-3 py-2.5 text-[12px] leading-snug text-white shadow-lg">
                     <LockClosed16Filled className="mt-0.5 shrink-0 text-white" />
                     <span>{t.matrix.dossier.underReview.lockNotice}</span>
                   </div>
                 ) : null}
+                <div className="h-full min-h-0 overflow-y-auto">
                 <MatrixDossierTable
                   rows={rows}
                   selectedIds={selectedIds}
@@ -196,8 +200,10 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
                     setPanel("reviewer");
                   }}
                 />
+                </div>
               </div>
             )}
+            </div>
           </div>
 
           {panel === "activity" ? (

@@ -71,9 +71,9 @@ export function BillingScreen() {
   const overview = data?.overview;
 
   return (
-    <div className="relative flex h-screen w-full bg-surface font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-surface font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border">
         <DashboardTopbar
           title={t.billing.title}
           onToggleNotifications={() => setIsNotificationCenterOpen((current) => !current)}
@@ -81,16 +81,16 @@ export function BillingScreen() {
         />
 
         {isLoading ? (
-          <section className="flex flex-1 items-center justify-center border-t border-border-soft px-6">
+          <section className="flex min-h-0 flex-1 items-center justify-center border-t border-border-soft px-6">
             <div className="flex items-center gap-2 text-secondary">
               <Spinner size="tiny" />
               <span className="text-[13px]">{t.billing.loading}</span>
             </div>
           </section>
         ) : (
-          <main className="flex-1 overflow-y-auto bg-surface">
-            <div className="px-6 py-6">
-              <div className="mb-6">
+          <main className="flex min-h-0 flex-1 flex-col overflow-hidden bg-surface">
+            <div className="shrink-0 px-6 py-6">
+              <div className="mb-0">
                 <Text size={500} weight="semibold" className="text-[18px] text-foreground">
                   {t.billing.overview.title}
                 </Text>
@@ -139,19 +139,22 @@ export function BillingScreen() {
                   </div>
                 </div>
               </div>
+            </div>
 
-              <section className="border-t border-border-soft pt-6">
+            <section className="flex min-h-0 flex-1 flex-col border-t border-border-soft">
+              <div className="shrink-0 px-6 pt-6">
                 <Text size={500} weight="semibold" className="text-[18px] text-foreground">
                   {t.billing.invoices.title}
                 </Text>
                 <Text size={200} className="mt-1 block text-[13px] text-secondary">
                   {t.billing.invoices.subtitle}
                 </Text>
-
-                <div className="mt-4 overflow-x-auto">
+              </div>
+              <div className="min-h-0 flex-1 overflow-y-auto px-6">
+                <div className="overflow-x-auto">
                   <table className="w-full min-w-[720px] border-collapse text-[13px]">
-                    <thead>
-                      <tr className="border-b border-border text-left text-secondary font-medium tracking-tight">
+                    <thead className="sticky top-0 z-10 bg-surface text-left font-medium tracking-tight text-secondary">
+                      <tr className="border-b border-border">
                         <th className="px-1 py-[12px] pl-[12px] w-[22%]">
                           <span className="flex items-center gap-[4px]">
                             {t.billing.invoices.columns.invoice}{" "}
@@ -208,9 +211,10 @@ export function BillingScreen() {
                     </tbody>
                   </table>
                 </div>
+              </div>
 
                 {(data?.invoices.length ?? 0) > 0 ? (
-                  <div className="mt-8 flex items-center justify-end gap-1 text-[13px] font-medium text-secondary">
+                  <div className="mt-auto flex shrink-0 items-center justify-end gap-1 border-t border-border-soft px-6 py-4 text-[13px] font-medium text-secondary">
                     <button type="button" className="flex items-center gap-1 px-2 py-1 hover:text-foreground">
                       <span className="mb-[1px] text-[16px] leading-none">‹</span>{" "}
                       {t.dashboard.pagination.previous}
@@ -240,8 +244,7 @@ export function BillingScreen() {
                     </button>
                   </div>
                 ) : null}
-              </section>
-            </div>
+            </section>
           </main>
         )}
       </div>

@@ -48,9 +48,8 @@ export function ClientPortfolioTable({ rows, onSelectClient, onOpenAddClient }: 
   }, [filtered, safePage]);
 
   return (
-    <>
-      <section className="p-3">
-        <div className="flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
+    <section className="flex h-full min-h-0 flex-col p-3">
+        <div className="flex shrink-0 flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
           <div className="w-full min-w-0 sm:max-w-[min(100%,400px)]">
             <Input
               placeholder={x.searchClient}
@@ -95,10 +94,11 @@ export function ClientPortfolioTable({ rows, onSelectClient, onOpenAddClient }: 
           </div>
         </div>
 
-        <div className="mt-3 overflow-x-auto rounded-[4px] border border-border-soft">
+        <div className="mt-3 min-h-0 flex-1 overflow-y-auto">
+          <div className="overflow-x-auto rounded-[4px] border border-border-soft">
           <table className="w-full border-collapse text-[13px]">
-            <thead>
-              <tr className="border-b border-border-soft text-left text-secondary">
+            <thead className="sticky top-0 z-10 bg-surface text-left text-secondary">
+              <tr className="border-b border-border-soft">
                 <th className="px-4 py-3 font-medium">
                   {x.table.client} ↕
                 </th>
@@ -131,9 +131,10 @@ export function ClientPortfolioTable({ rows, onSelectClient, onOpenAddClient }: 
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center justify-end gap-1 text-[13px] text-secondary sm:gap-2">
+        <div className="mt-4 flex shrink-0 flex-wrap items-center justify-end gap-1 border-t border-border-soft pt-3 text-[13px] text-secondary sm:gap-2">
           <button
             type="button"
             className="px-2 py-1 hover:text-foreground disabled:opacity-40"
@@ -163,7 +164,6 @@ export function ClientPortfolioTable({ rows, onSelectClient, onOpenAddClient }: 
             {x.pagination.next}
           </button>
         </div>
-      </section>
-    </>
+    </section>
   );
 }

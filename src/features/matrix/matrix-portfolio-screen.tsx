@@ -21,16 +21,16 @@ export function MatrixPortfolioScreen() {
   });
 
   return (
-    <div className="relative flex h-screen w-full bg-background font-sans text-foreground">
+    <div className="relative flex h-screen min-h-0 w-full overflow-hidden bg-background font-sans text-foreground">
       <DashboardSidebar />
-      <div className="flex min-w-0 flex-1 flex-col border-l border-border bg-surface">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-border bg-surface">
         <DashboardTopbar
           title={t.dashboard.nav.matrix}
           onToggleNotifications={() => setIsNotificationCenterOpen((currentValue) => !currentValue)}
           hasUnreadNotifications={notificationItems.some((item) => item.unread)}
         />
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-1 py-1">
+        <div className="min-h-0 flex-1 overflow-hidden px-1 py-1">
           <MatrixPortfolioTable rows={query.data?.rows ?? []} />
         </div>
       </div>
