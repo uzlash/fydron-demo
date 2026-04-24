@@ -53,7 +53,7 @@ export function ClientProfileScreen({ clientId }: ClientProfileScreenProps) {
           hasUnreadNotifications={notificationItems.some((item) => item.unread)}
         />
 
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-6 py-1 pb-0 sm:px-10">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-6 pb-0 pt-4 sm:px-10 sm:pt-5">
           {!profile ? (
             <div className="shrink-0 p-4">
               <Text className="text-[15px] text-foreground">{p.notFound}</Text>
@@ -65,8 +65,8 @@ export function ClientProfileScreen({ clientId }: ClientProfileScreenProps) {
             <>
               <div className="shrink-0">
                 <ClientProfileHeader profile={profile} onEdit={() => setIsEditClientOpen(true)} />
-                <div className="mt-1 border-b border-border-soft">
-                  <div className="flex flex-wrap gap-1 sm:gap-6">
+                <div className="mt-4 border-b border-border-soft">
+                  <div className="flex flex-wrap gap-6">
                     {tabItems.map((item) => {
                       const isActive = tab === item.id;
                       return (
@@ -87,7 +87,7 @@ export function ClientProfileScreen({ clientId }: ClientProfileScreenProps) {
                   </div>
                 </div>
               </div>
-              <div className="min-h-0 flex-1 overflow-y-auto pt-1 pb-8">
+              <div className="min-h-0 flex-1 overflow-y-auto pb-8 pt-4">
                 {tab === "overview" ? <ClientProfileOverviewPanel profile={profile} /> : null}
                 {tab === "users" ? <ClientProfileUsersPanel users={profile.users} /> : null}
                 {tab === "dossiers" ? <ClientProfileDossiersPanel profile={profile} /> : null}

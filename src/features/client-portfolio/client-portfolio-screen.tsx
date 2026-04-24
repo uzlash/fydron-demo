@@ -41,7 +41,7 @@ export function ClientPortfolioScreen() {
           hasUnreadNotifications={notificationItems.some((item) => item.unread)}
         />
 
-        <div className="min-h-0 flex-1 overflow-hidden px-1 py-1">
+        <div className="min-h-0 flex-1 overflow-hidden">
           <ClientPortfolioTable
             rows={dataQuery.data ?? []}
             onSelectClient={(id) => setDrawerClientId(id)}

@@ -48,7 +48,7 @@ export function ClientPortfolioTable({ rows, onSelectClient, onOpenAddClient }: 
   }, [filtered, safePage]);
 
   return (
-    <section className="flex h-full min-h-0 flex-col p-3">
+    <section className="flex h-full min-h-0 flex-col px-5 pb-2 pt-4 sm:px-6">
         <div className="flex shrink-0 flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
           <div className="w-full min-w-0 sm:max-w-[min(100%,400px)]">
             <Input

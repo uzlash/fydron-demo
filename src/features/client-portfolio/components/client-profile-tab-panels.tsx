@@ -26,7 +26,7 @@ import { useLocale } from "@/i18n/locale-context";
 
 function LegalRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex flex-col gap-0.5 border-b border-border-soft py-3 last:border-b-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+    <div className="flex flex-col gap-0.5 border-b border-border py-3 last:border-b-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
       <span className="shrink-0 text-[12px] text-secondary">{label}</span>
       <span className="min-w-0 break-words text-right text-[14px] text-foreground sm:max-w-[60%]">{value}</span>
     </div>
@@ -49,7 +49,7 @@ function PersonCard({
       <Text weight="semibold" className="mb-2 block text-[15px] text-foreground">
         {title}
       </Text>
-      <div className="rounded-[6px] border border-border-soft bg-surface p-4">
+      <div className="rounded-[4px] border border-border bg-surface p-4 shadow-sm">
         <div className="flex gap-3">
           <Avatar name={person.avatarName} color="colorful" size={40} className="shrink-0" />
           <div className="min-w-0">
@@ -57,7 +57,7 @@ function PersonCard({
             <p className="text-[13px] text-secondary">{person.role}</p>
           </div>
         </div>
-        <div className="mt-4 border-t border-border-soft pt-3">
+        <div className="mt-4 border-t border-border pt-3">
           <a href={`mailto:${person.email}`} className="text-[14px] text-primary hover:underline">
             {person.email}
           </a>
@@ -82,12 +82,12 @@ export function ClientProfileOverviewPanel({ profile }: OverviewPanelProps) {
   const [note, setNote] = useState("");
 
   return (
-    <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-2">
+    <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
       <div>
         <Text weight="semibold" className="mb-2 block text-[15px] text-foreground">
           {p.legalData}
         </Text>
-        <div className="rounded-[6px] border border-border-soft bg-surface px-4">
+        <div className="rounded-[4px] border border-border bg-surface px-4 shadow-sm">
           <LegalRow label={l.legalName} value={leg.legalName} />
           <LegalRow label={l.kvk} value={leg.kvkNumber} />
           <LegalRow label={l.vat} value={leg.vatNumber} />
@@ -105,13 +105,15 @@ export function ClientProfileOverviewPanel({ profile }: OverviewPanelProps) {
           <Text weight="semibold" className="mb-2 block text-[15px] text-foreground">
             {p.addNote}
           </Text>
-          <Textarea
-            className="min-h-[120px] w-full"
-            value={note}
-            onChange={(_, d) => setNote(d.value)}
-            resize="vertical"
-            placeholder=""
-          />
+          <div className="overflow-hidden rounded-[4px] border border-border bg-surface shadow-sm">
+            <Textarea
+              className="min-h-[120px] w-full rounded-none border-0 !bg-transparent !shadow-none focus-visible:ring-0"
+              value={note}
+              onChange={(_, d) => setNote(d.value)}
+              resize="vertical"
+              placeholder=""
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -152,7 +154,7 @@ export function ClientProfileUsersPanel({ users }: UsersPanelProps) {
           />
         </div>
         <div className="flex shrink-0 items-center justify-end gap-2 self-end sm:self-center">
-          <Button appearance="outline" className="h-9" icon={<Filter16Regular />}>
+          <Button appearance="outline" className="h-9 min-h-9 rounded-[4px] border-border-strong" icon={<Filter16Regular />}>
             {u.filterByRole}
           </Button>
           <Menu>
@@ -160,7 +162,7 @@ export function ClientProfileUsersPanel({ users }: UsersPanelProps) {
               {(triggerProps: MenuButtonProps) => (
                 <SplitButton
                   appearance="primary"
-                  className="h-9 font-medium"
+                  className="h-9 min-h-9 rounded-[4px] font-medium"
                   icon={<Add16Regular />}
                   iconPosition="before"
                   menuButton={triggerProps}
@@ -180,10 +182,10 @@ export function ClientProfileUsersPanel({ users }: UsersPanelProps) {
         </div>
       </div>
 
-      <div className="mt-3 overflow-x-auto rounded-[4px] border border-border-soft">
+      <div className="mt-3 overflow-x-auto rounded-[4px] border border-border">
         <table className="w-full min-w-[640px] border-collapse text-[13px]">
-          <thead>
-            <tr className="border-b border-border-soft text-left text-secondary">
+          <thead className="sticky top-0 z-10 border-b border-border bg-surface text-left text-secondary">
+            <tr>
               <th className="px-4 py-3 font-medium">{u.columns.name}</th>
               <th className="px-4 py-3 font-medium">{u.columns.email}</th>
               <th className="px-4 py-3 font-medium">
@@ -195,7 +197,10 @@ export function ClientProfileUsersPanel({ users }: UsersPanelProps) {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.id} className="border-b border-border-soft last:border-b-0">
+              <tr
+                key={row.id}
+                className="border-b border-border-soft transition-colors last:border-b-0 hover:bg-surface-muted/60"
+              >
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
                     <Avatar name={row.name} size={32} color="colorful" className="shrink-0" />
@@ -217,7 +222,7 @@ export function ClientProfileUsersPanel({ users }: UsersPanelProps) {
                 </td>
                 <td className="px-4 py-3 text-[13px] text-foreground">{row.lastActivity}</td>
                 <td className="px-4 py-3 text-right">
-                  <Button appearance="outline" className="h-8 min-h-8 text-[12px]">
+                  <Button appearance="outline" className="h-8 min-h-8 rounded-[4px] border-border-strong text-[12px]">
                     {u.edit}
                   </Button>
                 </td>
@@ -265,7 +270,7 @@ export function ClientProfileDossiersPanel({ profile }: DossiersPanelProps) {
               {(triggerProps: MenuButtonProps) => (
                 <SplitButton
                   appearance="primary"
-                  className="h-9 font-medium"
+                  className="h-9 min-h-9 rounded-[4px] font-medium"
                   icon={<Add16Regular />}
                   iconPosition="before"
                   menuButton={triggerProps}
@@ -285,10 +290,10 @@ export function ClientProfileDossiersPanel({ profile }: DossiersPanelProps) {
         </div>
       </div>
 
-      <div className="mt-3 overflow-x-auto rounded-[4px] border border-border-soft">
+      <div className="mt-3 overflow-x-auto rounded-[4px] border border-border">
         <table className="w-full min-w-[640px] border-collapse text-[13px]">
-          <thead>
-            <tr className="border-b border-border-soft text-left text-secondary">
+          <thead className="sticky top-0 z-10 border-b border-border bg-surface text-left text-secondary">
+            <tr>
               <th className="px-4 py-3 font-medium">{p.columns.framework}</th>
               <th className="px-4 py-3 font-medium">{p.columns.progress}</th>
               <th className="px-4 py-3 font-medium">{p.columns.lastUpdated}</th>
@@ -297,24 +302,27 @@ export function ClientProfileDossiersPanel({ profile }: DossiersPanelProps) {
           </thead>
           <tbody>
             {rows.map((fw) => (
-              <tr key={fw.id} className="border-b border-border-soft last:border-b-0">
+              <tr
+                key={fw.id}
+                className="border-b border-border-soft transition-colors last:border-b-0 hover:bg-surface-muted/60"
+              >
                 <td className="px-4 py-3 text-[14px] font-medium text-foreground">{fw.name}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <div className="h-1.5 w-[120px] max-w-full overflow-hidden rounded-sm bg-surface-muted">
+                    <div className="h-2 w-[120px] max-w-full overflow-hidden rounded-sm bg-surface-muted">
                       <div
                         className="h-full bg-primary"
                         style={{ width: `${fw.progress}%` }}
                       />
                     </div>
-                    <span className="text-[13px] text-foreground">{fw.progress}%</span>
+                    <span className="w-9 min-w-9 text-[13px] tabular-nums text-foreground">{fw.progress}%</span>
                   </div>
                 </td>
                 <td className="px-4 py-3 text-[13px] text-foreground">{fw.lastUpdated}</td>
                 <td className="px-4 py-3 text-right">
                   <Link
                     href={`/matrix/${fw.matrixDossierId}`}
-                    className="inline-flex h-8 min-h-8 items-center justify-center gap-1.5 rounded-[3px] border border-border bg-surface px-3 text-[12px] text-foreground transition-colors hover:bg-surface-muted"
+                    className="inline-flex h-8 min-h-8 items-center justify-center gap-1.5 rounded-[4px] border border-border bg-surface px-3 text-[12px] text-foreground transition-colors hover:bg-surface-muted"
                   >
                     {p.openMatrix}
                     <ArrowUpRight16Regular className="h-3.5 w-3.5" />
@@ -342,86 +350,92 @@ export function ClientProfileSettingsPanel({ onDeactivateSuccess }: SettingsPane
 
   return (
     <div className="mt-4 max-w-3xl">
-      <section>
-        <Text weight="semibold" className="mb-3 block text-[16px] text-foreground">
-          {s.clientRelationship}
-        </Text>
-        <ul className="divide-y divide-border">
-          <li className="flex items-start justify-between gap-4 py-4">
-            <div className="min-w-0">
-              <p className="text-[14px] font-medium text-foreground">{s.autoReminders}</p>
-              <p className="mt-0.5 text-[13px] text-secondary">{s.autoRemindersDescription}</p>
-            </div>
-            <Switch
-              checked={reminders}
-              onChange={(_, d) => setReminders(d.checked)}
-              className="shrink-0"
-              label={{ children: s.autoReminders, className: "sr-only" }}
-            />
-          </li>
-          <li className="flex items-start justify-between gap-4 py-4">
-            <div className="min-w-0">
-              <p className="text-[14px] font-medium text-foreground">{s.advisorApproval}</p>
-              <p className="mt-0.5 text-[13px] text-secondary">{s.advisorApprovalDescription}</p>
-            </div>
-            <Switch
-              checked={advisor}
-              onChange={(_, d) => setAdvisor(d.checked)}
-              className="shrink-0"
-              label={{ children: s.advisorApproval, className: "sr-only" }}
-            />
-          </li>
-        </ul>
-      </section>
-
-      <section className="mt-6">
-        <Text weight="semibold" className="mb-3 block text-[16px] text-foreground">
-          {s.notifications}
-        </Text>
-        <ul className="divide-y divide-border">
-          <li className="flex items-start justify-between gap-4 py-4">
-            <div className="min-w-0">
-              <p className="text-[14px] font-medium text-foreground">{s.notifyEvidence}</p>
-              <p className="mt-0.5 text-[13px] text-secondary">{s.notifyEvidenceDescription}</p>
-            </div>
-            <Switch
-              checked={evidence}
-              onChange={(_, d) => setEvidence(d.checked)}
-              className="shrink-0"
-              label={{ children: s.notifyEvidence, className: "sr-only" }}
-            />
-          </li>
-          <li className="flex items-start justify-between gap-4 py-4">
-            <div className="min-w-0">
-              <p className="text-[14px] font-medium text-foreground">{s.notifyActivity}</p>
-              <p className="mt-0.5 text-[13px] text-secondary">{s.notifyActivityDescription}</p>
-            </div>
-            <Switch
-              checked={activity}
-              onChange={(_, d) => setActivity(d.checked)}
-              className="shrink-0"
-              label={{ children: s.notifyActivity, className: "sr-only" }}
-            />
-          </li>
-        </ul>
-      </section>
-
-      <section className="mt-8">
-        <Text weight="semibold" className="mb-3 block text-[16px] text-foreground">
-          {s.account}
-        </Text>
-        <div className="rounded-[6px] border border-[#f1bbbc] bg-[#fef6f6] p-4">
-          <p className="text-[15px] font-semibold text-foreground">{s.deactivateTitle}</p>
-          <p className="mt-1 text-[13px] text-secondary">{s.deactivateDescription}</p>
-          <Button
-            appearance="primary"
-            className={`mt-4 ${CLIENT_DANGER_BUTTON_CLASS}`}
-            onClick={() => setDeactivateOpen(true)}
-          >
-            {s.deactivateCta}
-          </Button>
+      <div className="overflow-hidden rounded-[8px] border border-border bg-surface shadow-sm">
+        <div className="px-5 py-4">
+          <Text weight="semibold" className="block text-[16px] leading-snug text-foreground">
+            {s.clientRelationship}
+          </Text>
+          <ul className="mt-1 divide-y divide-border">
+            <li className="flex items-start justify-between gap-4 py-4">
+              <div className="min-w-0 pr-2">
+                <p className="text-[14px] font-medium text-foreground">{s.autoReminders}</p>
+                <p className="mt-0.5 text-[13px] leading-snug text-secondary">{s.autoRemindersDescription}</p>
+              </div>
+              <Switch
+                checked={reminders}
+                onChange={(_, d) => setReminders(d.checked)}
+                className="shrink-0"
+                label={{ children: s.autoReminders, className: "sr-only" }}
+              />
+            </li>
+            <li className="flex items-start justify-between gap-4 py-4">
+              <div className="min-w-0 pr-2">
+                <p className="text-[14px] font-medium text-foreground">{s.advisorApproval}</p>
+                <p className="mt-0.5 text-[13px] leading-snug text-secondary">{s.advisorApprovalDescription}</p>
+              </div>
+              <Switch
+                checked={advisor}
+                onChange={(_, d) => setAdvisor(d.checked)}
+                className="shrink-0"
+                label={{ children: s.advisorApproval, className: "sr-only" }}
+              />
+            </li>
+          </ul>
         </div>
-      </section>
+
+        <div className="h-px w-full bg-border" />
+
+        <div className="px-5 py-4">
+          <Text weight="semibold" className="block text-[16px] leading-snug text-foreground">
+            {s.notifications}
+          </Text>
+          <ul className="mt-1 divide-y divide-border">
+            <li className="flex items-start justify-between gap-4 py-4">
+              <div className="min-w-0 pr-2">
+                <p className="text-[14px] font-medium text-foreground">{s.notifyEvidence}</p>
+                <p className="mt-0.5 text-[13px] leading-snug text-secondary">{s.notifyEvidenceDescription}</p>
+              </div>
+              <Switch
+                checked={evidence}
+                onChange={(_, d) => setEvidence(d.checked)}
+                className="shrink-0"
+                label={{ children: s.notifyEvidence, className: "sr-only" }}
+              />
+            </li>
+            <li className="flex items-start justify-between gap-4 py-4">
+              <div className="min-w-0 pr-2">
+                <p className="text-[14px] font-medium text-foreground">{s.notifyActivity}</p>
+                <p className="mt-0.5 text-[13px] leading-snug text-secondary">{s.notifyActivityDescription}</p>
+              </div>
+              <Switch
+                checked={activity}
+                onChange={(_, d) => setActivity(d.checked)}
+                className="shrink-0"
+                label={{ children: s.notifyActivity, className: "sr-only" }}
+              />
+            </li>
+          </ul>
+        </div>
+
+        <div className="h-px w-full bg-border" />
+
+        <div className="px-5 py-4 pb-5">
+          <Text weight="semibold" className="block text-[16px] leading-snug text-foreground">
+            {s.account}
+          </Text>
+          <div className="mt-3 rounded-[4px] border border-[#f1bbbc] bg-[#fef6f6] p-4">
+            <p className="text-[15px] font-semibold text-foreground">{s.deactivateTitle}</p>
+            <p className="mt-1 text-[13px] leading-snug text-secondary">{s.deactivateDescription}</p>
+            <Button
+              appearance="primary"
+              className={`mt-4 h-8 min-h-8 rounded-[4px] px-4 text-[13px] ${CLIENT_DANGER_BUTTON_CLASS}`}
+              onClick={() => setDeactivateOpen(true)}
+            >
+              {s.deactivateCta}
+            </Button>
+          </div>
+        </div>
+      </div>
 
       <DeactivateClientDialog
         open={deactivateOpen}

@@ -38,10 +38,10 @@ export function ClientDetailDrawer({ open, detail, onClose }: ClientDetailDrawer
       <button
         type="button"
         aria-label="Close client drawer"
-        className="fixed inset-0 z-40 bg-black/20"
+        className="fixed inset-0 z-40 bg-black/45"
         onClick={onClose}
       />
-      <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_420} position="fixed" zClass="z-50">
+      <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_420} position="fixed" zClass="z-50" vertical="inset">
         <aside
           className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface"
           role="complementary"
@@ -103,10 +103,10 @@ export function ClientDetailDrawer({ open, detail, onClose }: ClientDetailDrawer
               {list.map((item) => (
                 <li
                   key={item.id}
-                  className="rounded-[4px] border border-border-soft bg-surface p-4 shadow-sm"
+                  className="rounded-[4px] border border-border bg-surface p-4 shadow-sm"
                 >
                   <p className="text-[15px] font-semibold text-foreground">{item.title}</p>
-                  <p className={`mt-1 text-[12px] font-medium ${item.archived ? "text-secondary" : "text-[#13a10e]"}`}>
+                  <p className={`mt-1 text-[12px] font-medium ${item.archived ? "text-secondary" : "text-success"}`}>
                     {item.archived ? d.archivedStatus : d.activeStatus}
                   </p>
                   {!item.archived ? (

@@ -229,8 +229,8 @@ export const en = {
     nFrameworks: "{count} Frameworks",
     progressValue: "{value}%",
     pagination: {
-      previous: "‹ Previous",
-      next: "Next ›",
+      previous: "< Previous",
+      next: "Next >",
     },
     addClientStep1: {
       title: "Add New Client",
