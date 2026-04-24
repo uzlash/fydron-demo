@@ -13,6 +13,7 @@ import { NotificationCenter } from "@/features/dashboard/components/notification
 import { notificationItems } from "@/features/dashboard/mock-data";
 import { useLocale } from "@/i18n/locale-context";
 import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
+import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_360 } from "@/components/right-drawer-frame";
 
 const SUGGESTED_CLIENTS_INITIAL = ["Facebook", "Coca cola", "Google", "Apple"];
 const EXTRA_CLIENTS = ["Microsoft", "Amazon", "Acme Corp", "Wayne Enterprises"];
@@ -303,9 +304,9 @@ export function ExportCenterScreen() {
             className="absolute inset-0 z-20 bg-black/45"
             onClick={() => setIsNotificationCenterOpen(false)}
           />
-          <div className="absolute right-0 top-0 z-30 h-full">
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
             <NotificationCenter items={notificationItems} />
-          </div>
+          </RightDrawerFrame>
         </>
       ) : null}
     </AppPageFrame>

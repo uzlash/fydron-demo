@@ -6,6 +6,7 @@ import { Button } from "@fluentui/react-components";
 import { Dismiss20Regular, Archive20Regular, Eye20Regular } from "@fluentui/react-icons";
 import type { ClientDetail, ClientDossier } from "@/features/client-portfolio/types";
 import { useLocale } from "@/i18n/locale-context";
+import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_420 } from "@/components/right-drawer-frame";
 
 type DrawerTab = "active" | "archived";
 
@@ -40,11 +41,12 @@ export function ClientDetailDrawer({ open, detail, onClose }: ClientDetailDrawer
         className="fixed inset-0 z-40 bg-black/20"
         onClick={onClose}
       />
-      <aside
-        className="fixed right-0 top-0 z-50 flex h-full w-[min(420px,100%)] max-w-full flex-col border-l border-border bg-surface shadow-[-4px_0_24px_rgba(0,0,0,0.08)]"
-        role="complementary"
-        aria-labelledby="client-drawer-title"
-      >
+      <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_420} position="fixed" zClass="z-50">
+        <aside
+          className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface"
+          role="complementary"
+          aria-labelledby="client-drawer-title"
+        >
         <header className="flex items-start justify-between gap-3 border-b border-border-soft px-5 py-4">
           <h2 id="client-drawer-title" className="pr-2 text-[20px] font-semibold leading-snug text-foreground">
             {client.name}
@@ -147,7 +149,8 @@ export function ClientDetailDrawer({ open, detail, onClose }: ClientDetailDrawer
             {d.clientProfile}
           </Button>
         </footer>
-      </aside>
+        </aside>
+      </RightDrawerFrame>
     </>
   );
 }

@@ -27,7 +27,7 @@ export function ActivityTimelinePanel({ tab, onTabChange, items, onClose }: Acti
   }, {});
 
   return (
-    <aside className="flex h-full w-[360px] flex-col border-l border-border bg-surface shadow-2xl">
+    <aside className="flex h-full min-h-0 w-full flex-col bg-surface">
       <div className="flex items-start justify-between px-5 pb-4 pt-5">
         <div>
           <h3 className="text-[20px] font-semibold leading-none text-foreground">{t.matrix.activity.title}</h3>
@@ -50,7 +50,7 @@ export function ActivityTimelinePanel({ tab, onTabChange, items, onClose }: Acti
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-5 py-2">
+      <div className="min-h-0 flex-1 overflow-y-auto px-5 py-2">
         {Object.entries(groups).map(([day, group]) => (
           <div key={day} className="mb-6">
             <div className="my-4 flex items-center gap-3">

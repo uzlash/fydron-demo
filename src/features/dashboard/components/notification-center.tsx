@@ -45,7 +45,7 @@ export function NotificationCenter({ items }: NotificationCenterProps) {
   ];
 
   return (
-    <aside className="h-full w-[360px] border-l border-border bg-surface shadow-2xl">
+    <aside className="flex h-full min-h-0 w-full flex-col bg-surface">
       <header className="flex items-center justify-between border-b border-border px-4 py-[14px]">
         <Text size={500} weight="semibold" className="text-[30px] leading-none text-foreground">
           {t.dashboard.notificationCenter.title}
@@ -82,7 +82,7 @@ export function NotificationCenter({ items }: NotificationCenterProps) {
         ))}
       </div>
 
-      <div className="h-[calc(100%-109px)] overflow-y-auto">
+      <div className="min-h-0 flex-1 overflow-y-auto">
         {Object.entries(groupedItems).map(([dayLabel, dayItems]) => (
           <section key={dayLabel} className="border-b border-border-soft px-4 py-3">
             <Text size={200} className="mb-3 block text-[11px] text-secondary">

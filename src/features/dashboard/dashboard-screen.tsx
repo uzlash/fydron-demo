@@ -14,6 +14,7 @@ import type { DashboardDataMode } from "@/features/dashboard/types";
 import { useDemoSession } from "@/features/auth/demo-session-context";
 import { useLocale } from "@/i18n/locale-context";
 import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
+import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_360 } from "@/components/right-drawer-frame";
 
 function DashboardDataLoading({ label }: { label: string }) {
   return (
@@ -95,9 +96,9 @@ export function DashboardScreen() {
             className="absolute inset-0 z-20 bg-black/45"
             onClick={() => setIsNotificationCenterOpen(false)}
           />
-          <div className="absolute right-0 top-0 z-30 h-full">
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
             <NotificationCenter items={notificationItems} />
-          </div>
+          </RightDrawerFrame>
         </>
       ) : null}
     </AppPageFrame>

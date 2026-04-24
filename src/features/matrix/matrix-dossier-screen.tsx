@@ -32,6 +32,7 @@ import {
 } from "@/features/matrix/types";
 import { useLocale } from "@/i18n/locale-context";
 import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
+import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_360, RIGHT_DRAWER_WIDTH_440 } from "@/components/right-drawer-frame";
 
 type MatrixDossierScreenProps = {
   dossierId: string;
@@ -235,14 +236,14 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
                 className="absolute inset-0 z-20 bg-black/45"
                 onClick={() => setPanel("none")}
               />
-              <div className="absolute right-0 top-0 z-30 h-full">
+              <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
                 <ActivityTimelinePanel
                   tab={activityTab}
                   onTabChange={setActivityTab}
                   items={activityQuery.data ?? []}
                   onClose={() => setPanel("none")}
                 />
-              </div>
+              </RightDrawerFrame>
             </>
           ) : null}
 
@@ -254,12 +255,9 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
                 className="absolute inset-0 z-20 bg-black/45"
                 onClick={() => setPanel("none")}
               />
-              <div className="absolute right-0 top-0 z-30 h-full">
-                <ComplianceOverviewPanel
-                  chapters={complianceQuery.data ?? []}
-                  onClose={() => setPanel("none")}
-                />
-              </div>
+              <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
+                <ComplianceOverviewPanel chapters={complianceQuery.data ?? []} onClose={() => setPanel("none")} />
+              </RightDrawerFrame>
             </>
           ) : null}
 
@@ -275,13 +273,9 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
             className="absolute inset-0 z-[200] bg-black/45"
             onClick={() => setPanel("none")}
           />
-          <div className="absolute right-0 top-0 z-[210] flex h-full w-[min(440px,100%)] min-w-0 sm:w-[440px]">
-            <MatrixReviewerPanel
-              row={activeReviewerRow}
-              auditMode={auditMode}
-              onClose={() => setPanel("none")}
-            />
-          </div>
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_440} zClass="z-[210]">
+            <MatrixReviewerPanel row={activeReviewerRow} auditMode={auditMode} onClose={() => setPanel("none")} />
+          </RightDrawerFrame>
         </>
       ) : null}
 
@@ -293,9 +287,9 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
             className="absolute inset-0 z-20 bg-black/45"
             onClick={() => setIsNotificationCenterOpen(false)}
           />
-          <div className="absolute right-0 top-0 z-30 h-full">
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
             <NotificationCenter items={notificationItems} />
-          </div>
+          </RightDrawerFrame>
         </>
       ) : null}
 

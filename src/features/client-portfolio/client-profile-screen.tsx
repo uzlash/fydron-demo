@@ -19,6 +19,7 @@ import { DashboardTopbar } from "@/features/dashboard/components/dashboard-topba
 import { NotificationCenter } from "@/features/dashboard/components/notification-center";
 import { notificationItems } from "@/features/dashboard/mock-data";
 import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
+import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_360 } from "@/components/right-drawer-frame";
 
 type ClientProfileScreenProps = {
   clientId: string;
@@ -114,9 +115,9 @@ export function ClientProfileScreen({ clientId }: ClientProfileScreenProps) {
             className="absolute inset-0 z-20 bg-black/45"
             onClick={() => setIsNotificationCenterOpen(false)}
           />
-          <div className="absolute right-0 top-0 z-30 h-full">
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
             <NotificationCenter items={notificationItems} />
-          </div>
+          </RightDrawerFrame>
         </>
       ) : null}
     </AppPageFrame>

@@ -39,7 +39,7 @@ function DocumentPreviewModal({ open, onClose }: { open: boolean; onClose: () =>
         className="fixed inset-0 z-[200] bg-black/40"
         onClick={onClose}
       />
-      <section className="fixed left-[220px] top-[10px] z-[210] h-[calc(100vh-20px)] w-[calc(100vw-680px)] min-w-[600px] max-w-[1000px] rounded-[2px] border border-border bg-surface shadow-2xl flex flex-col">
+      <section className="fixed left-[250px] right-[460px] top-[10px] z-[210] flex h-[calc(100vh-20px)] min-h-0 min-w-0 flex-col rounded-[2px] border border-border bg-surface shadow-2xl">
         <header className="flex items-center justify-between border-b border-border-soft px-5 py-4">
           <div>
             <h3 className="text-[20px] font-semibold leading-none text-foreground">Risk Assessment Report</h3>
@@ -95,7 +95,7 @@ export function ClientPortfolioDossierDrawer({ row, onClose, onViewInTurboView }
 
   return (
     <>
-      <aside className="flex h-full w-[440px] flex-col border-l border-border bg-surface shadow-[0_0_15px_rgba(0,0,0,0.1)]">
+      <aside className="flex h-full min-h-0 w-full flex-col bg-surface">
         <header className="shrink-0 border-b border-border-soft px-5 pb-4 pt-5">
           <div className="flex items-start justify-between gap-3">
             <div>
