@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { Checkbox } from "@fluentui/react-components";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { LockClosed16Filled } from "@fluentui/react-icons";
@@ -17,6 +18,7 @@ import { MatrixDossierToolbar } from "@/features/matrix/components/matrix-dossie
 import { MatrixChangeWorkflowConfirmModal } from "@/features/matrix/components/matrix-change-workflow-confirm-modal";
 import { MatrixEditDossierModal } from "@/features/matrix/components/matrix-edit-dossier-modal";
 import type { MatrixEditDossierWorkflow } from "@/features/matrix/components/matrix-edit-dossier-modal";
+import { MatrixContributorRequirementView } from "@/features/matrix/components/matrix-contributor-requirement-view";
 import { MatrixReviewerPanel } from "@/features/matrix/components/matrix-reviewer-panel";
 import { MatrixFrameworkMigrationModal } from "@/features/matrix/components/matrix-framework-migration-modal";
 import { MatrixInspectionBanner } from "@/features/matrix/components/matrix-inspection-banner";
@@ -62,6 +64,7 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
   const [isMigrationModalOpen, setIsMigrationModalOpen] = useState(false);
   const [isEditDossierOpen, setIsEditDossierOpen] = useState(false);
   const [isChangeWorkflowConfirmOpen, setIsChangeWorkflowConfirmOpen] = useState(false);
+  const [contributorView, setContributorView] = useState(false);
 
   useEffect(() => {
     if (auditMode !== "inspection") {
@@ -84,6 +87,12 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
 
   const rows = dossierQuery.data?.rows ?? [];
   const allSelected = rows.length > 0 && selectedIds.length === rows.length;
+
+  useEffect(() => {
+    if (rows.length === 0) {
+      setContributorView(false);
+    }
+  }, [rows.length]);
   const title = `${t.matrix.dossier.titlePrefix}: ${dossierQuery.data?.meta.id ?? "ISO 27001"} - ${dossierQuery.data?.meta.organizationName ?? "Medical Center X"}`;
   const showSkeleton = dossierQuery.isPending || mode === "loading";
   const showEmpty = !showSkeleton && rows.length === 0;
@@ -163,6 +172,19 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
                   >
                     {t.matrix.dossier.lastSynced}: {dossierQuery.data?.meta.lastSynced ?? "0 hours ago"}
                   </button>
+                </div>
+                <div className="mt-2">
+                  <Checkbox
+                    label={t.matrix.dossier.contributorView}
+                    checked={contributorView}
+                    disabled={showSkeleton || rows.length === 0}
+                    onChange={(_, data) => {
+                      const next = Boolean(data.checked);
+                      setContributorView(next);
+                      setPanel("none");
+                      setActiveReviewerRow(null);
+                    }}
+                  />
                 </div>
               </div>
               <MatrixDossierToolbar
@@ -271,10 +293,32 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
             type="button"
             aria-label="Close reviewer panel"
             className="absolute inset-0 z-[200] bg-black/45"
-            onClick={() => setPanel("none")}
+            onClick={() => {
+              setPanel("none");
+              setActiveReviewerRow(null);
+            }}
           />
           <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_440} zClass="z-[210]">
-            <MatrixReviewerPanel row={activeReviewerRow} auditMode={auditMode} onClose={() => setPanel("none")} />
+            {contributorView ? (
+              <MatrixContributorRequirementView
+                key={activeReviewerRow.id}
+                row={activeReviewerRow}
+                onClose={() => {
+                  setPanel("none");
+                  setActiveReviewerRow(null);
+                }}
+              />
+            ) : (
+              <MatrixReviewerPanel
+                key={activeReviewerRow.id}
+                row={activeReviewerRow}
+                auditMode={auditMode}
+                onClose={() => {
+                  setPanel("none");
+                  setActiveReviewerRow(null);
+                }}
+              />
+            )}
           </RightDrawerFrame>
         </>
       ) : null}

@@ -518,6 +518,20 @@ export const en = {
       selectedCount: "{count} selected",
       approveSelected: "Approve Selected",
       empty: "No framework loaded. Please contact your administrator.",
+      contributorView: "Contributor view",
+      contributor: {
+        backToList: "Back to requirements",
+        closePanel: "Close panel",
+        discussion: "Discussion",
+        requiredElements: "Required Elements",
+        uploadedEvidence: "Uploaded Evidence",
+        selectFromCam: "Select from CAM",
+        browseCentralAssetManager: "Browse Central Asset Manager",
+        linkedFromCam: "Linked from Central Asset Manager",
+        uploadedLocally: "Uploaded Locally",
+        removeFile: "Remove file",
+        discussionPlaceholder: "Start the conversation on this requirement.",
+      },
       columns: {
         title: "Title",
         status: "Status",
@@ -633,6 +647,7 @@ export const en = {
       dropZoneBrowse: "browse",
       dropZoneFormats: "Supported .PDF, .DOCX, .JPEG, .PNG, .CSV",
       dropZoneReadOnlyLabel: "Document upload (read only)",
+      removeEvidence: "Remove evidence",
     },
   },
   settings: {

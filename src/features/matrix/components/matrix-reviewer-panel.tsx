@@ -13,6 +13,7 @@ import {
   Eye16Regular,
   Person16Regular,
   QuestionCircle16Regular,
+  Delete16Regular,
   Warning16Filled,
 } from "@fluentui/react-icons";
 import type { MatrixDossierAuditMode, MatrixDossierRow } from "@/features/matrix/types";
@@ -22,6 +23,8 @@ type MatrixReviewerPanelProps = {
   row: MatrixDossierRow;
   onClose: () => void;
   auditMode?: MatrixDossierAuditMode;
+  /** Inline page layout (no drawer chrome; full-width document preview). */
+  layout?: "drawer" | "inline";
 };
 
 const EVIDENCE_FILE_ROWS: { id: string; label: string; meta: string }[] = [
@@ -43,13 +46,28 @@ type ReviewerTab = "assessment" | "logs";
 type ReviewChoice = "accept" | "reject" | null;
 type IndicatorStatus = "passed" | "failed";
 
-function DocumentPreviewModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+function DocumentPreviewModal({
+  open,
+  onClose,
+  layout = "drawer",
+}: {
+  open: boolean;
+  onClose: () => void;
+  layout?: "drawer" | "inline";
+}) {
   if (!open) return null;
+
+  const panelClassName =
+    layout === "inline"
+      ? "fixed left-4 right-4 top-4 bottom-4 z-[250] flex min-h-0 min-w-0 flex-col rounded-[2px] border border-border bg-surface shadow-2xl sm:left-6 sm:right-6 sm:top-6 sm:bottom-6"
+      : "fixed left-[250px] right-[460px] top-[10px] z-50 flex h-[calc(100vh-20px)] min-h-0 min-w-0 flex-col rounded-[2px] border border-border bg-surface shadow-2xl";
+
+  const scrimZ = layout === "inline" ? "z-[240]" : "z-40";
 
   return (
     <>
-      <button type="button" aria-label="Close document preview" className="fixed inset-0 z-40 bg-black/40" onClick={onClose} />
-      <section className="fixed left-[250px] right-[460px] top-[10px] z-50 flex h-[calc(100vh-20px)] min-h-0 min-w-0 flex-col rounded-[2px] border border-border bg-surface shadow-2xl">
+      <button type="button" aria-label="Close document preview" className={`fixed inset-0 ${scrimZ} bg-black/40`} onClick={onClose} />
+      <section className={panelClassName}>
         <header className="flex items-center justify-between border-b border-border-soft px-5 py-4">
           <div>
             <h3 className="text-[20px] font-semibold leading-none text-foreground">Risk Assessment Report</h3>
@@ -89,8 +107,9 @@ const EVIDENCE_CHECKLIST = [
   "Review meeting minutes",
 ] as const;
 
-export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: MatrixReviewerPanelProps) {
+export function MatrixReviewerPanel({ row, onClose, auditMode = "standard", layout = "drawer" }: MatrixReviewerPanelProps) {
   const readOnly = auditMode !== "standard";
+  const isInline = layout === "inline";
   const inspectionLayout = auditMode === "inspection";
   const isUnderReview = auditMode === "underReview";
   /** Inspection + under review share the same compact assessment drawer (Figma). */
@@ -103,12 +122,14 @@ export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: Ma
   const [logNote, setLogNote] = useState("");
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isEvidenceDetailView, setIsEvidenceDetailView] = useState(false);
+  const [removedEvidenceIds, setRemovedEvidenceIds] = useState<Set<string>>(() => new Set());
 
   const isAwaitingReview = row.status === "awaitingReview";
   const showDecisionButtons = isAwaitingReview && activeTab === "assessment";
 
   useEffect(() => {
     setIsEvidenceDetailView(false);
+    setRemovedEvidenceIds(new Set());
   }, [row.id]);
 
   const title = useMemo(() => {
@@ -169,41 +190,68 @@ export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: Ma
     </div>
   );
 
-  const renderUploadedEvidenceRows = (interactive: boolean) => (
-    <div className="space-y-2">
-      {EVIDENCE_FILE_ROWS.map((item) => (
-        <div
-          key={item.id}
-          className={`flex items-center justify-between rounded-[4px] border border-border-soft bg-surface p-3 shadow-[0_1px_2px_rgba(0,0,0,0.05)] ${interactive ? "cursor-pointer transition-colors hover:bg-surface-muted" : ""}`}
-          onClick={interactive ? () => setIsEvidenceDetailView(true) : undefined}
-        >
-          <div className="flex items-start gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded border border-border-soft bg-surface-muted">
-              <Document20Regular className="text-secondary" />
+  const renderUploadedEvidenceRows = (interactive: boolean, opts?: { showDelete?: boolean }) => {
+    const showDelete = opts?.showDelete ?? false;
+    const files = EVIDENCE_FILE_ROWS.filter((item) => !removedEvidenceIds.has(item.id));
+    return (
+      <div className="space-y-2">
+        {files.map((item) => (
+          <div
+            key={item.id}
+            className={`flex items-center justify-between gap-2 rounded-[4px] border border-border-soft bg-surface p-3 shadow-[0_1px_2px_rgba(0,0,0,0.05)] ${interactive ? "cursor-pointer transition-colors hover:bg-surface-muted" : ""}`}
+            onClick={interactive ? () => setIsEvidenceDetailView(true) : undefined}
+          >
+            <div className="flex min-w-0 flex-1 items-start gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded border border-border-soft bg-surface-muted">
+                <Document20Regular className="text-secondary" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[13px] font-medium text-foreground">{item.label}</p>
+                <p className="mt-0.5 text-[10px] uppercase text-muted">{item.meta}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-[13px] font-medium text-foreground">{item.label}</p>
-              <p className="mt-0.5 text-[10px] uppercase text-muted">{item.meta}</p>
+            <div className="flex shrink-0 items-center gap-1">
+              {showDelete ? (
+                <button
+                  type="button"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded border border-border-soft text-danger hover:bg-surface-muted"
+                  aria-label={t.matrix.reviewer.removeEvidence}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setRemovedEvidenceIds((prev) => new Set([...prev, item.id]));
+                  }}
+                >
+                  <Delete16Regular className="h-4 w-4" />
+                </button>
+              ) : null}
+              <Eye16Regular className="text-secondary" />
             </div>
           </div>
-          <Eye16Regular className="text-secondary" />
-        </div>
-      ))}
-    </div>
-  );
+        ))}
+      </div>
+    );
+  };
 
   return (
     <>
-      <aside className="flex h-full min-h-0 w-full min-w-0 flex-col bg-surface">
+      <aside
+        className={
+          isInline
+            ? "flex min-h-0 w-full flex-1 flex-col overflow-hidden bg-surface"
+            : "flex h-full min-h-0 w-full min-w-0 flex-col bg-surface"
+        }
+      >
         <header className="border-b border-border-soft px-5 pb-4 pt-5">
           <div className="flex items-start justify-between gap-3">
             <div>
               <h3 className="text-[20px] font-semibold leading-none text-foreground">{title}</h3>
               <p className="mt-2 text-[12px] text-secondary">{t.matrix.reviewer.subtitle}</p>
             </div>
-            <button type="button" aria-label="Close reviewer panel" onClick={onClose} className="text-secondary hover:text-foreground">
-              <Dismiss20Regular />
-            </button>
+            {!isInline ? (
+              <button type="button" aria-label="Close reviewer panel" onClick={onClose} className="text-secondary hover:text-foreground">
+                <Dismiss20Regular />
+              </button>
+            ) : null}
           </div>
           <div className="mt-5 flex items-center gap-6 text-[14px] font-medium">
             <button type="button" onClick={() => setActiveTab("assessment")} className={`border-b-[3px] pb-1.5 ${activeTab === "assessment" ? "border-primary text-foreground" : "border-transparent text-secondary"}`}>
@@ -441,7 +489,8 @@ export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: Ma
 
                   <div className="mt-6 border-t border-border-soft pt-5 pb-6">
                     <h5 className="text-[14px] font-semibold text-foreground">Uploaded Evidence</h5>
-                    <div className="mt-4">{renderUploadedEvidenceRows(!readOnly)}</div>
+                    {!readOnly ? <div className="mt-3">{dropZoneCard}</div> : null}
+                    <div className="mt-4">{renderUploadedEvidenceRows(!readOnly, { showDelete: !readOnly })}</div>
                   </div>
                 </section>
               </>
@@ -507,7 +556,11 @@ export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: Ma
         )}
       </aside>
 
-      <DocumentPreviewModal open={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} />
+      <DocumentPreviewModal
+        open={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        layout={isInline ? "inline" : "drawer"}
+      />
     </>
   );
 }
