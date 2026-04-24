@@ -172,6 +172,49 @@ export const en = {
       "All evidence files have been compiled and organised into the compliance dossier for {client}.",
     newReport: "Generate a new report",
   },
+  partnerAssets: {
+    list: {
+      clientsHeading: "Clients",
+      searchPlaceholder: "Search clients by name...",
+      table: {
+        organisation: "Organisation",
+      },
+      pagination: {
+        previous: "< Previous",
+        next: "Next >",
+      },
+    },
+    detail: {
+      breadcrumbModule: "Partner Assets",
+      breadcrumbClients: "Clients",
+      searchDocumentsPlaceholder: "Search documents...",
+      status: "Status",
+      upload: "Upload to Master Library",
+      cards: {
+        totalAssets: "Total Assets",
+        activeLinks: "Active Links",
+        expiringSoon: "Expiring soon",
+        expired: "Expired",
+      },
+      table: {
+        documentName: "Document Name",
+        type: "Type",
+        version: "Version",
+        size: "Size",
+        validUntil: "Valid Until",
+        status: "Status",
+      },
+      documentStatus: {
+        expiringSoon: "Expiring soon",
+        approved: "Approved",
+        expired: "Expired",
+      },
+      pagination: {
+        previous: "< Previous",
+        next: "Next >",
+      },
+    },
+  },
   clientPortfolio: {
     title: "Client Portfolio",
     searchClient: "Search Client",

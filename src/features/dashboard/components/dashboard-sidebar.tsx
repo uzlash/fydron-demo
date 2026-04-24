@@ -101,7 +101,7 @@ export function DashboardSidebar() {
         { key: "matrix", label: t.dashboard.nav.matrix, icon: <GridDots20Regular />, href: "/matrix" },
         { key: "globalMessages", label: t.dashboard.nav.globalMessages, icon: <Chat20Regular />, alertCount: 1 },
         { key: "clientPortfolio", label: t.dashboard.nav.clientPortfolio, icon: <Folder20Regular />, href: "/client-portfolio" },
-        { key: "partnerAssets", label: t.dashboard.nav.partnerAssets, icon: <Money20Regular /> },
+        { key: "partnerAssets", label: t.dashboard.nav.partnerAssets, icon: <Money20Regular />, href: "/partner-assets" },
         {
           key: "exportCenter",
           label: t.dashboard.nav.exportCenter,

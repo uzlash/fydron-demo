@@ -6,7 +6,7 @@ import {
   ArrowSync16Regular,
   ArrowDownload16Regular,
   CheckmarkCircle16Filled,
-  Warning16Filled,
+  DiamondDismiss16Filled,
 } from "@fluentui/react-icons";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardSidebar } from "@/features/dashboard/components/dashboard-sidebar";
@@ -38,7 +38,7 @@ function StatusBadge({
   if (status === "failed") {
     return (
       <span className="inline-flex items-center gap-2 text-[13px] text-foreground">
-        <Warning16Filled className="shrink-0 text-danger" />
+        <DiamondDismiss16Filled className="shrink-0 text-danger" />
         {label}
       </span>
     );

@@ -250,42 +250,42 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
             </div>
           </div>
 
-          {panel === "activity" ? (
-            <>
-              <button
-                type="button"
-                aria-label="Close activity panel"
-                className="absolute inset-0 z-20 bg-black/45"
-                onClick={() => setPanel("none")}
-              />
-              <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
-                <ActivityTimelinePanel
-                  tab={activityTab}
-                  onTabChange={setActivityTab}
-                  items={activityQuery.data ?? []}
-                  onClose={() => setPanel("none")}
-                />
-              </RightDrawerFrame>
-            </>
-          ) : null}
-
-          {panel === "compliance" ? (
-            <>
-              <button
-                type="button"
-                aria-label="Close compliance panel"
-                className="absolute inset-0 z-20 bg-black/45"
-                onClick={() => setPanel("none")}
-              />
-              <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
-                <ComplianceOverviewPanel chapters={complianceQuery.data ?? []} onClose={() => setPanel("none")} />
-              </RightDrawerFrame>
-            </>
-          ) : null}
-
         </div>
       </div>
       </AppMainCard>
+
+      {panel === "activity" ? (
+        <>
+          <button
+            type="button"
+            aria-label="Close activity panel"
+            className="absolute inset-0 z-20 bg-black/45"
+            onClick={() => setPanel("none")}
+          />
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
+            <ActivityTimelinePanel
+              tab={activityTab}
+              onTabChange={setActivityTab}
+              items={activityQuery.data ?? []}
+              onClose={() => setPanel("none")}
+            />
+          </RightDrawerFrame>
+        </>
+      ) : null}
+
+      {panel === "compliance" ? (
+        <>
+          <button
+            type="button"
+            aria-label="Close compliance panel"
+            className="absolute inset-0 z-20 bg-black/45"
+            onClick={() => setPanel("none")}
+          />
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
+            <ComplianceOverviewPanel chapters={complianceQuery.data ?? []} onClose={() => setPanel("none")} />
+          </RightDrawerFrame>
+        </>
+      ) : null}
 
       {panel === "reviewer" && activeReviewerRow ? (
         <>
