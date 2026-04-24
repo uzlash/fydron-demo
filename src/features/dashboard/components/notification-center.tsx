@@ -46,7 +46,7 @@ export function NotificationCenter({ items }: NotificationCenterProps) {
 
   return (
     <aside className="flex h-full min-h-0 w-full flex-col bg-surface">
-      <header className="flex items-center justify-between border-b border-border px-4 py-[14px]">
+      <header className="flex items-center justify-between border-b border-border-soft px-5 py-[14px]">
         <Text size={500} weight="semibold" className="text-[30px] leading-none text-foreground">
           {t.dashboard.notificationCenter.title}
         </Text>
@@ -66,7 +66,7 @@ export function NotificationCenter({ items }: NotificationCenterProps) {
         </button>
       </header>
 
-      <div className="flex h-[44px] items-end gap-4 border-b border-border px-4">
+      <div className="flex h-[44px] items-end gap-4 border-b border-border-soft px-5">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -84,7 +84,7 @@ export function NotificationCenter({ items }: NotificationCenterProps) {
 
       <div className="min-h-0 flex-1 overflow-y-auto">
         {Object.entries(groupedItems).map(([dayLabel, dayItems]) => (
-          <section key={dayLabel} className="border-b border-border-soft px-4 py-3">
+          <section key={dayLabel} className="border-b border-border-soft px-5 py-3">
             <Text size={200} className="mb-3 block text-[11px] text-secondary">
               {dayLabel}
             </Text>
@@ -126,7 +126,7 @@ export function NotificationCenter({ items }: NotificationCenterProps) {
         ))}
 
         {filteredItems.length === 0 ? (
-          <div className="px-4 py-8 text-center text-[13px] text-secondary">
+          <div className="px-5 py-8 text-center text-[13px] text-secondary">
             {activeTab === "unread" && unreadCount === 0
               ? t.dashboard.notificationCenter.empty.unread
               : t.dashboard.notificationCenter.empty.generic}

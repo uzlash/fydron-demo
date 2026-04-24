@@ -12,7 +12,7 @@ import { NotificationCenter } from "@/features/dashboard/components/notification
 import { notificationItems } from "@/features/dashboard/mock-data";
 import { useLocale } from "@/i18n/locale-context";
 import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
-import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_360 } from "@/components/right-drawer-frame";
+import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_440 } from "@/components/right-drawer-frame";
 
 export function ClientPortfolioScreen() {
   const { t } = useLocale();
@@ -59,7 +59,7 @@ export function ClientPortfolioScreen() {
             className="absolute inset-0 z-20 bg-black/45"
             onClick={() => setIsNotificationCenterOpen(false)}
           />
-          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_440} zClass="z-30">
             <NotificationCenter items={notificationItems} />
           </RightDrawerFrame>
         </>

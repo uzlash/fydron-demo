@@ -13,7 +13,7 @@ import { NotificationCenter } from "@/features/dashboard/components/notification
 import { notificationItems } from "@/features/dashboard/mock-data";
 import { useLocale } from "@/i18n/locale-context";
 import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
-import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_360 } from "@/components/right-drawer-frame";
+import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_440 } from "@/components/right-drawer-frame";
 
 const TURBO_VIEW_ROW_COUNT = 5;
 
@@ -240,7 +240,7 @@ export function AuditorTurboViewScreen({ clientId, dossierId }: AuditorTurboView
             className="fixed inset-0 z-[100] bg-black/45"
             onClick={() => setIsNotificationCenterOpen(false)}
           />
-          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} position="fixed" zClass="z-[110]">
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_440} position="fixed" zClass="z-[110]">
             <NotificationCenter items={notificationItems} />
           </RightDrawerFrame>
         </>

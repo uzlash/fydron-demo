@@ -333,7 +333,7 @@ export function ClientTurboDossierScreen({ clientId, dossierId }: ClientTurboDos
             className="fixed inset-0 z-[100] bg-black/45"
             onClick={() => setIsNotificationCenterOpen(false)}
           />
-          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} position="fixed" zClass="z-[110]">
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_440} position="fixed" zClass="z-[110]">
             <NotificationCenter items={notificationItems} />
           </RightDrawerFrame>
         </>

@@ -25,7 +25,7 @@ import { useDemoSession } from "@/features/auth/demo-session-context";
 import { SuccessToast } from "@/features/settings/components/success-toast";
 import { useLocale } from "@/i18n/locale-context";
 import { AppPageFrame, AppMainCard } from "@/components/app-content-shell";
-import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_360 } from "@/components/right-drawer-frame";
+import { RightDrawerFrame, RIGHT_DRAWER_WIDTH_440 } from "@/components/right-drawer-frame";
 
 type SettingsTab = "profile" | "notifications" | "security";
 
@@ -433,7 +433,7 @@ export function SettingsScreen() {
             className="absolute inset-0 z-20 bg-black/45"
             onClick={() => setIsNotificationCenterOpen(false)}
           />
-          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_440} zClass="z-30">
             <NotificationCenter items={notificationItems} />
           </RightDrawerFrame>
         </>

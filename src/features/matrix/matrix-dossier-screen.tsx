@@ -287,7 +287,7 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
             className="absolute inset-0 z-20 bg-black/45"
             onClick={() => setIsNotificationCenterOpen(false)}
           />
-          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_360} zClass="z-30">
+          <RightDrawerFrame widthClass={RIGHT_DRAWER_WIDTH_440} zClass="z-30">
             <NotificationCenter items={notificationItems} />
           </RightDrawerFrame>
         </>
