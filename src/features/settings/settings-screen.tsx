@@ -73,45 +73,53 @@ export function SettingsScreen() {
 
   const advisorRole = t.settings.profile.defaultRole;
 
+  const settingsFieldClass =
+    "h-9 w-full max-w-full rounded border border-border bg-surface text-[13px] text-foreground [box-shadow:none]";
+
   return (
     <AppPageFrame>
       <DashboardSidebar />
       <AppMainCard>
-      <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-surface">
-        <DashboardTopbar
-          title={t.settings.title}
-          onToggleNotifications={() => setIsNotificationCenterOpen((v) => !v)}
-          hasUnreadNotifications={notificationItems.some((item) => item.unread)}
-        />
+        <div className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden">
+          <DashboardTopbar
+            title={t.settings.title}
+            onToggleNotifications={() => setIsNotificationCenterOpen((v) => !v)}
+            hasUnreadNotifications={notificationItems.some((item) => item.unread)}
+          />
 
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-          <div className="shrink-0 border-b border-border-soft px-6">
-            <div className="flex gap-8">
-              {tabs.map((item) => (
-                <button
-                  key={item.key}
-                  type="button"
-                  onClick={() => setTab(item.key)}
-                  className={`border-b-2 pb-3 pt-4 text-[14px] font-medium transition-colors ${
-                    tab === item.key
-                      ? "border-primary text-primary"
-                      : "border-transparent text-secondary hover:text-foreground"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+            <div className="shrink-0 border-b border-border px-6">
+              <div className="flex gap-10">
+                {tabs.map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => setTab(item.key)}
+                    className={`-mb-px border-b-2 pb-3 pt-5 text-[14px] font-medium transition-colors ${
+                      tab === item.key
+                        ? "border-primary text-primary"
+                        : "border-transparent text-secondary hover:text-foreground"
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+            <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6">
             {tab === "profile" ? (
-              <div className="max-w-[720px]">
-                <div className="border-b border-border-soft pb-4">
-                  <Text size={500} weight="semibold" className="block text-[20px] text-foreground">
+              <div className="w-full max-w-[min(100%,32rem)]">
+                <div className="border-b border-border pb-4 flex flex-col">
+                  <Text
+                    as="h2"
+                    size={500}
+                    weight="semibold"
+                    className="block text-2xl leading-tight text-foreground"
+                  >
                     {t.settings.profile.sectionTitle}
                   </Text>
-                  <Text size={200} className="mt-1 block text-[13px] text-secondary">
+                  <Text size={200} className="mt-1 block text-[13px] leading-5 text-secondary">
                     {t.settings.profile.subtitle}
                   </Text>
                 </div>
@@ -129,7 +137,7 @@ export function SettingsScreen() {
                   }}
                 />
 
-                <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start">
+                <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start">
                   <Avatar
                     name={`${firstName} ${lastName}`.trim()}
                     image={photoUrl ? { src: photoUrl } : undefined}
@@ -137,18 +145,18 @@ export function SettingsScreen() {
                     size={96}
                     shape="circular"
                   />
-                  <div className="flex flex-col gap-2">
-                    <div className="flex flex-wrap gap-2">
+                  <div className="flex min-w-0 flex-col gap-2">
+                    <div className="flex flex-wrap gap-3">
                       <Button
                         appearance="primary"
-                        className="h-8 rounded-[4px]"
+                        className="h-9 rounded border-0 px-4 text-[13px] font-semibold"
                         onClick={() => fileRef.current?.click()}
                       >
                         {t.settings.profile.changePicture}
                       </Button>
                       <Button
                         appearance="outline"
-                        className="h-8 rounded-[4px] border-border-strong text-foreground"
+                        className="h-9 rounded border-border-strong px-4 text-[13px] font-medium text-foreground"
                         onClick={() => {
                           setPhotoUrl(null);
                           if (fileRef.current) fileRef.current.value = "";
@@ -157,18 +165,18 @@ export function SettingsScreen() {
                         {t.settings.profile.removePhoto}
                       </Button>
                     </div>
-                    <Text size={200} className="text-[12px] text-secondary">
+                    <Text size={200} className="text-[12px] leading-4 text-secondary">
                       {t.profile.photoHint}
                     </Text>
                   </div>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <Field label={t.profile.firstName}>
                     <Input
                       value={firstName}
                       onChange={(_, d) => setFirstName(d.value)}
-                      className="h-9"
+                      className={settingsFieldClass}
                       placeholder={t.settings.profile.placeholders.firstName}
                     />
                   </Field>
@@ -176,40 +184,39 @@ export function SettingsScreen() {
                     <Input
                       value={lastName}
                       onChange={(_, d) => setLastName(d.value)}
-                      className="h-9"
+                      className={settingsFieldClass}
                       placeholder={t.settings.profile.placeholders.lastName}
                     />
                   </Field>
                 </div>
 
-                <div className="mt-5">
+                <div className="mt-6">
                   <Field label={t.settings.profile.assignedRole}>
                     <Input
                       value={advisorRole}
                       readOnly
-                      disabled
-                      className="h-9 bg-sidebar text-secondary"
+                      className={`${settingsFieldClass} cursor-not-allowed bg-surface-muted text-foreground`}
                     />
                   </Field>
                 </div>
 
-                <div className="mt-5">
+                <div className="mt-6">
                   <Field label={t.profile.phone}>
                     <Input
                       value={phone}
                       onChange={(_, d) => setPhone(d.value)}
-                      className="h-9"
+                      className={settingsFieldClass}
                       placeholder={t.settings.profile.placeholders.phone}
                     />
                   </Field>
                 </div>
 
-                <div className="mt-5">
+                <div className="mt-6">
                   <Field label={t.settings.profile.emailAddress}>
                     <Input
                       value={email}
                       onChange={(_, d) => setEmail(d.value)}
-                      className="h-9"
+                      className={settingsFieldClass}
                       type="email"
                       placeholder={t.settings.profile.placeholders.email}
                     />
@@ -217,7 +224,11 @@ export function SettingsScreen() {
                 </div>
 
                 <div className="mt-8">
-                  <Button appearance="primary" className="h-9 rounded-[4px] px-4 font-medium" onClick={() => setSaveDialogOpen(true)}>
+                  <Button
+                    appearance="primary"
+                    className="h-9 rounded px-4 text-[13px] font-semibold"
+                    onClick={() => setSaveDialogOpen(true)}
+                  >
                     {t.settings.profile.saveChanges}
                   </Button>
                 </div>
@@ -225,12 +236,17 @@ export function SettingsScreen() {
             ) : null}
 
             {tab === "notifications" ? (
-              <div className="max-w-[720px]">
-                <div className="border-b border-border-soft pb-4">
-                  <Text size={500} weight="semibold" className="block text-[20px] text-foreground">
+              <div className="w-full max-w-[min(100%,32rem)]">
+                <div className="border-b border-border pb-4 flex flex-col">
+                  <Text
+                    as="h2"
+                    size={500}
+                    weight="semibold"
+                    className="block text-2xl leading-tight text-foreground"
+                  >
                     {t.settings.notifications.sectionTitle}
                   </Text>
-                  <Text size={200} className="mt-1 block text-[13px] text-secondary">
+                  <Text size={200} className="mt-1 block text-[13px] leading-5 text-secondary">
                     {t.settings.notifications.subtitle}
                   </Text>
                 </div>
@@ -304,47 +320,58 @@ export function SettingsScreen() {
             ) : null}
 
             {tab === "security" ? (
-              <div className="max-w-[720px]">
-                <div className="border-b border-border-soft pb-4">
-                  <Text size={500} weight="semibold" className="block text-[20px] text-foreground">
+              <div className="w-full max-w-[min(100%,32rem)]">
+                <div className="flex flex-col border-b border-border pb-4">
+                  <Text
+                    as="h2"
+                    size={500}
+                    weight="semibold"
+                    className="block text-2xl leading-tight text-foreground"
+                  >
                     {t.settings.security.sectionTitle}
                   </Text>
-                  <Text size={200} className="mt-1 block text-[13px] text-secondary">
+                  <Text size={200} className="mt-1 block text-[13px] leading-5 text-secondary">
                     {t.settings.security.subtitle}
                   </Text>
                 </div>
 
-                <div className="mt-6">
-                  <Text size={400} weight="semibold" className="block text-[16px] text-foreground">
+                <div className="mt-0 border-b border-border py-6">
+                  <Text size={400} weight="semibold" className="block text-[16px] leading-tight text-foreground">
                     {t.settings.security.mfaConfigTitle}
                   </Text>
 
-                  <div className="mt-4 flex items-center gap-3">
-                    <Text size={300} className="text-[14px] text-foreground">
+                  <div className="my-4 flex flex-wrap items-center gap-3">
+                    <Text size={300} className="text-[14px] leading-5 text-foreground">
                       {t.settings.security.mfaStatusLabel}
                     </Text>
-                    <span className="inline-flex items-center gap-1.5 rounded-[4px] bg-success px-2 py-1 text-[12px] font-medium text-white">
-                      <CheckmarkCircle16Filled />
+                    <span className="inline-flex items-center gap-1.5 rounded-md bg-fydron-active px-2.5 py-1.5 text-[12px] font-semibold text-white">
+                      <CheckmarkCircle16Filled className="h-4 w-4 shrink-0 text-white" />
                       {t.settings.security.mfaActiveBadge}
                     </span>
                   </div>
 
-                  <Text size={200} className="mt-4 block text-[13px] text-secondary">
+                  <Text size={200} className="block text-[13px] leading-5 text-secondary">
                     {t.settings.security.mfaProtectedText}
                   </Text>
 
                   <div className="mt-6 flex flex-wrap gap-3">
-                    <Button appearance="outline" className="h-8 rounded-[4px] border-border-strong text-foreground">
+                    <Button
+                      appearance="outline"
+                      className="h-9 rounded border-border-strong px-4 text-[13px] font-medium text-foreground"
+                    >
                       {t.settings.security.resetMfa}
                     </Button>
-                    <Button appearance="primary" className="h-8 rounded-[4px]">
+                    <Button
+                      appearance="primary"
+                      className="h-9 rounded px-4 text-[13px] font-semibold"
+                    >
                       {t.settings.security.reconfigureMfa}
                     </Button>
                   </div>
                 </div>
 
-                <div className="mt-8 border-t border-border-soft pt-4">
-                  <Text size={200} className="block text-[13px] text-secondary">
+                <div className="mt-4">
+                  <Text size={200} className="block text-[13px] leading-5 text-secondary">
                     {t.settings.security.footerText}
                   </Text>
                 </div>

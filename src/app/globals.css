@@ -22,6 +22,7 @@
   --palette-body: #323130;
   --palette-danger: #d13438;
   --palette-success: #107c10;
+  --fydron-active: #22b346;
 }
 
 @theme inline {
@@ -43,6 +44,7 @@
   --color-body: var(--palette-body);
   --color-danger: var(--palette-danger);
   --color-success: var(--palette-success);
+  --color-fydron-active: var(--fydron-active);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

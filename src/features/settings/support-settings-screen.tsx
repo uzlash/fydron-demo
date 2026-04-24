@@ -48,7 +48,10 @@ export function SupportSettingsScreen() {
             </div>
 
             <div className="px-5 py-7">
-              <Card className="w-full max-w-[250px] rounded-[3px] border border-border bg-surface p-4 shadow-none">
+              <Card
+                appearance="outline"
+                className="w-full max-w-[250px] rounded-md border border-border bg-surface p-4 shadow-none"
+              >
                 <span className="inline-flex h-5 w-5 items-center justify-center text-secondary">
                   <Mail20Regular />
                 </span>
@@ -59,7 +62,7 @@ export function SupportSettingsScreen() {
                   {t.settings.support.emailSubtitle}
                 </Text>
 
-                <Button appearance="outline" className="mt-6 h-8 w-fit rounded-[3px] border-border-strong px-3 text-[13px] font-medium">
+                <Button appearance="outline" className="mt-6 h-8 w-fit rounded border-border-strong px-3 text-[13px] font-medium text-foreground">
                   {t.settings.support.sendEmail}
                 </Button>
               </Card>

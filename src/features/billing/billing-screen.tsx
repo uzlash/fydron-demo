@@ -111,7 +111,7 @@ export function BillingScreen() {
                           block
                           className={
                             overview?.isActive
-                              ? "mt-2 text-[13px] leading-5 text-[#22B346]"
+                              ? "mt-2 text-[13px] leading-5 text-fydron-active"
                               : "mt-2 text-[13px] leading-5 text-secondary"
                           }
                         >
