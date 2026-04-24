@@ -13,7 +13,7 @@ import type { DemoUser } from "@/features/auth/demo-accounts";
 
 const STORAGE_KEY = "fydron-demo-user";
 
-function readStoredUser(): DemoUser | null {
+export function readDemoSessionUserFromStorage(): DemoUser | null {
   if (typeof window === "undefined") return null;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
@@ -45,6 +45,7 @@ type DemoSessionContextValue = {
   ready: boolean;
   signIn: (user: DemoUser) => void;
   signOut: () => void;
+  syncFromStorage: () => void;
 };
 
 const DemoSessionContext = createContext<DemoSessionContextValue | null>(null);
@@ -54,17 +55,21 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    setUser(readStoredUser());
+    setUser(readDemoSessionUserFromStorage());
     setReady(true);
   }, []);
 
+  const syncFromStorage = useCallback(() => {
+    setUser(readDemoSessionUserFromStorage());
+  }, []);
+
   const signIn = useCallback((next: DemoUser) => {
-    setUser(next);
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     } catch {
-      /* ignore quota / private mode */
+            /* ignore */
     }
+    setUser(next);
   }, []);
 
   const signOut = useCallback(() => {
@@ -77,8 +82,8 @@ export function DemoSessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, ready, signIn, signOut }),
-    [user, ready, signIn, signOut],
+    () => ({ user, ready, signIn, signOut, syncFromStorage }),
+    [user, ready, signIn, signOut, syncFromStorage],
   );
 
   return (

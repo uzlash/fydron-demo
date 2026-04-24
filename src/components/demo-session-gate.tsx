@@ -3,7 +3,7 @@
 import { Spinner } from "@fluentui/react-components";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
-import { useDemoSession } from "@/features/auth/demo-session-context";
+import { readDemoSessionUserFromStorage, useDemoSession } from "@/features/auth/demo-session-context";
 
 const AUTH_PREFIX = "/auth";
 
@@ -20,7 +20,7 @@ function isAuthPath(pathname: string | null): boolean {
 export function DemoSessionGate({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, ready } = useDemoSession();
+  const { user, ready, syncFromStorage } = useDemoSession();
   const auth = isAuthPath(pathname);
   const isLogin = pathname === "/auth/login";
 
@@ -34,10 +34,16 @@ export function DemoSessionGate({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!ready) return;
     if (auth) return;
-    if (!user) {
-      router.replace("/auth/login");
+    if (user) return;
+    // Right after sign-in, navigation can run before React commits `user`. Session is
+    // already in localStorage — recover once before sending the user back to login.
+    const stored = readDemoSessionUserFromStorage();
+    if (stored) {
+      syncFromStorage();
+      return;
     }
-  }, [ready, user, auth, router]);
+    router.replace("/auth/login");
+  }, [ready, user, auth, router, syncFromStorage]);
 
   if (!ready && !auth) {
     return (
