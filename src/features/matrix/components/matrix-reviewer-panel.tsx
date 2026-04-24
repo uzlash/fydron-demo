@@ -4,14 +4,15 @@ import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Button, Input, Textarea } from "@fluentui/react-components";
 import {
+  ArrowUpload16Regular,
   CheckmarkCircle16Filled,
   ChevronRight16Regular,
   Dismiss20Regular,
   Document20Regular,
+  DocumentAdd20Regular,
   Eye16Regular,
   Person16Regular,
   QuestionCircle16Regular,
-  ArrowUpload16Regular,
   Warning16Filled,
 } from "@fluentui/react-icons";
 import type { MatrixDossierAuditMode, MatrixDossierRow } from "@/features/matrix/types";
@@ -81,9 +82,19 @@ function DocumentPreviewModal({ open, onClose }: { open: boolean; onClose: () =>
   );
 }
 
+const EVIDENCE_CHECKLIST = [
+  "Incident response policy document",
+  "Past incident reports",
+  "Escalation logs",
+  "Review meeting minutes",
+] as const;
+
 export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: MatrixReviewerPanelProps) {
   const readOnly = auditMode !== "standard";
   const inspectionLayout = auditMode === "inspection";
+  const isUnderReview = auditMode === "underReview";
+  /** Inspection + under review share the same compact assessment drawer (Figma). */
+  const useReadOnlyFigmaAssessment = isUnderReview || inspectionLayout;
   const { t } = useLocale();
   const [activeTab, setActiveTab] = useState<ReviewerTab>("assessment");
   const [reviewChoice, setReviewChoice] = useState<ReviewChoice>(row.status === "awaitingReview" ? null : "accept");
@@ -111,7 +122,7 @@ export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: Ma
       <h5 className="text-[14px] font-semibold text-foreground">{t.matrix.reviewer.evidenceGuidance}</h5>
       <p className="mt-1.5 text-[12px] leading-relaxed text-secondary">{t.matrix.reviewer.evidenceBody}</p>
       <ul className="mt-3 space-y-2.5 text-[12px] font-medium">
-        {["Incident response policy document", "Past incident reports", "Escalation logs", "Review meeting minutes"].map((item) => (
+        {EVIDENCE_CHECKLIST.map((item) => (
           <li key={item} className="flex items-center gap-2 text-foreground">
             <CheckmarkCircle16Filled className="text-[16px] text-success" />
             {item}
@@ -119,6 +130,33 @@ export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: Ma
         ))}
       </ul>
     </div>
+  );
+
+  const readOnlyEvidenceGuidanceAndDropZone = (
+    <section className="mt-4 border-t border-border-soft pt-4 pb-2">
+      <h5 className="text-[14px] font-semibold text-foreground">{t.matrix.reviewer.evidenceGuidance}</h5>
+      <p className="mt-1.5 text-[12px] leading-relaxed text-secondary">{t.matrix.reviewer.evidenceBody}</p>
+      <ul className="mt-3 space-y-2.5 text-[12px] font-medium">
+        {EVIDENCE_CHECKLIST.map((item) => (
+          <li key={item} className="flex items-center gap-2 text-foreground">
+            <CheckmarkCircle16Filled className="h-4 w-4 shrink-0 text-success" />
+            {item}
+          </li>
+        ))}
+      </ul>
+      <div
+        className="mt-6 flex flex-col items-center justify-center rounded-[4px] border border-dashed border-border bg-surface-muted/60 px-6 py-10 text-center"
+        role="img"
+        aria-label={t.matrix.reviewer.dropZoneReadOnlyLabel}
+      >
+        <DocumentAdd20Regular className="text-[32px] text-muted" aria-hidden />
+        <p className="pointer-events-none mt-3 text-[13px] text-secondary">
+          {t.matrix.reviewer.dropZonePrefix}{" "}
+          <span className="font-medium text-primary">{t.matrix.reviewer.dropZoneBrowse}</span>
+        </p>
+        <p className="pointer-events-none mt-1.5 text-[12px] text-muted">{t.matrix.reviewer.dropZoneFormats}</p>
+      </div>
+    </section>
   );
 
   const dropZoneCard = (
@@ -156,7 +194,7 @@ export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: Ma
 
   return (
     <>
-      <aside className="flex h-full w-[440px] flex-col border-l border-border bg-surface shadow-[0_0_15px_rgba(0,0,0,0.1)]">
+      <aside className="flex h-full w-full min-w-0 flex-col border-l border-border bg-surface shadow-[0_0_15px_rgba(0,0,0,0.1)]">
         <header className="border-b border-border-soft px-5 pb-4 pt-5">
           <div className="flex items-start justify-between gap-3">
             <div>
@@ -179,7 +217,42 @@ export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: Ma
 
         {activeTab === "assessment" ? (
           <div className="flex-1 overflow-y-auto px-5 py-5">
-            {showDecisionButtons ? (
+            {useReadOnlyFigmaAssessment ? (
+              <div>
+                <section>
+                  <h5 className="text-[14px] font-semibold text-foreground">Incident Response Requirements</h5>
+                  <p className="mt-1.5 text-[13px] leading-[1.6] text-secondary">{t.matrix.reviewer.requirementsBody}</p>
+                  <div className="mt-5">
+                    <h5 className="text-[14px] font-semibold text-foreground">Required Elements</h5>
+                    <ul className="mt-2 space-y-1.5 text-[13px] text-secondary">
+                      <li>• Defined incident categories</li>
+                      <li>• Assigned incident response roles</li>
+                      <li>• Escalation matrix</li>
+                      <li>• Documentation procedures</li>
+                      <li>• Post-incident review process</li>
+                    </ul>
+                  </div>
+                </section>
+
+                <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-border-soft pt-3">
+                  <span className="text-[12px] font-medium text-secondary">{t.matrix.reviewer.indicatorReview}</span>
+                  <span
+                    className={`inline-flex items-center gap-1 rounded-full border border-border-soft bg-surface-muted px-2 py-0.5 text-[11px] font-semibold tabular-nums ${
+                      indicatorStatus === "passed" ? "text-foreground" : "text-danger"
+                    }`}
+                  >
+                    {indicatorStatus === "passed" ? (
+                      <CheckmarkCircle16Filled className="h-3.5 w-3.5 shrink-0 text-success" aria-hidden />
+                    ) : (
+                      <Warning16Filled className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                    )}
+                    {indicatorStatus === "passed" ? t.matrix.reviewer.indicatorPassed : t.matrix.reviewer.indicatorFailed}
+                  </span>
+                </div>
+
+                {readOnlyEvidenceGuidanceAndDropZone}
+              </div>
+            ) : showDecisionButtons ? (
               <div className={readOnly ? "pointer-events-none opacity-55" : ""}>
               <>
                 <div className="rounded-[4px] border border-border-soft p-4">
@@ -319,65 +392,6 @@ export function MatrixReviewerPanel({ row, onClose, auditMode = "standard" }: Ma
                     <div className="mt-4">{renderUploadedEvidenceRows(false)}</div>
                   </EvidenceUploadBlock>
                 ) : null}
-              </>
-            ) : inspectionLayout ? (
-              <>
-                <section className="mt-4">
-                  <h5 className="text-[14px] font-semibold text-foreground">Incident Response Requirements</h5>
-                  <p className="mt-1.5 text-[13px] leading-[1.6] text-secondary">{t.matrix.reviewer.requirementsBody}</p>
-
-                  <div className="mt-5">
-                    <h5 className="text-[14px] font-semibold text-foreground">Required Elements</h5>
-                    <ul className="mt-2 space-y-1.5 text-[13px] text-secondary">
-                      <li>• Defined incident categories</li>
-                      <li>• Assigned incident response roles</li>
-                      <li>• Escalation matrix</li>
-                      <li>• Documentation procedures</li>
-                      <li>• Post-incident review process</li>
-                    </ul>
-                  </div>
-                </section>
-
-                {evidenceGuidanceBlock}
-
-                <div className="mt-6 border-t border-border-soft pt-5">
-                  <h5 className="text-[14px] font-semibold text-foreground">{t.matrix.reviewer.indicatorReview}</h5>
-                  <div className="mt-3 inline-flex items-center gap-2.5 text-[13px] text-secondary">
-                    Indicator Status:
-                    <span className={`inline-flex items-center gap-1.5 font-medium ${indicatorStatus === "passed" ? "text-success" : "text-danger"}`}>
-                      {indicatorStatus === "passed" ? <CheckmarkCircle16Filled /> : <Warning16Filled />}
-                      {indicatorStatus === "passed" ? "Passed" : "Failed"}
-                    </span>
-                    <select
-                      aria-label="Indicator status"
-                      value={indicatorStatus}
-                      disabled
-                      className="ml-1 cursor-not-allowed rounded-[4px] border border-border-strong bg-surface-muted px-2 py-1 text-[13px] text-foreground opacity-80 shadow-sm"
-                    >
-                      <option value="passed">Passed</option>
-                      <option value="failed">Failed</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="pointer-events-none mt-6 border-t border-border-soft pt-5 opacity-60">
-                  <h5 className="text-[14px] font-semibold text-foreground">{t.matrix.reviewer.officialAssessment}</h5>
-                  <Textarea className="mt-3 min-h-[90px] w-full" readOnly value={note} onChange={() => undefined} />
-                  <div className="mt-3 flex justify-end gap-2">
-                    <Button appearance="outline" className="h-[34px] rounded-[4px] border-border-strong px-4 font-medium" disabled>
-                      {t.matrix.common.cancel}
-                    </Button>
-                    <Button appearance="primary" className="h-[34px] rounded-[4px] px-4 font-medium" disabled>
-                      {t.matrix.common.send}
-                    </Button>
-                  </div>
-                </div>
-
-                <EvidenceUploadBlock blurred>
-                  <h5 className="mb-3 text-[14px] font-semibold text-foreground">Uploaded Evidence</h5>
-                  {dropZoneCard}
-                  <div className="mt-4">{renderUploadedEvidenceRows(false)}</div>
-                </EvidenceUploadBlock>
               </>
             ) : (
               <>

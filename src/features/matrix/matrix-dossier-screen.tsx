@@ -14,6 +14,9 @@ import { MatrixAddTeamDialog } from "@/features/matrix/components/matrix-add-tea
 import { ComplianceOverviewPanel } from "@/features/matrix/components/compliance-overview-panel";
 import { MatrixDossierTable } from "@/features/matrix/components/matrix-dossier-table";
 import { MatrixDossierToolbar } from "@/features/matrix/components/matrix-dossier-toolbar";
+import { MatrixChangeWorkflowConfirmModal } from "@/features/matrix/components/matrix-change-workflow-confirm-modal";
+import { MatrixEditDossierModal } from "@/features/matrix/components/matrix-edit-dossier-modal";
+import type { MatrixEditDossierWorkflow } from "@/features/matrix/components/matrix-edit-dossier-modal";
 import { MatrixReviewerPanel } from "@/features/matrix/components/matrix-reviewer-panel";
 import { MatrixFrameworkMigrationModal } from "@/features/matrix/components/matrix-framework-migration-modal";
 import { MatrixInspectionBanner } from "@/features/matrix/components/matrix-inspection-banner";
@@ -56,6 +59,8 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
   const [auditMode, setAuditMode] = useState<MatrixDossierAuditMode>("standard");
   const [inspectionBannerDismissed, setInspectionBannerDismissed] = useState(false);
   const [isMigrationModalOpen, setIsMigrationModalOpen] = useState(false);
+  const [isEditDossierOpen, setIsEditDossierOpen] = useState(false);
+  const [isChangeWorkflowConfirmOpen, setIsChangeWorkflowConfirmOpen] = useState(false);
 
   useEffect(() => {
     if (auditMode !== "inspection") {
@@ -86,6 +91,15 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
     () => [t.matrix.dossier.breadcrumbRoot, t.matrix.dossier.breadcrumbMid, `${t.matrix.dossier.breadcrumbDossier} ${dossierId.toUpperCase()}`],
     [dossierId, t.matrix.dossier.breadcrumbDossier, t.matrix.dossier.breadcrumbMid, t.matrix.dossier.breadcrumbRoot],
   );
+
+  const editDossierDefaultName = useMemo(() => {
+    const meta = dossierQuery.data?.meta;
+    if (!meta) return "ISO 27001 - Medical Center X";
+    return `${meta.id} - ${meta.organizationName}`;
+  }, [dossierQuery.data?.meta]);
+
+  const editDossierDefaultWorkflow: MatrixEditDossierWorkflow =
+    addTeamActivationPreset === "direct" ? "direct" : "standard";
 
   const toggleOne = (id: string) => {
     setSelectedIds((current) => (current.includes(id) ? current.filter((item) => item !== id) : [...current, id]));
@@ -153,6 +167,11 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
               <MatrixDossierToolbar
                 selectedCount={selectedIds.length}
                 auditMode={auditMode}
+                onEdit={() => {
+                  setPanel("none");
+                  setIsNotificationCenterOpen(false);
+                  setIsEditDossierOpen(true);
+                }}
                 onAddTeam={() => {
                   setPanel("none");
                   setIsNotificationCenterOpen(false);
@@ -244,26 +263,27 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
             </>
           ) : null}
 
-          {panel === "reviewer" && activeReviewerRow ? (
-            <>
-              <button
-                type="button"
-                aria-label="Close reviewer panel"
-                className="absolute inset-0 z-20 bg-black/45"
-                onClick={() => setPanel("none")}
-              />
-              <div className="absolute right-0 top-0 z-30 h-full">
-                <MatrixReviewerPanel
-                  row={activeReviewerRow}
-                  auditMode={auditMode}
-                  onClose={() => setPanel("none")}
-                />
-              </div>
-            </>
-          ) : null}
         </div>
       </div>
       </AppMainCard>
+
+      {panel === "reviewer" && activeReviewerRow ? (
+        <>
+          <button
+            type="button"
+            aria-label="Close reviewer panel"
+            className="absolute inset-0 z-[200] bg-black/45"
+            onClick={() => setPanel("none")}
+          />
+          <div className="absolute right-0 top-0 z-[210] flex h-full w-[min(440px,100%)] min-w-0 sm:w-[440px]">
+            <MatrixReviewerPanel
+              row={activeReviewerRow}
+              auditMode={auditMode}
+              onClose={() => setPanel("none")}
+            />
+          </div>
+        </>
+      ) : null}
 
       {isNotificationCenterOpen ? (
         <>
@@ -286,6 +306,25 @@ export function MatrixDossierScreen({ dossierId }: MatrixDossierScreenProps) {
       />
 
       <MatrixFrameworkMigrationModal open={isMigrationModalOpen} onClose={() => setIsMigrationModalOpen(false)} />
+
+      <MatrixEditDossierModal
+        open={isEditDossierOpen}
+        onClose={() => setIsEditDossierOpen(false)}
+        defaultDossierName={editDossierDefaultName}
+        defaultWorkflow={editDossierDefaultWorkflow}
+        onContinue={() => {
+          setIsEditDossierOpen(false);
+          setIsChangeWorkflowConfirmOpen(true);
+        }}
+      />
+
+      <MatrixChangeWorkflowConfirmModal
+        open={isChangeWorkflowConfirmOpen}
+        onClose={() => setIsChangeWorkflowConfirmOpen(false)}
+        onConfirm={() => {
+          setIsChangeWorkflowConfirmOpen(false);
+        }}
+      />
     </AppPageFrame>
   );
 }

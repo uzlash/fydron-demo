@@ -273,7 +273,7 @@ export function ExportCenterScreen() {
             ) : null}
 
             {phase === "complete" ? (
-              <div className="space-y-3 rounded-[4px] border border-border bg-surface p-4 shadow-sm">
+              <div className="space-y-3 rounded-[4px] border-2 border-border-strong bg-surface p-4 shadow-sm">
                 <h2 className="text-[16px] font-semibold text-foreground">
                   {x.archiveTitle.replace("{client}", selectedClient ?? displayClient)}
                 </h2>

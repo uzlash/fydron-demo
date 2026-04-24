@@ -8,12 +8,14 @@ type DashboardTopbarProps = {
   onToggleNotifications: () => void;
   hasUnreadNotifications: boolean;
   title: string;
+  titleWeight?: "semibold" | "medium" | "regular";
 };
 
 export function DashboardTopbar({
   onToggleNotifications,
   hasUnreadNotifications,
   title,
+  titleWeight = "semibold",
 }: DashboardTopbarProps) {
   const { t } = useLocale();
 
@@ -22,7 +24,7 @@ export function DashboardTopbar({
       <Text
         as="h1"
         size={500}
-        weight="semibold"
+        weight={titleWeight}
         className="shrink-0 text-[18px] text-foreground"
       >
         {title}
@@ -30,12 +32,12 @@ export function DashboardTopbar({
       <div className="flex min-w-0 flex-1 items-center justify-end gap-3 pl-6">
         <Input
           placeholder={t.dashboard.searchPlaceholder}
-          className="h-9 w-full min-w-0 max-w-[380px] rounded border-border"
+          className="h-9 w-full min-w-0 max-w-[380px] rounded-md border border-border bg-surface"
           contentBefore={<Search20Regular className="text-muted" />}
         />
         <button
           type="button"
-          className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded border border-border bg-surface text-secondary hover:bg-sidebar"
+          className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-border bg-surface text-secondary hover:bg-sidebar"
           aria-label={t.dashboard.notifications}
           onClick={onToggleNotifications}
         >

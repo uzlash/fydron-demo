@@ -10,17 +10,18 @@ import {
   SplitButton,
 } from "@fluentui/react-components";
 import type { MenuButtonProps } from "@fluentui/react-components";
-import { Add16Regular, Archive16Regular, ArrowDownload16Regular } from "@fluentui/react-icons";
+import { Add16Regular, Archive16Regular, Edit16Regular } from "@fluentui/react-icons";
 import type { MatrixDossierAuditMode } from "@/features/matrix/types";
 import { useLocale } from "@/i18n/locale-context";
 
 type MatrixDossierToolbarProps = {
   selectedCount: number;
   onAddTeam: () => void;
+  onEdit: () => void;
   auditMode?: MatrixDossierAuditMode;
 };
 
-export function MatrixDossierToolbar({ selectedCount, onAddTeam, auditMode = "standard" }: MatrixDossierToolbarProps) {
+export function MatrixDossierToolbar({ selectedCount, onAddTeam, onEdit, auditMode = "standard" }: MatrixDossierToolbarProps) {
   const { t } = useLocale();
   const restrictActions = auditMode !== "standard";
   const archiveDisabled = auditMode === "inspection";
@@ -39,8 +40,14 @@ export function MatrixDossierToolbar({ selectedCount, onAddTeam, auditMode = "st
         </>
       ) : null}
 
-      <Button appearance="outline" className="h-8 rounded-[3px] border-border px-3 text-[13px]" icon={<ArrowDownload16Regular />} disabled={restrictActions}>
-        {t.matrix.dossier.export}
+      <Button
+        appearance="outline"
+        className="h-8 rounded-[3px] border-border px-3 text-[13px] font-medium"
+        icon={<Edit16Regular />}
+        disabled={restrictActions}
+        onClick={onEdit}
+      >
+        {t.matrix.dossier.edit}
       </Button>
       <Button appearance="outline" className="h-8 rounded-[3px] border-border px-3 text-[13px]" icon={<Archive16Regular />} disabled={archiveDisabled}>
         {t.matrix.dossier.archive}

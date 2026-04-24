@@ -43,7 +43,7 @@ export function MatrixFrameworkMigrationModal({ open, onClose }: MatrixFramework
       >
         <header className="flex items-start justify-between border-b border-border-soft px-6 pb-4 pt-5">
           <div>
-            <h2 id="matrix-migration-title" className="text-[22px] font-semibold leading-tight text-foreground">
+            <h2 id="matrix-migration-title" className="text-[22px] font-normal leading-tight text-foreground">
               {t.matrix.dossier.migration.title}
             </h2>
             <p className="mt-1.5 text-[13px] text-secondary">{t.matrix.dossier.migration.subtitle}</p>

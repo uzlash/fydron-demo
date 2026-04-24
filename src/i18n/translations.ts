@@ -432,6 +432,9 @@ export const en = {
       searchPlaceholder: "Search Dossier",
       filterByRole: "Filter by role",
       new: "New",
+      roleContributor: "Contributor",
+      paginationPrevious: "< Previous",
+      paginationNext: "Next >",
       actions: {
         activateNewDossier: "Activate New Dossier",
         userManagement: "User Management",
@@ -567,6 +570,29 @@ export const en = {
         stay: "Stay on the current version",
       },
       export: "Export",
+      edit: "Edit",
+      editDossierDialog: {
+        title: "Edit Audit/Dossier",
+        dossierNameLabel: "Dossier name",
+        dossierNamePlaceholder: "Enter dossier name",
+        changeWorkflow: "Change Audit Workflow",
+        continue: "Continue",
+        cancel: "Cancel",
+      },
+      changeWorkflowConfirm: {
+        title: "Change Audit Workflow?",
+        intro:
+          "Switching the workflow will reset the status of all requirements to neutral. This ensures the integrity of the new audit process;",
+        preservedLabel: "Preserved:",
+        preserved: "All uploaded evidence, chat history, and activity logs remain intact.",
+        resetLabel: "Reset:",
+        reset: "All current statuses and previous reviews will be permanently cleared.",
+        autoUpdateLabel: "Auto-Update:",
+        autoUpdate: "Any requirement with existing evidence will be set to 'Uploaded'.",
+        irreversible: "This action is irreversible. Do you want to proceed?",
+        confirm: "Confirm changes",
+        cancel: "Cancel",
+      },
     },
     activity: {
       title: "Activity Timeline",
@@ -596,6 +622,8 @@ export const en = {
       requirementsBody:
         "Organizations must establish, document, and maintain a formal incident response process that ensures timely identification, containment, and remediation of security incidents.",
       indicatorReview: "Indicator Review",
+      indicatorPassed: "Passed",
+      indicatorFailed: "Failed",
       officialAssessment: "Official Assessment",
       evidenceGuidance: "Evidence Guidance",
       evidenceBody:
@@ -603,6 +631,8 @@ export const en = {
       logInput: "Add a note to this indicator...",
       dropZonePrefix: "Drop document here, or",
       dropZoneBrowse: "browse",
+      dropZoneFormats: "Supported .PDF, .DOCX, .JPEG, .PNG, .CSV",
+      dropZoneReadOnlyLabel: "Document upload (read only)",
     },
   },
   settings: {

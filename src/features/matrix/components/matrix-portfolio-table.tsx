@@ -17,7 +17,14 @@ import {
   SplitButton,
 } from "@fluentui/react-components";
 import type { MenuButtonProps } from "@fluentui/react-components";
-import { Add16Regular, Checkmark12Filled, Filter16Regular, Info16Regular, Search16Regular } from "@fluentui/react-icons";
+import {
+  Add16Regular,
+  ArrowBidirectionalUpDown16Regular,
+  Checkmark12Filled,
+  Filter16Regular,
+  Info16Regular,
+  Search16Regular,
+} from "@fluentui/react-icons";
 import type { MatrixPortfolioRow } from "@/features/matrix/types";
 import { MATRIX_ACTIVATION_DOSSIER_ID, MATRIX_ACTIVATION_QUERY_KEY } from "@/features/matrix/types";
 import { MatrixUserManagementModal } from "@/features/matrix/components/matrix-user-management-modal";
@@ -28,19 +35,28 @@ const PAGE_SIZE = 12;
 type ActivateStep = 1 | 2;
 type Workflow = "standard" | "direct";
 
+/** Figma Matrix / Audit Portfolio role chips */
 function roleClass(role: MatrixPortfolioRow["role"]) {
   switch (role) {
     case "Admin":
-      return "bg-surface-muted text-foreground";
+      return "bg-[#f3f2f1] text-[#323130]";
     case "Auditor":
-      return "bg-primary text-white";
+      return "bg-[#0078d4] text-white";
     case "Reviewer":
-      return "bg-[#1f1f1f] text-white";
+      return "bg-[#323130] text-white";
     case "User":
-      return "bg-[#fce1e6] text-[#d13438]";
+      return "bg-[#fde7e9] text-[#a4262c]";
     default:
       return "bg-border-soft text-secondary";
   }
+}
+
+function roleLabel(
+  role: MatrixPortfolioRow["role"],
+  contributor: string,
+): string {
+  if (role === "User") return contributor;
+  return role;
 }
 
 type ActivateDossierDialogProps = {
@@ -123,7 +139,7 @@ function ActivateDossierDialog({ open, onClose }: ActivateDossierDialogProps) {
         {step === 1 ? (
           <>
             <div className="px-6 pb-5 pt-5">
-              <h3 id="matrix-activate-dossier-title" className="text-[20px] font-semibold leading-tight text-foreground">
+              <h3 id="matrix-activate-dossier-title" className="text-[20px] font-normal leading-tight text-foreground">
                 {t.matrix.portfolio.activateDialog.title}
               </h3>
 
@@ -137,10 +153,17 @@ function ActivateDossierDialog({ open, onClose }: ActivateDossierDialogProps) {
                 </Select>
               </section>
 
-              <section className="mt-4">
-                <p className="mb-1.5 text-[13px] text-foreground">{t.matrix.portfolio.activateDialog.dossierName}</p>
-                <Input className="h-8 min-h-8" placeholder={t.matrix.portfolio.activateDialog.enterDossierName} size="small" />
-              </section>
+              <Field
+                label={t.matrix.portfolio.activateDialog.dossierName}
+                size="small"
+                className="mt-4 w-full min-w-0"
+              >
+                <Input
+                  className="h-8 min-h-8 w-full min-w-0 text-[13px] [&>input]:min-w-0"
+                  placeholder={t.matrix.portfolio.activateDialog.enterDossierName}
+                  size="small"
+                />
+              </Field>
 
               <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-3">
                 <section>
@@ -180,7 +203,7 @@ function ActivateDossierDialog({ open, onClose }: ActivateDossierDialogProps) {
         ) : (
           <>
             <div className="px-6 pb-5 pt-5">
-              <h3 id="matrix-activate-dossier-title" className="text-[20px] font-semibold leading-tight text-foreground">
+              <h3 id="matrix-activate-dossier-title" className="text-[20px] font-normal leading-tight text-foreground">
                 {t.matrix.portfolio.activateDialog.title}
               </h3>
               <p className="mt-1.5 text-[13px] text-secondary">{t.matrix.portfolio.activateDialog.chooseWorkflow}</p>
@@ -275,36 +298,45 @@ export function MatrixPortfolioTable({ rows }: MatrixPortfolioTableProps) {
 
   return (
     <>
-      <section className="flex h-full min-h-0 flex-col px-4 pb-5 pt-4 sm:px-5">
-        <h2 className="shrink-0 text-[30px] font-semibold leading-none text-foreground">
+      <section className="flex h-full min-h-0 flex-col px-6 pb-6 pt-6">
+        <h2 className="shrink-0 text-[18px] font-normal leading-normal text-foreground">
           {t.matrix.portfolio.title}
         </h2>
 
-        <div className="mt-4 flex shrink-0 items-center justify-between gap-3">
+        <div className="mt-5 flex shrink-0 flex-wrap items-center justify-between gap-3">
           <Input
-            className="h-[38px] w-[360px]"
+            className="h-9 w-full min-w-0 max-w-[360px] rounded-md border border-border-soft bg-surface"
             placeholder={t.matrix.portfolio.searchPlaceholder}
+            size="small"
             contentBefore={<Search16Regular className="text-muted" />}
           />
-          <div className="flex items-center gap-2">
-            <Button appearance="outline" className="h-[36px] rounded-[2px] border-border px-3 text-secondary" icon={<Filter16Regular />}>
+          <div className="ml-auto flex flex-wrap items-center gap-2">
+            <Button
+              appearance="outline"
+              className="h-9 min-h-9 rounded-md border-border px-3 text-[13px] font-semibold text-foreground"
+              icon={<Filter16Regular className="text-foreground" />}
+            >
               {t.matrix.portfolio.filterByRole}
             </Button>
 
             <Menu positioning="below-end">
               <MenuTrigger disableButtonEnhancement>
                 {(triggerProps: MenuButtonProps) => (
-                  <SplitButton
-                    appearance="primary"
-                    className="font-medium"
-                    icon={<Add16Regular />}
-                    iconPosition="before"
-                    menuButton={triggerProps}
-                    primaryActionButton={{ onClick: () => setIsActivateDialogOpen(true) }}
-                    size="medium"
+                  <div
+                    className="inline-flex rounded-md [&_button]:!border-[#0078d4] [&_button]:!bg-[#0078d4] [&_button]:!text-white [&_button:hover]:!bg-[#106ebe] [&_button:hover]:!border-[#106ebe] [&_button:disabled]:!opacity-100"
                   >
-                    {t.matrix.portfolio.new}
-                  </SplitButton>
+                    <SplitButton
+                      appearance="primary"
+                      className="h-9 min-h-9 rounded-md text-[13px] font-semibold"
+                      icon={<Add16Regular />}
+                      iconPosition="before"
+                      menuButton={triggerProps}
+                      primaryActionButton={{ onClick: () => setIsActivateDialogOpen(true) }}
+                      size="medium"
+                    >
+                      {t.matrix.portfolio.new}
+                    </SplitButton>
+                  </div>
                 )}
               </MenuTrigger>
               <MenuPopover>
@@ -317,46 +349,110 @@ export function MatrixPortfolioTable({ rows }: MatrixPortfolioTableProps) {
           </div>
         </div>
 
-        <div className="mt-3 min-h-0 flex-1 overflow-y-auto">
-          <div className="overflow-x-auto rounded-[4px] border border-border-soft">
-          <table className="w-full border-collapse text-[13px]">
-            <thead className="sticky top-0 z-10 bg-surface text-left text-secondary">
-              <tr className="border-b border-border-soft">
-                <th className="px-4 py-3 font-medium">{t.matrix.portfolio.columns.dossier} ↕</th>
-                <th className="px-4 py-3 font-medium">{t.matrix.portfolio.columns.framework} ↕</th>
-                <th className="px-4 py-3 font-medium">{t.matrix.portfolio.columns.roles} ↕</th>
-                <th className="px-4 py-3 font-medium">{t.matrix.portfolio.columns.progress}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentPageRows.map((row, idx) => (
-                <tr key={row.id} className="border-b border-border-soft text-foreground last:border-b-0 hover:bg-surface-muted">
-                  <td className="px-4 py-3">
-                    <Link href={`/matrix/${row.id}`} className="text-[14px] font-medium hover:text-primary">
-                      {row.organization}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3 text-[13px] text-secondary">{row.framework}</td>
-                  <td className="px-4 py-3">
-                    <span className={`inline-flex h-5 items-center rounded-[4px] px-2 text-[10px] font-semibold ${roleClass(row.role)}`}>
-                      {row.role}
+        <div className="mt-4 min-h-0 flex-1 overflow-y-auto">
+          <div className="overflow-x-auto rounded-md border border-border-soft">
+            <table className="w-full border-collapse text-[13px]">
+              <thead className="sticky top-0 z-10 border-b border-border-soft bg-surface text-left">
+                <tr>
+                  <th className="px-4 py-3.5 pr-2 text-[12px] font-semibold capitalize text-secondary">
+                    <span className="inline-flex items-center gap-1.5">
+                      {t.matrix.portfolio.columns.dossier}
+                      <ArrowBidirectionalUpDown16Regular
+                        className="h-3.5 w-3.5 shrink-0 text-muted"
+                        aria-hidden
+                      />
                     </span>
-                  </td>
-                  <td className="px-4 py-3 text-[13px]">{idx === 0 ? "82%" : `${row.progress}%`}</td>
+                  </th>
+                  <th className="px-4 py-3.5 pr-2 text-[12px] font-semibold capitalize text-secondary">
+                    <span className="inline-flex items-center gap-1.5">
+                      {t.matrix.portfolio.columns.framework}
+                      <ArrowBidirectionalUpDown16Regular
+                        className="h-3.5 w-3.5 shrink-0 text-muted"
+                        aria-hidden
+                      />
+                    </span>
+                  </th>
+                  <th className="px-4 py-3.5 pr-2 text-[12px] font-semibold capitalize text-secondary">
+                    <span className="inline-flex items-center gap-1.5">
+                      {t.matrix.portfolio.columns.roles}
+                      <ArrowBidirectionalUpDown16Regular
+                        className="h-3.5 w-3.5 shrink-0 text-muted"
+                        aria-hidden
+                      />
+                    </span>
+                  </th>
+                  <th className="px-4 py-3.5 pr-2 text-[12px] font-semibold capitalize text-secondary">
+                    <span className="inline-flex items-center gap-1.5">
+                      {t.matrix.portfolio.columns.progress}
+                      <ArrowBidirectionalUpDown16Regular
+                        className="h-3.5 w-3.5 shrink-0 text-muted"
+                        aria-hidden
+                      />
+                    </span>
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {currentPageRows.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="border-b border-border-soft text-foreground last:border-b-0 hover:bg-surface-muted/80"
+                  >
+                    <td className="px-4 py-3.5">
+                      <Link
+                        href={`/matrix/${row.id}`}
+                        className="text-[14px] font-normal text-foreground decoration-transparent hover:text-primary hover:underline"
+                      >
+                        {row.organization}
+                      </Link>
+                    </td>
+                    <td className="px-4 py-3.5 text-[13px] text-secondary">{row.framework}</td>
+                    <td className="px-4 py-3.5">
+                      <span
+                        className={`inline-flex h-[22px] items-center rounded px-2 text-[11px] font-semibold leading-none ${roleClass(row.role)}`}
+                      >
+                        {roleLabel(row.role, t.matrix.portfolio.roleContributor)}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3.5 text-[13px] text-foreground">{row.progress}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div className="mt-4 flex shrink-0 items-center justify-end gap-2 border-t border-border-soft pt-3 text-[13px] text-secondary">
-          <button type="button" className="px-2 py-1 hover:text-foreground">‹ {t.matrix.common.previous}</button>
-          <button type="button" className="h-7 w-7 rounded hover:bg-surface-muted">1</button>
-          <button type="button" className="h-7 w-7 rounded border border-border bg-surface-muted">2</button>
-          <button type="button" className="h-7 w-7 rounded hover:bg-surface-muted">3</button>
-          <span>...</span>
-          <button type="button" className="px-2 py-1 hover:text-foreground">{t.matrix.common.next} ›</button>
+        <div className="mt-4 flex shrink-0 items-center justify-end gap-1 border-t border-border-soft pt-4 text-[13px] text-secondary">
+          <button type="button" className="px-2 py-1.5 text-foreground/80 hover:text-foreground">
+            {t.matrix.portfolio.paginationPrevious}
+          </button>
+          <div className="mx-0.5 flex items-center gap-0.5">
+            <button
+              type="button"
+              className="inline-flex h-8 min-w-8 items-center justify-center rounded px-2 text-foreground/90 hover:bg-[#f3f2f1]"
+            >
+              1
+            </button>
+            <button
+              type="button"
+              className="inline-flex h-8 min-w-8 items-center justify-center rounded bg-[#edebe9] px-2 font-medium text-foreground"
+              aria-current="page"
+            >
+              2
+            </button>
+            <button
+              type="button"
+              className="inline-flex h-8 min-w-8 items-center justify-center rounded px-2 text-foreground/90 hover:bg-[#f3f2f1]"
+            >
+              3
+            </button>
+            <span className="px-1" aria-hidden>
+              ...
+            </span>
+          </div>
+          <button type="button" className="px-2 py-1.5 text-foreground/80 hover:text-foreground">
+            {t.matrix.portfolio.paginationNext}
+          </button>
         </div>
       </section>
 
